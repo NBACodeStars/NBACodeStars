@@ -1,96 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/scss/styles.css">
-    <title>NBACodeStars</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/styles.css" />
+    <title>NBA Code Stars</title>
+  </head>
+  <body>
+    <!-- CHANGED -->
+    <header class="wrapper">
+      <nav>
+        <div class="logoContainer">
+          <img
+            class="logo"
+            src="./assets/nba-logo-alt.png"
+            alt="nba code stars logo"
+          />
+        </div>
+      </nav>
+      <h1>NBA Code Stars</h1>
+    </header>
+    <main>
+      <section class="teamSelectionSection">
+        <label for="teamDropdown">Select one or more teams</label>
+        <select id="teamDropdown" class="teamDropdown" multiple onfocus="1">
+          <option id="all" selected>All</option>
+        </select>
+      </section>
 
-    <select multiple onfocus='this.size=6;'>
-        <option value="">1</option>
-        <option value="">2</option>
-        <option value="">3</option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
-    </select>
-
-    <div>NBACodeStars</div>
-    <ul class="displayUl"></ul>
-
-    <select name="" id="">
-        
-    </select>
-
-
-    
-    
-</body>
+      <section class="teamCardsSection">
+        <ul class="teamCards"></ul>
+      </section>
+    </main>
+    <script src="./script/script.js"></script>
+  </body>
 </html>
-
-
-
-<!-- teams = {	
-    atl: 'hawks',
-    bkn: 'nets',
-    bos: 'celtics',
-    cha: 'hornets',
-    chi: 'bulls',
-
-    cle: 'cavaliers',
-    dal: 'mavericks',
-    den: 'nuggets',
-    det: 'pistons',
-    gsw: 'warriors',
-
-    hou: 'rockets',
-    ind: 'pacers',
-    lac: 'clippers',
-    lal: 'lakers',
-    mem: 'grizzlies',
-
-    mia: 'heat',
-    mil: 'bucks',
-    min: 'timberwolves',
-    nop: 'pelicans',
-    nyk: 'knicks',
-
-    okc: 'thunder',
-    orl: 'magic',
-    phi: '76ers',
-    phx: 'suns',
-    por: 'blazers'
-    ,
-    sac: 'kings',
-    sas: 'spurs',
-    tor: 'raptors',
-    uta: 'jazz',
-    was: 'wizards'
-    } -->
