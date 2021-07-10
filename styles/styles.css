@@ -361,7 +361,7 @@ h1 {
 }
 
 .card {
-  max-width: 300px;
+  min-width: 250px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -372,7 +372,6 @@ h1 {
   border: 2px solid #dbedf3;
   border-radius: 5px;
   background-color: #404b69;
-  position: relative;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   overflow: hidden;
@@ -386,12 +385,15 @@ h1 {
           transform: scale(1.2);
 }
 
-.cardImg {
-  width: 100%;
-  height: auto;
+.cardInnerContainer {
   -webkit-box-flex: 10;
       -ms-flex-positive: 10;
           flex-grow: 10;
+  position: relative;
+}
+
+.cardImg {
+  width: 100%;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   overflow: hidden;
@@ -420,6 +422,34 @@ h1 {
   border: 2px solid #dbedf3;
 }
 
+.teamDetailsCard {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(40, 49, 73, 0.9);
+  font-size: 2rem;
+  padding: 10px;
+}
+
+.closeIcon {
+  font-size: 1rem;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #dbedf3;
+  text-align: right;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.closeIcon:hover {
+  color: #f73859;
+  background-color: #283149;
+}
+
 .btn {
   display: inline-block;
   padding: 10px;
@@ -435,17 +465,14 @@ h1 {
   text-align: center;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
+  position: relative;
+  z-index: 1;
 }
 
 .btn:hover {
   cursor: pointer;
   background-color: #283149;
   color: white;
-}
-
-.btnTeamDetails {
-  position: relative;
-  z-index: 1;
 }
 
 .dropdownContainer {
@@ -540,4 +567,15 @@ footer {
   padding: 10px;
   font-size: 1rem;
   text-align: center;
+}
+
+@media screen and (max-width: 860px) {
+  .teamCards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 580px) {
+  .teamCards {
+    grid-template-columns: 1fr;
+  }
 }

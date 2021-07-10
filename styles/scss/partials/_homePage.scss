@@ -107,14 +107,15 @@ h1 {
   align-items: center;
 }
 
+// First layer of team card styles
+
 .card {
-  max-width: 300px;
+  min-width: 250px;
   display: flex;
   flex-direction: column;
   border: 2px solid $offWhite;
   border-radius: 5px;
   background-color: $greyAlt;
-  position: relative;
   transition: all 0.5s;
   overflow: hidden;
 
@@ -129,10 +130,13 @@ h1 {
   }
 }
 
+.cardInnerContainer {
+  flex-grow: 10;
+  position: relative;
+}
+
 .cardImg {
   width: 100%;
-  height: auto;
-  flex-grow: 10;
   transition: all 0.5s;
   overflow: hidden;
   object-fit: contain;
@@ -152,6 +156,37 @@ h1 {
   border: 2px solid $offWhite;
 }
 
+// Team details styles
+
+.teamDetailsCard {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba($grey, 0.9);
+  font-size: 2rem;
+  padding: 10px;
+}
+
+.closeIcon {
+  font-size: 1rem;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  color: $offWhite;
+  text-align: right;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    color: $red;
+    background-color: $grey;
+  }
+}
+
 .btn {
   display: inline-block;
   padding: 10px;
@@ -166,17 +201,14 @@ h1 {
   font-weight: 700;
   text-align: center;
   transition: all 0.5s;
+  position: relative;
+  z-index: 1;
 }
 
 .btn:hover {
   cursor: pointer;
   background-color: $grey;
   color: $white;
-}
-
-.btnTeamDetails {
-  position: relative;
-  z-index: 1;
 }
 
 //***************************************

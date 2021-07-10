@@ -1,0 +1,15 @@
+//***************************************
+// Media queries
+//***************************************
+
+@media screen and (max-width: 860px) {
+  .teamCards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .teamCards {
+    grid-template-columns: 1fr;
+  }
+}

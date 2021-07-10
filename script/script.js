@@ -44,11 +44,12 @@ NBACodeStars.cardsContainerElem =
 
 // Team details API
 NBACodeStars.apiUrl = "https://www.balldontlie.io";
-NBACodeStars.apiEndpoint = `${NBACodeStars.apiUrl}/api/v1/teams/`;
+NBACodeStars.apiTeamsEndpoint = `${NBACodeStars.apiUrl}/api/v1/teams/`;
+NBACodeStars.apiTeamDetailsEndpoint = `${NBACodeStars.apiUrl}/api/v1/players/`;
 
 // 2. Function that makes the API call
 NBACodeStars.getTeams = () => {
-  const url = new URL(NBACodeStars.apiEndpoint);
+  const url = new URL(NBACodeStars.apiTeamsEndpoint);
 
   fetch(url)
     .then((res) => res.json())
@@ -93,6 +94,10 @@ NBACodeStars.displayTeamCard = (team) => {
   imgElem.alt = team.full_name; // CHANGED
   imgElem.classList.add("cardImg");
 
+  const cardInnerContainerElem = document.createElement("div");
+  cardInnerContainerElem.classList.add("cardInnerContainer");
+  cardInnerContainerElem.append(imgElem);
+
   // CHANGED
   const aElem = document.createElement("a");
   aElem.innerHTML = "Team details";
@@ -100,9 +105,12 @@ NBACodeStars.displayTeamCard = (team) => {
   aElem.classList.add("btnTeamDetails");
   aElem.ariaRole = "button";
 
+  NBACodeStars.teamDetailsListener(aElem);
+
   const liElem = document.createElement("li");
   liElem.classList.add("card");
-  liElem.append(imgElem);
+  liElem.id = `card-${team.id}`;
+  liElem.append(cardInnerContainerElem);
   liElem.append(aElem);
   liElem.append(h3Elem);
 
@@ -142,6 +150,124 @@ NBACodeStars.getSelection = () => {
     }
   });
 };
+
+// Add event listener to the team details buttons populated
+// Call the function when team details button has been created
+NBACodeStars.teamDetailsListener = (btnElement) => {
+  btnElement.addEventListener("click", (e) => {
+    // Determine which team was selected based on the id of the card it is in
+    const cardId = e.target.closest(".card").id;
+    const teamId = cardId.split("-")[1];
+
+    let teamDetailsObj = null;
+
+    // Collect team details in a variable
+    for (const key in NBACodeStars.teamsData) {
+      if (parseInt(teamId) === parseInt(NBACodeStars.teamsData[key].id)) {
+        teamDetailsObj = NBACodeStars.teamsData[key];
+        break;
+      }
+    }
+
+    // Create team details card
+
+    // Create elements to hold team details
+    const closeIconElem = document.createElement("i");
+    closeIconElem.classList.add("fas", "fa-times", "closeIcon");
+
+    const cityElem = document.createElement("p");
+    cityElem.innerHTML = teamDetailsObj.city;
+    cityElem.classList.add("city");
+
+    const cityLabelElem = document.createElement("p");
+    cityLabelElem.innerHTML = "City:";
+    cityLabelElem.classList.add("teamDetailsLabel");
+
+    const conferenceElem = document.createElement("p");
+    conferenceElem.innerHTML = teamDetailsObj.conference;
+    conferenceElem.classList.add("conference");
+
+    const conferenceLabelElem = document.createElement("p");
+    conferenceLabelElem.innerHTML = "Confernce:";
+    conferenceLabelElem.classList.add("teamDetailsLabel");
+
+    const divisionElem = document.createElement("p");
+    divisionElem.innerHTML = teamDetailsObj.division;
+    divisionElem.classList.add("division");
+
+    const divisionLabelElem = document.createElement("p");
+    divisionLabelElem.innerHTML = "Division:";
+    divisionLabelElem.classList.add("teamDetailsLabel");
+
+    // Create an overlay container to hold team details and append details into it
+    const teamDetailsCardElem = document.createElement("div");
+    teamDetailsCardElem.classList.add("teamDetailsCard");
+    teamDetailsCardElem.append(closeIconElem);
+    teamDetailsCardElem.append(cityLabelElem);
+    teamDetailsCardElem.append(cityElem);
+
+    teamDetailsCardElem.append(conferenceLabelElem);
+    teamDetailsCardElem.append(conferenceElem);
+
+    teamDetailsCardElem.append(divisionLabelElem);
+    teamDetailsCardElem.append(divisionElem);
+
+    // append overlay to card inner div for the card selected
+    const cardElem = document.getElementById(cardId);
+    const cardInnerContainer =
+      cardElem.getElementsByClassName("cardInnerContainer")[0];
+    cardInnerContainer.append(teamDetailsCardElem);
+
+    // Event listener to close the team details card when close icon is clicked
+    // ASK: Does .remove() get rid of the event listener on the close icon as well?
+    closeIconElem.addEventListener("click", (e) => {
+      const teamDetailsCard = e.target.closest(".teamDetailsCard");
+      teamDetailsCard.remove();
+
+      // TODO: Bring back team details button
+      // Remove the team details button and add the player details button
+      // Refactor with team details button being removed and player details being added
+      const playerDetailsBtn =
+        cardElem.getElementsByClassName("btnPlayerDetails")[0];
+      playerDetailsBtn.remove();
+
+      const aElem = document.createElement("a");
+      aElem.innerHTML = "Team details";
+      aElem.classList.add("btn");
+      aElem.classList.add("btnTeamDetails");
+      aElem.ariaRole = "button";
+
+      cardInnerContainer.parentNode.insertBefore(
+        aElem,
+        cardInnerContainer.nextSibling
+      );
+
+      // Add event listener to the team details button
+      NBACodeStars.teamDetailsListener(aElem);
+    });
+
+    // Remove the team details button and add the player details button
+    // Refactor this code with the player details event listener code
+    const teamDetailsBtn = cardElem.getElementsByClassName("btnTeamDetails")[0];
+    teamDetailsBtn.remove();
+
+    const aElem = document.createElement("a");
+    aElem.innerHTML = "Player details";
+    aElem.classList.add("btn");
+    aElem.classList.add("btnPlayerDetails");
+    aElem.ariaRole = "button";
+
+    cardInnerContainer.parentNode.insertBefore(
+      aElem,
+      cardInnerContainer.nextSibling
+    );
+  });
+};
+
+// when close button is clicked
+//    hide the overlay
+//    remove the event listener on closebutton
+//    show team details button again and remove the player details button
 
 // 0. Calling the init to hit it off
 NBACodeStars.init();
