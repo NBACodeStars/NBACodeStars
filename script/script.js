@@ -180,7 +180,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     cityElem.classList.add("city");
 
     const cityLabelElem = document.createElement("p");
-    cityLabelElem.innerHTML = "City:";
+    cityLabelElem.innerHTML = "City";
     cityLabelElem.classList.add("teamDetailsLabel");
 
     const conferenceElem = document.createElement("p");
@@ -188,7 +188,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     conferenceElem.classList.add("conference");
 
     const conferenceLabelElem = document.createElement("p");
-    conferenceLabelElem.innerHTML = "Confernce:";
+    conferenceLabelElem.innerHTML = "Conference";
     conferenceLabelElem.classList.add("teamDetailsLabel");
 
     const divisionElem = document.createElement("p");
@@ -196,7 +196,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     divisionElem.classList.add("division");
 
     const divisionLabelElem = document.createElement("p");
-    divisionLabelElem.innerHTML = "Division:";
+    divisionLabelElem.innerHTML = "Division";
     divisionLabelElem.classList.add("teamDetailsLabel");
 
     // Create an overlay container to hold team details and append details into it
@@ -216,15 +216,20 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     const cardElem = document.getElementById(cardId);
     const cardInnerContainer =
       cardElem.getElementsByClassName("cardInnerContainer")[0];
+
     cardInnerContainer.append(teamDetailsCardElem);
 
     // Event listener to close the team details card when close icon is clicked
     // ASK: Does .remove() get rid of the event listener on the close icon as well?
     closeIconElem.addEventListener("click", (e) => {
       const teamDetailsCard = e.target.closest(".teamDetailsCard");
-      teamDetailsCard.remove();
 
-      // TODO: Bring back team details button
+      // Refactor to create a general fadeout animation
+      teamDetailsCard.classList.add("fadeOut");
+      setTimeout(function () {
+        teamDetailsCard.remove();
+      }, 500);
+
       // Remove the team details button and add the player details button
       // Refactor with team details button being removed and player details being added
       const playerDetailsBtn =
@@ -263,11 +268,6 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     );
   });
 };
-
-// when close button is clicked
-//    hide the overlay
-//    remove the event listener on closebutton
-//    show team details button again and remove the player details button
 
 // 0. Calling the init to hit it off
 NBACodeStars.init();
