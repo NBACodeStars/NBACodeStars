@@ -14,25 +14,65 @@
         <div class="logoContainer">
           <img
             class="logo"
-            src="./assets/nba-logo-alt.png"
+            src="./assets/nba-logo.png"
             alt="nba code stars logo"
           />
         </div>
       </nav>
       <h1>NBA Code Stars</h1>
-    </header>
-    <main>
-      <section class="teamSelectionSection">
-        <label for="teamDropdown">Select one or more teams</label>
-        <select id="teamDropdown" class="teamDropdown" multiple onfocus="1">
+
+      <form action="/">
+        <label class="teamDropdownLabel" for="teamDropdown"
+          >Search for your favourite teams</label
+        >
+        <select id="teamDropdown" class="teamDropdown" autofocus multiple>
           <option id="all" selected>All</option>
         </select>
-      </section>
 
+        <div class="dropdownContainer">
+          <ul class="dropdown" role="listbox">
+            <li class="dropdownOption" role="option" tabindex="0">
+              Toronto raptors
+            </li>
+            <li class="dropdownOption" role="option" tabindex="0">
+              Atlanta hawks
+            </li>
+            <li class="dropdownOption" role="option" tabindex="0">
+              Boston celtics
+            </li>
+            <li class="dropdownOption" role="option" tabindex="0">
+              Brooklyn nets
+            </li>
+            <li class="dropdownOption" role="option" tabindex="0">
+              Boston celtics
+            </li>
+            <li class="dropdownOption" role="option" tabindex="-1">
+              Boston celtics
+            </li>
+            <li class="dropdownOption" role="option" tabindex="-1">
+              Boston celtics
+            </li>
+            <li class="dropdownOption" role="option" tabindex="-1">
+              Boston celtics
+            </li>
+            <li class="dropdownOption" role="option" tabindex="-1">
+              Boston celtics
+            </li>
+            <li class="dropdownOption" role="option" tabindex="-1">
+              Boston celtics
+            </li>
+          </ul>
+        </div>
+      </form>
+    </header>
+    <main class="wrapper">
       <section class="teamCardsSection">
         <ul class="teamCards"></ul>
       </section>
     </main>
+    <footer class="wrapper">
+      <p>Created at Juno College 2021</p>
+    </footer>
     <script src="./script/script.js"></script>
   </body>
 </html>

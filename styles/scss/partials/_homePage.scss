@@ -1,17 +1,226 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Source+Sans+Pro:wght@300;400;700&display=swap");
+
+// ASK: Why isnt base font of 10px being applied to rem when setting font-size to 62.5%
+body {
+  font-size: 62.5%;
+  font-family: "Source Sans Pro", sans-serif;
+  background-color: $grey;
+  color: $white;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
 .wrapper {
   margin: 0px auto;
   max-width: 1200px;
+  width: 90%;
 }
 
-.logoContainer {
-  height: 75px;
-  position: relative;
+nav {
+  margin: 10px 0px;
+}
+
+section {
+  margin: 50px 0px;
+}
+
+.logoContainer::before,
+.logoContainer::after {
+  content: "{";
+  font-size: 4rem;
+  color: $offWhite;
+}
+
+.logoContainer::after {
+  content: "}";
 }
 
 .logo {
   width: auto;
-  height: 75px;
-  position: absolute;
-  transform: scaleX(-1);
-  background-color: red;
+  height: 50px;
+  position: relative;
+  top: 8px;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 4rem;
+  color: $red;
+}
+
+.teamDropdownLabel,
+.teamDropdown {
+  display: block;
+  text-align: center;
+  margin: 10px auto;
+  font-size: 1.5rem;
+}
+
+.teamDropdown {
+  width: 300px;
+  font-size: 1.25rem;
+}
+
+.teamCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 30px;
+  column-gap: 10px;
+  align-items: center;
+}
+
+.card {
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid $offWhite;
+  border-radius: 5px;
+  background-color: $greyAlt;
+  position: relative;
+  transition: all 0.5s;
+  overflow: hidden;
+
+  &:hover,
+  &:focus-within {
+    box-shadow: 0 14px 28px rgba($offWhite, 0.19),
+      0 10px 10px rgba($offWhite, 0.23);
+
+    .cardImg {
+      transform: scale(1.2);
+    }
+  }
+}
+
+.cardImg {
+  width: 100%;
+  height: auto;
+  flex-grow: 10;
+  transition: all 0.5s;
+  overflow: hidden;
+  object-fit: contain;
+  object-position: center;
+}
+
+.cardTeamName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  height: 50px;
+  background-color: $offWhite;
+  color: $grey;
+  border: 2px solid $offWhite;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 2px;
+  border: 2px solid $red;
+  background-color: $red;
+  color: $white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.5s;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: $grey;
+  color: $white;
+}
+
+.btnTeamDetails {
+  position: relative;
+  z-index: 1;
+}
+
+// Trial
+
+.dropdownContainer {
+  position: relative;
+  height: 50px;
+  width: 300px;
+  margin: 0px auto;
+}
+
+.dropdown {
+  position: relative;
+  width: 300px;
+  height: 55px;
+  font-size: 1.5rem;
+  overflow-y: scroll;
+  background-color: $greyAlt;
+  transition: all 0.5s;
+  z-index: 2;
+  border: 2px solid $offWhite;
+  border-radius: 5px;
+
+  &:hover,
+  &:focus-within {
+    height: 200px;
+  }
+
+  //   LEFT HERE
+  &::after {
+    content: "";
+  }
+}
+
+.dropdownOption {
+  width: 100%;
+  padding: 10px;
+  transition: all 0.3s;
+  border: 2px solid $greyAlt;
+  background-color: $grey;
+  color: $offWhite;
+
+  &:hover,
+  &:focus-within {
+    color: $grey;
+    background-color: rgba($offWhite, 0.9);
+    cursor: pointer;
+  }
+}
+
+/* Whole scrollbar */
+.dropdown::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  margin-left: 5px;
+  background-color: $greyAlt;
+}
+
+/* Track */
+.dropdown::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* Handle */
+.dropdown::-webkit-scrollbar-thumb {
+  background: $red;
+  border-radius: 5px;
 }

@@ -93,9 +93,17 @@ NBACodeStars.displayTeamCard = (team) => {
   imgElem.alt = team.full_name; // CHANGED
   imgElem.classList.add("cardImg");
 
+  // CHANGED
+  const aElem = document.createElement("a");
+  aElem.innerHTML = "Team details";
+  aElem.classList.add("btn");
+  aElem.classList.add("btnTeamDetails");
+  aElem.ariaRole = "button";
+
   const liElem = document.createElement("li");
   liElem.classList.add("card");
   liElem.append(imgElem);
+  liElem.append(aElem);
   liElem.append(h2Elem);
 
   NBACodeStars.cardsContainerElem.append(liElem);
