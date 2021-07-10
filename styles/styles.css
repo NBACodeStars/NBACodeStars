@@ -304,7 +304,8 @@ nav {
   margin: 10px 0px;
 }
 
-section {
+section,
+footer {
   margin: 50px 0px;
 }
 
@@ -449,13 +450,20 @@ h1 {
 
 .dropdownContainer {
   position: relative;
-  height: 50px;
   width: 300px;
+  height: 100px;
   margin: 0px auto;
 }
 
+.dropdownLabel {
+  margin: 10px 0px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
 .dropdown {
-  position: relative;
+  position: absolute;
   width: 300px;
   height: 55px;
   font-size: 1.5rem;
@@ -470,8 +478,8 @@ h1 {
 .dropdown:hover, .dropdown:focus-within {
   height: 200px;
 }
-.dropdown::after {
-  content: "";
+.dropdown:hover .dropdownIcon {
+  border-left-color: #404b69;
 }
 
 .dropdownOption {
@@ -487,6 +495,20 @@ h1 {
   color: #283149;
   background-color: rgba(219, 237, 243, 0.9);
   cursor: pointer;
+}
+
+.optionOne {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.dropdownIcon {
+  border-left: 2px solid #dbedf3;
+  padding-left: 10px;
 }
 
 /* Whole scrollbar */
@@ -506,4 +528,16 @@ h1 {
 .dropdown::-webkit-scrollbar-thumb {
   background: #f73859;
   border-radius: 5px;
+}
+
+footer {
+  margin-bottom: 0px;
+  color: #283149;
+  background-color: #dbedf3;
+}
+
+.footerText {
+  padding: 10px;
+  font-size: 1rem;
+  text-align: center;
 }

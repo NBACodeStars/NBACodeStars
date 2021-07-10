@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Source+Sans+Pro:wght@300;400;700&display=swap");
 
+//***************************************
+// General styles
+//***************************************
+
 // ASK: Why isnt base font of 10px being applied to rem when setting font-size to 62.5%
 body {
   font-size: 62.5%;
@@ -35,9 +39,14 @@ nav {
   margin: 10px 0px;
 }
 
-section {
+section,
+footer {
   margin: 50px 0px;
 }
+
+//***************************************
+// Header styles
+//***************************************
 
 .logoContainer::before,
 .logoContainer::after {
@@ -77,6 +86,10 @@ h1 {
   width: 300px;
   font-size: 1.25rem;
 }
+
+//***************************************
+// Main styles
+//***************************************
 
 .teamCards {
   display: grid;
@@ -158,17 +171,26 @@ h1 {
   z-index: 1;
 }
 
-// Trial
+//***************************************
+// Custom dropdown styles
+//***************************************
 
 .dropdownContainer {
   position: relative;
-  height: 50px;
   width: 300px;
+  height: 100px;
   margin: 0px auto;
 }
 
+.dropdownLabel {
+  margin: 10px 0px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
 .dropdown {
-  position: relative;
+  position: absolute;
   width: 300px;
   height: 55px;
   font-size: 1.5rem;
@@ -184,9 +206,8 @@ h1 {
     height: 200px;
   }
 
-  //   LEFT HERE
-  &::after {
-    content: "";
+  &:hover .dropdownIcon {
+    border-left-color: $greyAlt;
   }
 }
 
@@ -206,6 +227,16 @@ h1 {
   }
 }
 
+.optionOne {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropdownIcon {
+  border-left: 2px solid $offWhite;
+  padding-left: 10px;
+}
+
 /* Whole scrollbar */
 .dropdown::-webkit-scrollbar {
   width: 8px;
@@ -223,4 +254,20 @@ h1 {
 .dropdown::-webkit-scrollbar-thumb {
   background: $red;
   border-radius: 5px;
+}
+
+//***************************************
+// Footer styles
+//***************************************
+
+footer {
+  margin-bottom: 0px;
+  color: $grey;
+  background-color: $offWhite;
+}
+
+.footerText {
+  padding: 10px;
+  font-size: 1rem;
+  text-align: center;
 }

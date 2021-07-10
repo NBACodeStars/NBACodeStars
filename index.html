@@ -4,13 +4,23 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Font awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+      crossorigin="anonymous"
+    />
+
+    <!-- Internal stylesheet -->
     <link rel="stylesheet" href="./styles/styles.css" />
     <title>NBA Code Stars</title>
   </head>
   <body>
-    <!-- CHANGED -->
     <header class="wrapper">
       <nav>
+        <!-- START: Logo container -->
         <div class="logoContainer">
           <img
             class="logo"
@@ -19,59 +29,76 @@
           />
         </div>
       </nav>
+
+      <!-- START: Website name -->
       <h1>NBA Code Stars</h1>
 
-      <form action="/">
-        <label class="teamDropdownLabel" for="teamDropdown"
-          >Search for your favourite teams</label
-        >
-        <select id="teamDropdown" class="teamDropdown" autofocus multiple>
-          <option id="all" selected>All</option>
-        </select>
+      <div class="dropdownFormContainer">
+        <!-- START: Dropdown form -->
+        <form action="/">
+          <!-- START: Select dropdown -->
+          <label class="teamDropdownLabel" for="teamDropdown"
+            >Search for your favourite teams</label
+          >
+          <select id="teamDropdown" class="teamDropdown" autofocus multiple>
+            <option id="all" selected>All</option>
+          </select>
 
-        <div class="dropdownContainer">
-          <ul class="dropdown" role="listbox">
-            <li class="dropdownOption" role="option" tabindex="0">
-              Toronto raptors
-            </li>
-            <li class="dropdownOption" role="option" tabindex="0">
-              Atlanta hawks
-            </li>
-            <li class="dropdownOption" role="option" tabindex="0">
-              Boston celtics
-            </li>
-            <li class="dropdownOption" role="option" tabindex="0">
-              Brooklyn nets
-            </li>
-            <li class="dropdownOption" role="option" tabindex="0">
-              Boston celtics
-            </li>
-            <li class="dropdownOption" role="option" tabindex="-1">
-              Boston celtics
-            </li>
-            <li class="dropdownOption" role="option" tabindex="-1">
-              Boston celtics
-            </li>
-            <li class="dropdownOption" role="option" tabindex="-1">
-              Boston celtics
-            </li>
-            <li class="dropdownOption" role="option" tabindex="-1">
-              Boston celtics
-            </li>
-            <li class="dropdownOption" role="option" tabindex="-1">
-              Boston celtics
-            </li>
-          </ul>
-        </div>
-      </form>
+          <!-- START: Custom dropdown container -->
+          <!-- Consider accessibility for the custom dropdown -->
+          <div class="dropdownContainer">
+            <h2 class="dropdownLabel">Select your favourite teams</h2>
+
+            <!-- START: Custom dropdown -->
+            <ul class="dropdown" role="listbox">
+              <li class="dropdownOption optionOne" role="option" tabindex="0">
+                <span>All teams</span>
+                <i class="fas fa-caret-down dropdownIcon"></i>
+              </li>
+              <li class="dropdownOption" role="option" tabindex="0">
+                Atlanta hawks
+              </li>
+              <li class="dropdownOption" role="option" tabindex="0">
+                Boston celtics
+              </li>
+              <li class="dropdownOption" role="option" tabindex="0">
+                Brooklyn nets
+              </li>
+              <li class="dropdownOption" role="option" tabindex="0">
+                Boston celtics
+              </li>
+              <li class="dropdownOption" role="option" tabindex="-1">
+                Boston celtics
+              </li>
+              <li class="dropdownOption" role="option" tabindex="-1">
+                Boston celtics
+              </li>
+              <li class="dropdownOption" role="option" tabindex="-1">
+                Boston celtics
+              </li>
+              <li class="dropdownOption" role="option" tabindex="-1">
+                Boston celtics
+              </li>
+              <li class="dropdownOption" role="option" tabindex="-1">
+                Boston celtics
+              </li>
+            </ul>
+          </div>
+        </form>
+      </div>
     </header>
+
+    <!-- START: Main -->
     <main class="wrapper">
+      <!-- START: Team cards section -->
       <section class="teamCardsSection">
+        <!-- START: Container to hold team cards -->
         <ul class="teamCards"></ul>
       </section>
     </main>
-    <footer class="wrapper">
-      <p>Created at Juno College 2021</p>
+    <!-- START: Footer -->
+    <footer>
+      <p class="footerText">Created at Juno College 2021</p>
     </footer>
     <script src="./script/script.js"></script>
   </body>

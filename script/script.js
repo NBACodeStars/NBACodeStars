@@ -82,9 +82,9 @@ NBACodeStars.displayTeamsDropdown = (teams) => {
 
 // 4. Function that displays the teams card
 NBACodeStars.displayTeamCard = (team) => {
-  const h2Elem = document.createElement("h2");
-  h2Elem.innerText = team.full_name;
-  h2Elem.classList.add("cardTeamName");
+  const h3Elem = document.createElement("h3");
+  h3Elem.innerText = team.full_name;
+  h3Elem.classList.add("cardTeamName");
 
   const shortName = team.abbreviation.toLowerCase();
   const imageURL = `http://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${shortName}.png`;
@@ -104,7 +104,7 @@ NBACodeStars.displayTeamCard = (team) => {
   liElem.classList.add("card");
   liElem.append(imgElem);
   liElem.append(aElem);
-  liElem.append(h2Elem);
+  liElem.append(h3Elem);
 
   NBACodeStars.cardsContainerElem.append(liElem);
 };
