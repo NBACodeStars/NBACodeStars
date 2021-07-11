@@ -275,6 +275,7 @@ body {
   font-family: "Source Sans Pro", sans-serif;
   background-color: #283149;
   color: white;
+  position: relative;
 }
 
 h1,
@@ -381,8 +382,8 @@ h1 {
           box-shadow: 0 14px 28px rgba(219, 237, 243, 0.19), 0 10px 10px rgba(219, 237, 243, 0.23);
 }
 .card:hover .cardImg, .card:focus-within .cardImg {
-  -webkit-transform: scale(1.2);
-          transform: scale(1.2);
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 .cardInnerContainer {
@@ -428,8 +429,8 @@ h1 {
   bottom: 0;
   right: 0;
   left: 0;
-  background-color: rgba(219, 237, 243, 0.8);
-  font-size: 3rem;
+  background-color: rgba(219, 237, 243, 0.3);
+  font-size: 2rem;
   padding: 30px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -441,9 +442,11 @@ h1 {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  color: #283149;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
+  color: #f73859;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
 }
 
 .fadeOut {
@@ -453,10 +456,10 @@ h1 {
 .teamDetailsLabel {
   font-size: 1.5rem;
   margin-top: 10px;
-  color: #404b69;
+  color: #283149;
   font-weight: 700;
   padding: 5px 0px;
-  border-bottom: 2px solid #f73859;
+  border-bottom: 2px solid #404b69;
 }
 
 .closeIcon {
@@ -475,6 +478,33 @@ h1 {
 }
 .closeIcon:hover {
   color: #f73859;
+}
+
+.playerDetailsContainer {
+  min-width: 80vw;
+  min-height: 80vh;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: fixed;
+  background-color: rgba(64, 75, 105, 0.5);
+  font-size: 2rem;
+  z-index: 3;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.playerDetailsContainer::before {
+  content: "";
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  color: rgba(40, 49, 73, 0.8);
 }
 
 .btn {

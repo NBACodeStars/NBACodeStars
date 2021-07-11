@@ -18,6 +18,7 @@ body {
   font-family: "Source Sans Pro", sans-serif;
   background-color: $grey;
   color: $white;
+  position: relative;
 }
 
 h1,
@@ -125,7 +126,7 @@ h1 {
       0 10px 10px rgba($offWhite, 0.23);
 
     .cardImg {
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
   }
 }
@@ -164,14 +165,16 @@ h1 {
   bottom: 0;
   right: 0;
   left: 0;
-  background-color: rgba($offWhite, 0.8);
-  font-size: 3rem;
+  background-color: rgba($offWhite, 0.3);
+  font-size: 2rem;
   padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: $grey;
-  transition: all 0.3s;
+  color: $red;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.5s;
 }
 
 .fadeOut {
@@ -181,10 +184,10 @@ h1 {
 .teamDetailsLabel {
   font-size: 1.5rem;
   margin-top: 10px;
-  color: $greyAlt;
+  color: $grey;
   font-weight: 700;
   padding: 5px 0px;
-  border-bottom: 2px solid $red;
+  border-bottom: 2px solid $greyAlt;
 }
 
 .closeIcon {
@@ -203,6 +206,35 @@ h1 {
   &:hover {
     color: $red;
   }
+}
+
+// Player details styles
+
+.playerDetailsContainer {
+  min-width: 80vw;
+  min-height: 80vh;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: fixed;
+  background-color: rgba($greyAlt, 0.5);
+  font-size: 2rem;
+  z-index: 3;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.5s;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.playerDetailsContainer::before {
+  content: "";
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  color: rgba($grey, 0.8);
 }
 
 .btn {

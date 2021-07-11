@@ -262,11 +262,32 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     aElem.classList.add("btnPlayerDetails");
     aElem.ariaRole = "button";
 
+    aElem.addEventListener("click", NBACodeStars.displayPlayerDetails);
+
     cardInnerContainer.parentNode.insertBefore(
       aElem,
       cardInnerContainer.nextSibling
     );
   });
+};
+
+// Display player details on the screen
+NBACodeStars.displayPlayerDetails = () => {
+  const bodyElem = document.querySelector("body");
+
+  // Create player details modal
+  const playerDetailsContainerElem = document.createElement("div");
+  playerDetailsContainerElem.classList.add("playerDetailsContainer");
+  playerDetailsContainerElem.innerHTML = "Hello";
+  bodyElem.prepend(playerDetailsContainerElem);
+  console.log(playerDetailsContainerElem);
+
+  // Make async api call to get player details on page load
+  // Determine which team was selected
+  // Filter down players on the selected team
+  // Create li element and p elements for name, position, general stats
+  // Append p elements to li then li to container and container to screen
+  // Create close icon -> refactor code from above to manage close icon functionality
 };
 
 // 0. Calling the init to hit it off
