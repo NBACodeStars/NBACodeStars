@@ -37,8 +37,8 @@ NBACodeStars.init = () => {
   NBACodeStars.getSelection();
 };
 
-NBACodeStars.teamDropdownElem =
-  document.getElementsByClassName("teamDropdown")[0];
+NBACodeStars.teamSelectDropdown =
+  document.getElementsByClassName("teamSelectDropdown")[0];
 NBACodeStars.cardsContainerElem =
   document.getElementsByClassName("teamCards")[0];
 
@@ -55,7 +55,8 @@ NBACodeStars.getTeams = () => {
     .then((res) => res.json())
     .then((response) => {
       NBACodeStars.teamsData = response.data;
-      NBACodeStars.displayTeamsDropdown(NBACodeStars.teamsData);
+      NBACodeStars.displayOptions(NBACodeStars.teamsData);
+      NBACodeStars.highLightOption()
     })
     .catch(() => {
       // TODO: Error handling
@@ -63,24 +64,41 @@ NBACodeStars.getTeams = () => {
 };
 
 // 3. Function that displays the teams in the dropdown
-NBACodeStars.displayTeamsDropdown = (teams) => {
-  // Clear container
-  NBACodeStars.cardsContainerElem.innerHTML = "";
+NBACodeStars.displayOptions = (teams) => {
 
-  teams.forEach((team) => {
+  teams.forEach(team)
+  console.log(team)
     const teamName = team.full_name;
 
-    const optionElem = document.createElement("option");
-    optionElem.innerText = teamName;
-    optionElem.value = teamName;
-    optionElem.id = team.id;
+    const optionLi = document.createElement("li");
+    // This could be any header element or a button
+    optionUl.innerText = teamName;
+    // Do we still need a value here if they are not option elements
+    optionLi.value = teamName;
+    optionLi.id = team.id;
+    optionLi.tabIndex = "0";
+    optionLi.role = "option";
+    // This will be the css class background color toggled on or off
+    
 
-    NBACodeStars.teamDropdownElem.append(optionElem);
+    NBACodeStars.teamSelectDropdown.append(optionLi);
 
     NBACodeStars.displayTeamCard(team);
-  });
-};
+  };
 
+  NBACodeStars.highLightOption = () => {
+    NBACodeStars.teamDropdownElem.addEventListener("click", (event) => {
+      console.log(event.target)
+      let selectedChoice =  event.target 
+      selectedChoice.toggle("highLight");
+    });
+  }
+
+      // .highLight {
+    //   backgroundColor: lightGrey;
+    // }
+
+ 
 // 4. Function that displays the teams card
 NBACodeStars.displayTeamCard = (team) => {
   const h3Elem = document.createElement("h3");
@@ -121,8 +139,8 @@ NBACodeStars.displayTeamCard = (team) => {
 
 // CHANGED
 NBACodeStars.getSelection = () => {
-  NBACodeStars.teamDropdownElem.addEventListener("change", () => {
-    const options = document.querySelectorAll("option");
+  NBACodeStars.teamSelectDropdown.addEventListener("change", function(){
+    const options = document.querySelectorAll(".teamSelectDropdown li");
     let noSelection = true;
 
     NBACodeStars.cardsContainerElem.innerHTML = "";
