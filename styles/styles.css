@@ -480,31 +480,36 @@ h1 {
   color: #f73859;
 }
 
+.playerDetailsOuterContainer {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(40, 49, 73, 0.8);
+}
+
 .playerDetailsContainer {
   min-width: 80vw;
   min-height: 80vh;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  position: fixed;
-  background-color: rgba(64, 75, 105, 0.5);
+  background-color: rgba(219, 237, 243, 0.5);
   font-size: 2rem;
-  z-index: 3;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
-  padding: 10px;
+  padding: 20px;
   border-radius: 10px;
-}
-
-.playerDetailsContainer::before {
-  content: "";
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  color: rgba(40, 49, 73, 0.8);
 }
 
 .btn {

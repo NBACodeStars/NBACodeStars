@@ -273,21 +273,41 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
 
 // Display player details on the screen
 NBACodeStars.displayPlayerDetails = () => {
-  const bodyElem = document.querySelector("body");
-
   // Create player details modal
+  // Create close icon -> refactor code from above to manage close icon functionality
+  const closeIconElem = document.createElement("i");
+  closeIconElem.classList.add("fas", "fa-times", "closeIcon");
+
   const playerDetailsContainerElem = document.createElement("div");
   playerDetailsContainerElem.classList.add("playerDetailsContainer");
   playerDetailsContainerElem.innerHTML = "Hello";
-  bodyElem.prepend(playerDetailsContainerElem);
-  console.log(playerDetailsContainerElem);
+  playerDetailsContainerElem.append(closeIconElem);
+
+  const playerDetailsOuterElem = document.createElement("div");
+  playerDetailsOuterElem.classList.add("playerDetailsOuterContainer");
+  playerDetailsOuterElem.append(playerDetailsContainerElem);
+
+  const bodyElem = document.querySelector("body");
+  bodyElem.prepend(playerDetailsOuterElem);
+
+  closeIconElem.addEventListener("click", (e) => {
+    const playerDetailsOuterContainerElem = e.target.closest(
+      ".playerDetailsOuterContainer"
+    );
+
+    // Refactor to create a general fadeout animation
+    playerDetailsOuterContainerElem.classList.add("fadeOut");
+    setTimeout(function () {
+      playerDetailsOuterContainerElem.remove();
+    }, 500);
+  });
 
   // Make async api call to get player details on page load
+
   // Determine which team was selected
   // Filter down players on the selected team
   // Create li element and p elements for name, position, general stats
   // Append p elements to li then li to container and container to screen
-  // Create close icon -> refactor code from above to manage close icon functionality
 };
 
 // 0. Calling the init to hit it off
