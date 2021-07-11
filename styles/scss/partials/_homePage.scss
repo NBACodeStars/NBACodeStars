@@ -1,0 +1,361 @@
+//***************************************
+// Home page styles
+//***************************************
+
+//***************************************
+// Imports
+//***************************************
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Source+Sans+Pro:wght@300;400;700&display=swap");
+
+//***************************************
+// General styles
+//***************************************
+
+// ASK: Why isnt base font of 10px being applied to rem when setting font-size to 62.5%
+body {
+  font-size: 62.5%;
+  font-family: "Source Sans Pro", sans-serif;
+  background-color: $grey;
+  color: $white;
+  position: relative;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+.wrapper {
+  margin: 0px auto;
+  max-width: 1200px;
+  width: 90%;
+}
+
+nav {
+  margin: 10px 0px;
+}
+
+section,
+footer {
+  margin: 50px 0px;
+}
+
+//***************************************
+// Header styles
+//***************************************
+
+.logoContainer::before,
+.logoContainer::after {
+  content: "{";
+  font-size: 4rem;
+  color: $offWhite;
+}
+
+.logoContainer::after {
+  content: "}";
+}
+
+.logo {
+  width: auto;
+  height: 50px;
+  position: relative;
+  top: 8px;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 4rem;
+  color: $red;
+}
+
+.teamDropdownLabel,
+.teamDropdown {
+  display: block;
+  text-align: center;
+  margin: 10px auto;
+  font-size: 1.5rem;
+}
+
+.teamDropdown {
+  width: 300px;
+  font-size: 1.25rem;
+}
+
+//***************************************
+// Main styles
+//***************************************
+
+.teamCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 30px;
+  column-gap: 10px;
+  align-items: center;
+}
+
+// First layer of team card styles
+
+.card {
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid $offWhite;
+  border-radius: 5px;
+  background-color: $greyAlt;
+  transition: all 0.5s;
+  overflow: hidden;
+
+  &:hover,
+  &:focus-within {
+    box-shadow: 0 14px 28px rgba($offWhite, 0.19),
+      0 10px 10px rgba($offWhite, 0.23);
+
+    .cardImg {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.cardInnerContainer {
+  flex-grow: 10;
+  position: relative;
+}
+
+.cardImg {
+  width: 100%;
+  transition: all 0.5s;
+  overflow: hidden;
+  object-fit: contain;
+  object-position: center;
+}
+
+.cardTeamName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  height: 50px;
+  background-color: $offWhite;
+  color: $grey;
+  border: 2px solid $offWhite;
+}
+
+// Team details styles
+
+.teamDetailsCard {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba($offWhite, 0.3);
+  font-size: 2rem;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: $red;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.5s;
+}
+
+.fadeOut {
+  opacity: 0;
+}
+
+.teamDetailsLabel {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  color: $grey;
+  font-weight: 700;
+  padding: 5px 0px;
+  border-bottom: 2px solid $greyAlt;
+}
+
+.closeIcon {
+  font-size: 1rem;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  color: $greyAlt;
+  text-align: right;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: all 0.3s;
+
+  &:hover {
+    color: $red;
+  }
+}
+
+// Player details styles
+
+.playerDetailsOuterContainer {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($grey, 0.8);
+}
+
+.playerDetailsContainer {
+  min-width: 80vw;
+  min-height: 80vh;
+  background-color: rgba($offWhite, 0.5);
+  font-size: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.5s;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 2px;
+  border: 2px solid $red;
+  background-color: $red;
+  color: $white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.5s;
+  position: relative;
+  z-index: 1;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: $grey;
+  color: $white;
+}
+
+//***************************************
+// Custom dropdown styles
+//***************************************
+
+.dropdownContainer {
+  position: relative;
+  width: 300px;
+  height: 100px;
+  margin: 0px auto;
+}
+
+.dropdownLabel {
+  margin: 10px 0px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.dropdown {
+  position: absolute;
+  width: 300px;
+  height: 55px;
+  font-size: 1.5rem;
+  overflow-y: scroll;
+  background-color: $greyAlt;
+  transition: all 0.5s;
+  z-index: 2;
+  border: 2px solid $offWhite;
+  border-radius: 5px;
+
+  &:hover,
+  &:focus-within {
+    height: 200px;
+  }
+
+  &:hover .dropdownIcon {
+    border-left-color: $greyAlt;
+  }
+}
+
+.dropdownOption {
+  width: 100%;
+  padding: 10px;
+  transition: all 0.3s;
+  border: 2px solid $greyAlt;
+  background-color: $grey;
+  color: $offWhite;
+
+  &:hover,
+  &:focus-within {
+    color: $grey;
+    background-color: rgba($offWhite, 0.9);
+    cursor: pointer;
+  }
+}
+
+.optionOne {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropdownIcon {
+  border-left: 2px solid $offWhite;
+  padding-left: 10px;
+}
+
+/* Whole scrollbar */
+.dropdown::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  margin-left: 5px;
+  background-color: $greyAlt;
+}
+
+/* Track */
+.dropdown::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* Handle */
+.dropdown::-webkit-scrollbar-thumb {
+  background: $red;
+  border-radius: 5px;
+}
+
+//***************************************
+// Footer styles
+//***************************************
+
+footer {
+  margin-bottom: 0px;
+  color: $grey;
+  background-color: $offWhite;
+}
+
+.footerText {
+  padding: 10px;
+  font-size: 1rem;
+  text-align: center;
+}
