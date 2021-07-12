@@ -34,11 +34,11 @@ const NBACodeStars = {};
 // 1. init method that kicks everything off
 NBACodeStars.init = () => {
   NBACodeStars.getTeams();
+  NBACodeStars.highlightOption();
   NBACodeStars.getSelection();
 };
 
-NBACodeStars.teamDropdownElem =
-  document.getElementsByClassName("teamDropdown")[0];
+NBACodeStars.dropdownElem = document.getElementsByClassName("dropdown")[0];
 NBACodeStars.cardsContainerElem =
   document.getElementsByClassName("teamCards")[0];
 
@@ -55,7 +55,7 @@ NBACodeStars.getTeams = () => {
     .then((res) => res.json())
     .then((response) => {
       NBACodeStars.teamsData = response.data;
-      NBACodeStars.displayTeamsDropdown(NBACodeStars.teamsData);
+      NBACodeStars.displayOptions(NBACodeStars.teamsData);
     })
     .catch(() => {
       // TODO: Error handling
@@ -63,23 +63,63 @@ NBACodeStars.getTeams = () => {
 };
 
 // 3. Function that displays the teams in the dropdown
-NBACodeStars.displayTeamsDropdown = (teams) => {
-  // Clear container
-  NBACodeStars.cardsContainerElem.innerHTML = "";
+NBACodeStars.displayOptions = (teams) => {
+  for (const key in teams) {
+    const teamName = teams[key]["full_name"];
+    const id = teams[key].id;
+    const optionLi = document.createElement("li");
 
-  teams.forEach((team) => {
-    const teamName = team.full_name;
+    // This could be any header element or a button
+    optionLi.innerHTML = teamName;
 
-    const optionElem = document.createElement("option");
-    optionElem.innerText = teamName;
-    optionElem.value = teamName;
-    optionElem.id = team.id;
+    // Do we still need a value here if they are not option elements
+    optionLi.value = id;
+    optionLi.tabIndex = "0";
+    optionLi.setAttribute("role", "option");
+    optionLi.setAttribute("aria-selected", "false");
+    optionLi.classList.add("dropdownOption");
 
-    NBACodeStars.teamDropdownElem.append(optionElem);
+    // This will be the css class background color toggled on or off
+    NBACodeStars.dropdownElem.append(optionLi);
 
-    NBACodeStars.displayTeamCard(team);
+    // This still needs to be called
+    NBACodeStars.displayTeamCard(teams[key]);
+  }
+};
+
+// Highlight / unhighlight the option selected
+NBACodeStars.highlightOption = () => {
+  NBACodeStars.dropdownElem.addEventListener("click", (event) => {
+    const selectedChoice = event.target;
+    selectedChoice.classList.toggle("highlight");
+
+    // Toggle the aria-selected property
+    if (selectedChoice.ariaSelected) {
+      selectedChoice.setAttribute("aria-selected", "false");
+    } else {
+      selectedChoice.setAttribute("aria-selected", "true");
+    }
   });
 };
+
+// 3. Function that displays the teams in the dropdown
+// NBACodeStars.displayTeamsDropdown = (teams) => {
+//   // Clear container
+//   NBACodeStars.cardsContainerElem.innerHTML = "";
+
+//   teams.forEach((team) => {
+//     const teamName = team.full_name;
+
+//     const optionElem = document.createElement("option");
+//     optionElem.innerText = teamName;
+//     optionElem.value = teamName;
+//     optionElem.id = team.id;
+
+//     NBACodeStars.teamDropdownElem.append(optionElem);
+
+//     NBACodeStars.displayTeamCard(team);
+//   });
+// };
 
 // 4. Function that displays the teams card
 NBACodeStars.displayTeamCard = (team) => {
@@ -121,8 +161,8 @@ NBACodeStars.displayTeamCard = (team) => {
 
 // CHANGED
 NBACodeStars.getSelection = () => {
-  NBACodeStars.teamDropdownElem.addEventListener("change", () => {
-    const options = document.querySelectorAll("option");
+  NBACodeStars.dropdownElem.addEventListener("change", () => {
+    const options = document.querySelectorAll("li");
     let noSelection = true;
 
     NBACodeStars.cardsContainerElem.innerHTML = "";
@@ -130,7 +170,7 @@ NBACodeStars.getSelection = () => {
     // Display all the team cards selected
     for (const option in options) {
       // Only show the card if there is an actual team selected
-      if (options[option].selected && options[option].id !== "all") {
+      if (options[option].ariaSelected && options[option].value !== "all") {
         const id = parseInt(options[option].id);
 
         noSelection = false;
