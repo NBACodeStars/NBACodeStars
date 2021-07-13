@@ -87,7 +87,6 @@ NBACodeStars.getUserSelections = () => {
           NBACodeStars.dropdownElem.querySelectorAll(".highlight");
 
         highlightedEl.forEach((element) => {
-          console.log(element);
           if (element.id !== "all") {
             element.classList.remove("highlight");
             element.setAttribute("aria-selected", "false");
