@@ -1,53 +1,25 @@
-// PULLING DATA
-// 1. Create namespace
-// 2. Create Init function
-//     1. Create function called displayTeamImages() (Loop through the teams array, make API Call to fetch team logos)
-// 3. displayTeamImages()
-//         1. Loop through the teams array
-//         2. Make API Call for each team.
-//             1.  https://gist.github.com/jerhinesmith/258eab7a892c87769115
-//         3. Create HTML elements
-//         4. Display images to page.
-//         5. http://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/#{abbreviation}.png
-//  4. Create a pull to get team details and player details
-// 	TEAM details - https://www.balldontlie.io/api/v1/teams
-// 	PLAYER details - https://www.balldontlie.io/api/v1/players
-// 	Store these in arrays, objects or variables
-// 	ALTERNATIVE - Make the api calls for each team or player as they are clicked.
-//   5. Hover Effect Step (Team Details)
-//     1. Create hover effect event listener attached to every team image
-//     2. When event is triggered we loop through the team details variable and extract the selected teams details to save in a variable.
-//     3. Create the html element for each piece of info on the team
-//     4. Append on insert the info into appropriate html element. City, conference, division and the full name of the team.
-//         1. Create ID for each team which is equal to the ID from the team details variable (from the API Call above)
-//         2. Create a link element inside the overlay which a user can click to display players on the team.
-//     5. Append that html as an overlay over the team image
-
-// create a namespace app
-// Make an api call to upsplash
-// Construct new url to add to search params
-// Display photos we get from unsplash api
-
 // Todo: Check if caps is good with mentors
 const NBACodeStars = {};
 
 // 1. init method that kicks everything off
 NBACodeStars.init = () => {
   NBACodeStars.getTeams();
-  NBACodeStars.highlightOption();
+  NBACodeStars.getUserSelections();
   NBACodeStars.getSelection();
 };
 
+// Global variables
 NBACodeStars.dropdownElem = document.getElementsByClassName("dropdown")[0];
 NBACodeStars.cardsContainerElem =
   document.getElementsByClassName("teamCards")[0];
+NBACodeStars.teamsSelected = ["all"]; // default state is all teams are selected
 
 // Team details API
 NBACodeStars.apiUrl = "https://www.balldontlie.io";
 NBACodeStars.apiTeamsEndpoint = `${NBACodeStars.apiUrl}/api/v1/teams/`;
 NBACodeStars.apiTeamDetailsEndpoint = `${NBACodeStars.apiUrl}/api/v1/players/`;
 
-// 2. Function that makes the API call
+// Function that makes the API call
 NBACodeStars.getTeams = () => {
   const url = new URL(NBACodeStars.apiTeamsEndpoint);
 
@@ -62,7 +34,7 @@ NBACodeStars.getTeams = () => {
     });
 };
 
-// 3. Function that displays the teams in the dropdown
+// Function that displays the teams in the dropdown
 NBACodeStars.displayOptions = (teams) => {
   for (const key in teams) {
     const teamName = teams[key]["full_name"];
@@ -75,6 +47,7 @@ NBACodeStars.displayOptions = (teams) => {
     // Do we still need a value here if they are not option elements
     optionLi.value = id;
     optionLi.tabIndex = "0";
+    optionLi.setAttribute("id", id);
     optionLi.setAttribute("role", "option");
     optionLi.setAttribute("aria-selected", "false");
     optionLi.classList.add("dropdownOption");
@@ -87,41 +60,97 @@ NBACodeStars.displayOptions = (teams) => {
   }
 };
 
-// Highlight / unhighlight the option selected
-NBACodeStars.highlightOption = () => {
+// Function that updates the dropdown and team cards based on the selections made
+NBACodeStars.getUserSelections = () => {
   NBACodeStars.dropdownElem.addEventListener("click", (event) => {
-    const selectedChoice = event.target;
-    selectedChoice.classList.toggle("highlight");
+    // Get the element selected
+    const selectedEl = event.target.closest("li");
 
-    // Toggle the aria-selected property
-    if (selectedChoice.ariaSelected) {
-      selectedChoice.setAttribute("aria-selected", "false");
-    } else {
-      selectedChoice.setAttribute("aria-selected", "true");
+    // Store the user's selection
+    const teamId = selectedEl.id;
+    const isSelected = selectedEl.getAttribute("aria-selected") === "false"; // true if its being selected; false if de-selected
+
+    // Toggle the highlight class and aria-selected values on the element selected
+    selectedEl.classList.toggle("highlight");
+    selectedEl.setAttribute("aria-selected", isSelected ? "true" : "false");
+
+    // Add the team selected
+    if (isSelected) {
+      // Scenario 1: All teams is selected
+      // empty selections if all teams is selected
+      if (teamId === "all") {
+        // Empty all the teams
+        NBACodeStars.teamsSelected = [];
+
+        // Remove highlight from all the teams and update aria-selected attribute
+        const highlightedEl =
+          NBACodeStars.dropdownElem.querySelectorAll(".highlight");
+
+        highlightedEl.forEach((element) => {
+          console.log(element);
+          if (element.id !== "all") {
+            element.classList.remove("highlight");
+            element.setAttribute("aria-selected", "false");
+          }
+        });
+      }
+
+      // Scenario 2: A specific team is selected
+      else {
+        // remove "all" selection if a specific team is selected
+        const index = NBACodeStars.teamsSelected.indexOf("all");
+        index !== -1 && NBACodeStars.teamsSelected.splice(index, 1);
+
+        // remove highlight from "all" selection and update aria-selected attribute
+        const allSelectionEl = NBACodeStars.dropdownElem.querySelector("#all");
+        allSelectionEl.classList.remove("highlight");
+        allSelectionEl.setAttribute("aria-selected", "false");
+      }
+
+      // Update the teamsSelected array
+      NBACodeStars.teamsSelected.push(teamId);
+    }
+
+    // Scenario 3: User deselects
+    else {
+      // Remove team
+      const index = NBACodeStars.teamsSelected.indexOf(teamId);
+      NBACodeStars.teamsSelected.splice(index, 1);
+
+      // Scenario 3.1: User deselects and does not have any teams selected
+      // Add "all" teams if the teamsSelected is empty after removing the most recent team
+      if (NBACodeStars.teamsSelected.length === 0) {
+        NBACodeStars.teamsSelected.push("all");
+
+        // Add highlight from "all" selection
+        const allSelectionEl = NBACodeStars.dropdownElem.querySelector("#all");
+        allSelectionEl.classList.add("highlight");
+        allSelectionEl.setAttribute("aria-selected", "true");
+      }
+    }
+
+    // Display team card's based on user's selection from the dropdown
+    NBACodeStars.cardsContainerElem.innerHTML = "";
+
+    // Display all the teams by looping through all 30 NBA teams
+    if (NBACodeStars.teamsSelected[0] === "all") {
+      NBACodeStars.teamsData.forEach((team) => {
+        NBACodeStars.displayTeamCard(team);
+      });
+    }
+    // Display only the teams selected by looping through the specific team selected
+    else {
+      NBACodeStars.teamsSelected.forEach((id) => {
+        const team = NBACodeStars.teamsData.find((team) => {
+          return team.id === parseInt(id);
+        });
+        NBACodeStars.displayTeamCard(team);
+      });
     }
   });
 };
 
-// 3. Function that displays the teams in the dropdown
-// NBACodeStars.displayTeamsDropdown = (teams) => {
-//   // Clear container
-//   NBACodeStars.cardsContainerElem.innerHTML = "";
-
-//   teams.forEach((team) => {
-//     const teamName = team.full_name;
-
-//     const optionElem = document.createElement("option");
-//     optionElem.innerText = teamName;
-//     optionElem.value = teamName;
-//     optionElem.id = team.id;
-
-//     NBACodeStars.teamDropdownElem.append(optionElem);
-
-//     NBACodeStars.displayTeamCard(team);
-//   });
-// };
-
-// 4. Function that displays the teams card
+// Function that displays the teams card
 NBACodeStars.displayTeamCard = (team) => {
   const h3Elem = document.createElement("h3");
   h3Elem.innerText = team.full_name;
@@ -131,14 +160,13 @@ NBACodeStars.displayTeamCard = (team) => {
   const imageURL = `http://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${shortName}.png`;
   const imgElem = document.createElement("img");
   imgElem.src = imageURL;
-  imgElem.alt = team.full_name; // CHANGED
+  imgElem.alt = team.full_name;
   imgElem.classList.add("cardImg");
 
   const cardInnerContainerElem = document.createElement("div");
   cardInnerContainerElem.classList.add("cardInnerContainer");
   cardInnerContainerElem.append(imgElem);
 
-  // CHANGED
   const aElem = document.createElement("a");
   aElem.innerHTML = "Team details";
   aElem.classList.add("btn");
@@ -157,9 +185,7 @@ NBACodeStars.displayTeamCard = (team) => {
   NBACodeStars.cardsContainerElem.append(liElem);
 };
 
-// 5. Function to set up event listener on the select dropdown
-
-// CHANGED
+// Function to set up event listener on the select dropdown
 NBACodeStars.getSelection = () => {
   NBACodeStars.dropdownElem.addEventListener("change", () => {
     const options = document.querySelectorAll("li");
@@ -354,7 +380,7 @@ NBACodeStars.displayPlayerDetails = () => {
 NBACodeStars.init();
 
 // STRETCH GOALS
-//      1. Show players to the user after they have clicked the show player button.
+//  1. Show players to the user after they have clicked the show player button.
 // 	2. Create event listener to listen for the click on the specific team. Use the event variable to extract the ID of the element that the user clicked.
 // 	     a. Filter the player details variable to extract all the players that have the same team ID as what we extracted.
 // 	      b. Save the player names in  a separate variable
@@ -369,69 +395,3 @@ NBACodeStars.init();
 // 	2. A button in the top right hand corner of the screen with Nicholas Cages face that says CAGE FINDER
 // 	3. It throws up 10 movie posters of Nicholas Cage with titles
 // 	4. There is a button that says back to basketball which takes us back to the original site.
-
-// ***************************************************
-// OLD CODEEEE
-// ***************************************************
-
-// const NBACodeStars = {};
-
-// NBACodeStars.init = () => {};
-
-// API CALL
-
-// fetch("https://www.septastats.com/api/current/system/latest")
-//   .then(function (responseObj) {
-//     console.log("It worked!");
-//     return responseObj.json();
-//   })
-//   .then(function (theRealData) {
-//     console.log("another promise resolved", theRealData);
-//   });
-
-//  Shorter way
-
-// fetch("")
-//   .then((res) => res.json())
-//   .then((data) => {
-//     console.log(data);
-//   });
-
-//      Construct new URL params
-
-// const url = new URL("https://api.datamuse.com/words");
-// url.search = new URLSearchParams({
-//   ml: "computer",
-// });
-// fetch(url)
-//   .then((res) => res.json())
-//   .then((data) => {
-//     console.log(data);
-//   });
-
-// const selectEl = document.querySelector("select");
-// const button = document.querySelector("button");
-
-// button.addEventListener("click", getUserSelection);
-
-// let selectionArray = [];
-
-// const getUserSelection = () => {
-//   // Write a function that pushes each team selected from form into an array
-// };
-
-// CREATING HTML
-
-// NBACodeStars.selectionArray.forEach((item) => {
-//   // create the new element
-//   const newListItem = document.createElement("li");
-
-//   newListItem.innerHTML = `
-//       <h2>${item.title}</h2>
-//       <img src=${item.url} alt="The basketball team ${item.title}">
-//     `;
-//   // City, conference, division and the full name of the team.
-
-//   // appending the new content to the screen
-//   displayUl.appendChild(newListItem);
-// });

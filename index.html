@@ -46,16 +46,25 @@
 
         <!-- START: Custom dropdown container -->
         <!-- Consider accessibility for the custom dropdown -->
+
         <div class="dropdownContainer">
           <h2 class="dropdownLabel">Select your favourite teams</h2>
 
           <!-- START: Custom dropdown -->
-          <ul class="dropdown" role="listbox">
+          <!-- Accessibility resource used: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role -->
+          <ul
+            class="dropdown"
+            role="listbox"
+            aria-multiselectable="true"
+            aria-activedescendant="all"
+          >
             <li
-              class="dropdownOption optionOne"
+              class="dropdownOption optionOne highlight"
               role="option"
               tabindex="0"
               value="all"
+              id="all"
+              aria-selected="true"
             >
               <span>All teams</span>
               <i class="fas fa-caret-down dropdownIcon"></i>
