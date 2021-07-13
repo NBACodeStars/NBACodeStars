@@ -1,3 +1,8 @@
+// TODO:
+//    - Make the website responsive to keyboard strokes
+//    - Refactor overall code to simplifly it
+//    - Accessibility overall
+
 // Todo: Check if caps is good with mentors
 const NBACodeStars = {};
 
@@ -66,87 +71,120 @@ NBACodeStars.getUserSelections = () => {
     // Get the element selected
     const selectedEl = event.target.closest("li");
 
-    // Store the user's selection
-    const teamId = selectedEl.id;
-    const isSelected = selectedEl.getAttribute("aria-selected") === "false"; // true if its being selected; false if de-selected
+    NBACodeStars.updateDropdown(selectedEl);
+    NBACodeStars.updateTeamCards();
+  });
 
-    // Toggle the highlight class and aria-selected values on the element selected
-    selectedEl.classList.toggle("highlight");
-    selectedEl.setAttribute("aria-selected", isSelected ? "true" : "false");
+  NBACodeStars.dropdownElem.addEventListener("keyup", (event) => {
+    if (event.code === "Space" || event.code === "Enter") {
+      // Get the element selected
+      const selectedEl = event.target.closest("li");
 
-    // Add the team selected
-    if (isSelected) {
-      // Scenario 1: All teams is selected
-      // empty selections if all teams is selected
-      if (teamId === "all") {
-        // Empty all the teams
-        NBACodeStars.teamsSelected = [];
-
-        // Remove highlight from all the teams and update aria-selected attribute
-        const highlightedEl =
-          NBACodeStars.dropdownElem.querySelectorAll(".highlight");
-
-        highlightedEl.forEach((element) => {
-          if (element.id !== "all") {
-            element.classList.remove("highlight");
-            element.setAttribute("aria-selected", "false");
-          }
-        });
-      }
-
-      // Scenario 2: A specific team is selected
-      else {
-        // remove "all" selection if a specific team is selected
-        const index = NBACodeStars.teamsSelected.indexOf("all");
-        index !== -1 && NBACodeStars.teamsSelected.splice(index, 1);
-
-        // remove highlight from "all" selection and update aria-selected attribute
-        const allSelectionEl = NBACodeStars.dropdownElem.querySelector("#all");
-        allSelectionEl.classList.remove("highlight");
-        allSelectionEl.setAttribute("aria-selected", "false");
-      }
-
-      // Update the teamsSelected array
-      NBACodeStars.teamsSelected.push(teamId);
+      NBACodeStars.updateDropdown(selectedEl);
+      NBACodeStars.updateTeamCards();
     }
 
-    // Scenario 3: User deselects
-    else {
-      // Remove team
-      const index = NBACodeStars.teamsSelected.indexOf(teamId);
-      NBACodeStars.teamsSelected.splice(index, 1);
+    console.log("pressed");
+  });
 
-      // Scenario 3.1: User deselects and does not have any teams selected
-      // Add "all" teams if the teamsSelected is empty after removing the most recent team
-      if (NBACodeStars.teamsSelected.length === 0) {
-        NBACodeStars.teamsSelected.push("all");
-
-        // Add highlight from "all" selection
-        const allSelectionEl = NBACodeStars.dropdownElem.querySelector("#all");
-        allSelectionEl.classList.add("highlight");
-        allSelectionEl.setAttribute("aria-selected", "true");
-      }
-    }
-
-    // Display team card's based on user's selection from the dropdown
-    NBACodeStars.cardsContainerElem.innerHTML = "";
-
-    // Display all the teams by looping through all 30 NBA teams
-    if (NBACodeStars.teamsSelected[0] === "all") {
-      NBACodeStars.teamsData.forEach((team) => {
-        NBACodeStars.displayTeamCard(team);
-      });
-    }
-    // Display only the teams selected by looping through the specific team selected
-    else {
-      NBACodeStars.teamsSelected.forEach((id) => {
-        const team = NBACodeStars.teamsData.find((team) => {
-          return team.id === parseInt(id);
-        });
-        NBACodeStars.displayTeamCard(team);
-      });
+  // Prevents the dropdown from scrolling when spacebar is selected
+  NBACodeStars.dropdownElem.addEventListener("keydown", (event) => {
+    if (event.code === "Space") {
+      event.preventDefault();
     }
   });
+};
+
+// Function updates the dropdown itself each time the user makes a selection from the dropdown
+NBACodeStars.updateDropdown = (selectedEl) => {
+  // Store the user's selection
+  const teamId = selectedEl.id;
+  const isSelected = selectedEl.getAttribute("aria-selected") === "false"; // true if its being selected; false if de-selected
+
+  // Toggle the highlight class and aria-selected values on the element selected
+  selectedEl.classList.toggle("highlight");
+  selectedEl.setAttribute("aria-selected", isSelected ? "true" : "false");
+
+  // update the attribute for dropdown element for accessibility
+  document
+    .querySelector(".dropdown")
+    .setAttribute("aria-activedescendant", teamId);
+
+  // Add the team selected
+  if (isSelected) {
+    // Scenario 1: All teams is selected
+    // empty selections if all teams is selected
+    if (teamId === "all") {
+      // Empty all the teams
+      NBACodeStars.teamsSelected = [];
+
+      // Remove highlight from all the teams and update aria-selected attribute
+      const highlightedEl =
+        NBACodeStars.dropdownElem.querySelectorAll(".highlight");
+
+      highlightedEl.forEach((element) => {
+        if (element.id !== "all") {
+          element.classList.remove("highlight");
+          element.setAttribute("aria-selected", "false");
+        }
+      });
+    }
+
+    // Scenario 2: A specific team is selected
+    else {
+      // remove "all" selection if a specific team is selected
+      const index = NBACodeStars.teamsSelected.indexOf("all");
+      index !== -1 && NBACodeStars.teamsSelected.splice(index, 1);
+
+      // remove highlight from "all" selection and update aria-selected attribute
+      const allSelectionEl = NBACodeStars.dropdownElem.querySelector("#all");
+      allSelectionEl.classList.remove("highlight");
+      allSelectionEl.setAttribute("aria-selected", "false");
+    }
+
+    // Update the teamsSelected array
+    NBACodeStars.teamsSelected.push(teamId);
+  }
+
+  // Scenario 3: User deselects
+  else {
+    // Remove team
+    const index = NBACodeStars.teamsSelected.indexOf(teamId);
+    NBACodeStars.teamsSelected.splice(index, 1);
+
+    // Scenario 3.1: User deselects and does not have any teams selected
+    // Add "all" teams if the teamsSelected is empty after removing the most recent team
+    if (NBACodeStars.teamsSelected.length === 0) {
+      NBACodeStars.teamsSelected.push("all");
+
+      // Add highlight from "all" selection
+      const allSelectionEl = NBACodeStars.dropdownElem.querySelector("#all");
+      allSelectionEl.classList.add("highlight");
+      allSelectionEl.setAttribute("aria-selected", "true");
+    }
+  }
+};
+
+// Function updated the team cards shown on the screen each time the user makes a selection from the dropdown
+NBACodeStars.updateTeamCards = () => {
+  // Display team card's based on user's selection from the dropdown
+  NBACodeStars.cardsContainerElem.innerHTML = "";
+
+  // Display all the teams by looping through all 30 NBA teams
+  if (NBACodeStars.teamsSelected[0] === "all") {
+    NBACodeStars.teamsData.forEach((team) => {
+      NBACodeStars.displayTeamCard(team);
+    });
+  }
+  // Display only the teams selected by looping through the specific team selected
+  else {
+    NBACodeStars.teamsSelected.forEach((id) => {
+      const team = NBACodeStars.teamsData.find((team) => {
+        return team.id === parseInt(id);
+      });
+      NBACodeStars.displayTeamCard(team);
+    });
+  }
 };
 
 // Function that displays the teams card
@@ -171,6 +209,7 @@ NBACodeStars.displayTeamCard = (team) => {
   aElem.classList.add("btn");
   aElem.classList.add("btnTeamDetails");
   aElem.ariaRole = "button";
+  aElem.tabIndex = "0";
 
   NBACodeStars.teamDetailsListener(aElem);
 
@@ -239,6 +278,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     // Create elements to hold team details
     const closeIconElem = document.createElement("i");
     closeIconElem.classList.add("fas", "fa-times", "closeIcon");
+    closeIconElem.tabIndex = "0";
 
     const cityElem = document.createElement("p");
     cityElem.innerHTML = teamDetailsObj.city;
@@ -306,6 +346,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
       aElem.classList.add("btn");
       aElem.classList.add("btnTeamDetails");
       aElem.ariaRole = "button";
+      aElem.tabIndex = "0";
 
       cardInnerContainer.parentNode.insertBefore(
         aElem,
@@ -326,8 +367,14 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     aElem.classList.add("btn");
     aElem.classList.add("btnPlayerDetails");
     aElem.ariaRole = "button";
+    aElem.tabIndex = "0";
 
     aElem.addEventListener("click", NBACodeStars.displayPlayerDetails);
+    aElem.addEventListener("keyup", (event) => {
+      if (event.code === "Enter") {
+        NBACodeStars.displayPlayerDetails();
+      }
+    });
 
     cardInnerContainer.parentNode.insertBefore(
       aElem,
@@ -342,6 +389,7 @@ NBACodeStars.displayPlayerDetails = () => {
   // Create close icon -> refactor code from above to manage close icon functionality
   const closeIconElem = document.createElement("i");
   closeIconElem.classList.add("fas", "fa-times", "closeIcon");
+  closeIconElem.tabIndex = "0";
 
   const playerDetailsContainerElem = document.createElement("div");
   playerDetailsContainerElem.classList.add("playerDetailsContainer");
