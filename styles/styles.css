@@ -310,6 +310,10 @@ footer {
   margin: 50px 0px;
 }
 
+.fullscreen {
+  min-height: calc(100vh - 98px);
+}
+
 .logoContainer::before,
 .logoContainer::after {
   content: "{";
@@ -468,6 +472,8 @@ h1 {
 
 .cardImg {
   width: 100%;
+  height: 350px;
+  padding: 15px;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   overflow: hidden;

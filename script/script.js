@@ -2,13 +2,15 @@
 //    - Make the website responsive to keyboard strokes
 //    - Refactor overall code to simplifly it
 //    - Accessibility overall
+//    - Wrap API calls in promises that dont proceed with showing page until they are resolved
+//    - Create a loading spinner
 
 // Todo: Check if caps is good with mentors
 const NBACodeStars = {};
 
 // 1. init method that kicks everything off
 NBACodeStars.init = () => {
-  NBACodeStars.getTeams();
+  NBACodeStars.getTeamsData();
   NBACodeStars.getUserSelections();
   NBACodeStars.getSelection();
 };
@@ -18,21 +20,76 @@ NBACodeStars.dropdownElem = document.getElementsByClassName("dropdown")[0];
 NBACodeStars.cardsContainerElem =
   document.getElementsByClassName("teamCards")[0];
 NBACodeStars.teamsSelected = ["all"]; // default state is all teams are selected
+NBACodeStars.teamsData = null;
+NBACodeStars.playerByTeamBiodata = null;
+NBACodeStars.playerByTeamStatsData = null;
+NBACodeStars.defaultSeason = 2021;
 
 // Team details API
-NBACodeStars.apiUrl = "https://www.balldontlie.io";
-NBACodeStars.apiTeamsEndpoint = `${NBACodeStars.apiUrl}/api/v1/teams/`;
-NBACodeStars.apiTeamDetailsEndpoint = `${NBACodeStars.apiUrl}/api/v1/players/`;
+NBACodeStars.url = "https://fly.sportsdata.io";
+NBACodeStars.endpoints = {
+  teams: "/v3/nba/scores/json/teams",
+  playersBio: "/v3/nba/stats/json/Players",
+  playersSeasonStats: `/v3/nba/stats/json/PlayerSeasonStatsByTeam/${NBACodeStars.defaultSeason}`,
+};
+NBACodeStars.apiKey = "44c04f59b59b46e0b83d9f530f7c8e27";
 
-// Function that makes the API call
-NBACodeStars.getTeams = () => {
-  const url = new URL(NBACodeStars.apiTeamsEndpoint);
+// Function that makes the API call get get teams data
+NBACodeStars.getTeamsData = async () => {
+  const url = new URL(`${NBACodeStars.url}${NBACodeStars.endpoints.teams}`);
+  url.search = new URLSearchParams({
+    key: NBACodeStars.apiKey,
+  });
 
+  // TODO: Add a throw and catch block
   fetch(url)
     .then((res) => res.json())
-    .then((response) => {
-      NBACodeStars.teamsData = response.data;
+    .then((data) => {
+      NBACodeStars.teamsData = data;
       NBACodeStars.displayOptions(NBACodeStars.teamsData);
+    })
+    .catch(() => {
+      // TODO: Error handling
+    });
+};
+
+// Function that makes the API call get get players data
+NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
+  const url = new URL(
+    `${NBACodeStars.url}${NBACodeStars.endpoints.playersBio}/${teamAbbreviation}`
+  );
+  url.search = new URLSearchParams({
+    key: NBACodeStars.apiKey,
+  });
+
+  // TODO: Add a throw and catch block
+  return fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      NBACodeStars.playerByTeamBiodata = data;
+      console.log(NBACodeStars.playerByTeamBiodata);
+      console.log(Array.isArray(NBACodeStars.playerByTeamBiodata));
+    })
+    .catch(() => {
+      // TODO: Error handling
+    });
+};
+
+NBACodeStars.getPlayersByTeamStatsData = async (teamAbbreviation) => {
+  const url = new URL(
+    `${NBACodeStars.url}${NBACodeStars.endpoints.playersBio}/${teamAbbreviation}`
+  );
+  url.search = new URLSearchParams({
+    key: NBACodeStars.apiKey,
+  });
+
+  // TODO: Add a throw and catch block
+  return fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      NBACodeStars.playerByTeamStatsData = data;
+      console.log(NBACodeStars.playerByTeamStatsData);
+      console.log(Array.isArray(NBACodeStars.playerByTeamStatsData));
     })
     .catch(() => {
       // TODO: Error handling
@@ -41,13 +98,13 @@ NBACodeStars.getTeams = () => {
 
 // Function that displays the teams in the dropdown
 NBACodeStars.displayOptions = (teams) => {
-  for (const key in teams) {
-    const teamName = teams[key]["full_name"];
-    const id = teams[key].id;
+  teams.forEach((team) => {
+    const teamName = `${team["City"]} ${team["Name"]}`;
+    const id = team["TeamID"];
     const optionLi = document.createElement("li");
 
     // This could be any header element or a button
-    optionLi.innerHTML = teamName;
+    optionLi.textContent = teamName;
 
     // Do we still need a value here if they are not option elements
     optionLi.value = id;
@@ -61,8 +118,8 @@ NBACodeStars.displayOptions = (teams) => {
     NBACodeStars.dropdownElem.append(optionLi);
 
     // This still needs to be called
-    NBACodeStars.displayTeamCard(teams[key]);
-  }
+    NBACodeStars.displayTeamCard(team);
+  });
 };
 
 // Function that updates the dropdown and team cards based on the selections made
@@ -180,7 +237,7 @@ NBACodeStars.updateTeamCards = () => {
   else {
     NBACodeStars.teamsSelected.forEach((id) => {
       const team = NBACodeStars.teamsData.find((team) => {
-        return team.id === parseInt(id);
+        return team["TeamID"] === parseInt(id);
       });
       NBACodeStars.displayTeamCard(team);
     });
@@ -189,15 +246,16 @@ NBACodeStars.updateTeamCards = () => {
 
 // Function that displays the teams card
 NBACodeStars.displayTeamCard = (team) => {
+  const teamName = `${team["City"]} ${team["Name"]}`;
+
   const h3Elem = document.createElement("h3");
-  h3Elem.innerText = team.full_name;
+  h3Elem.innerText = teamName;
   h3Elem.classList.add("cardTeamName");
 
-  const shortName = team.abbreviation.toLowerCase();
-  const imageURL = `http://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${shortName}.png`;
+  const imageURL = team["WikipediaLogoUrl"];
   const imgElem = document.createElement("img");
   imgElem.src = imageURL;
-  imgElem.alt = team.full_name;
+  imgElem.alt = `${teamName} team logo`;
   imgElem.classList.add("cardImg");
 
   const cardInnerContainerElem = document.createElement("div");
@@ -215,7 +273,7 @@ NBACodeStars.displayTeamCard = (team) => {
 
   const liElem = document.createElement("li");
   liElem.classList.add("card");
-  liElem.id = `card-${team.id}`;
+  liElem.id = `card-${team["TeamID"]}`;
   liElem.append(cardInnerContainerElem);
   liElem.append(aElem);
   liElem.append(h3Elem);
@@ -237,10 +295,15 @@ NBACodeStars.getSelection = () => {
       if (options[option].ariaSelected && options[option].value !== "all") {
         const id = parseInt(options[option].id);
 
+        console.log(typeof id);
+
         noSelection = false;
 
         const teamData = NBACodeStars.teamsData.find((team) => {
-          return team.id === id && team;
+          console.log(team["TeamID"]);
+          console.log(typeof team["TeamID"]);
+
+          return team["TeamID"] === id && team;
         });
         NBACodeStars.displayTeamCard(teamData);
       }
@@ -263,15 +326,10 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     const cardId = e.target.closest(".card").id;
     const teamId = cardId.split("-")[1];
 
-    let teamDetailsObj = null;
-
     // Collect team details in a variable
-    for (const key in NBACodeStars.teamsData) {
-      if (parseInt(teamId) === parseInt(NBACodeStars.teamsData[key].id)) {
-        teamDetailsObj = NBACodeStars.teamsData[key];
-        break;
-      }
-    }
+    const teamDetailsObj = NBACodeStars.teamsData.find(
+      (team) => team["TeamID"] === parseInt(teamId)
+    );
 
     // Create team details card
 
@@ -281,7 +339,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     closeIconElem.tabIndex = "0";
 
     const cityElem = document.createElement("p");
-    cityElem.innerHTML = teamDetailsObj.city;
+    cityElem.innerHTML = teamDetailsObj["City"];
     cityElem.classList.add("city");
 
     const cityLabelElem = document.createElement("p");
@@ -289,7 +347,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     cityLabelElem.classList.add("teamDetailsLabel");
 
     const conferenceElem = document.createElement("p");
-    conferenceElem.innerHTML = teamDetailsObj.conference;
+    conferenceElem.innerHTML = teamDetailsObj["Conference"];
     conferenceElem.classList.add("conference");
 
     const conferenceLabelElem = document.createElement("p");
@@ -297,7 +355,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     conferenceLabelElem.classList.add("teamDetailsLabel");
 
     const divisionElem = document.createElement("p");
-    divisionElem.innerHTML = teamDetailsObj.division;
+    divisionElem.innerHTML = teamDetailsObj["Division"];
     divisionElem.classList.add("division");
 
     const divisionLabelElem = document.createElement("p");
@@ -369,10 +427,17 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     aElem.ariaRole = "button";
     aElem.tabIndex = "0";
 
-    aElem.addEventListener("click", NBACodeStars.displayPlayerDetails);
-    aElem.addEventListener("keyup", (event) => {
-      if (event.code === "Enter") {
-        NBACodeStars.displayPlayerDetails();
+    aElem.addEventListener("click", (e) => {
+      const cardId = e.target.closest(".card").id;
+      const teamId = cardId.split("-")[1];
+
+      NBACodeStars.displayPlayerDetails(teamId);
+    });
+    aElem.addEventListener("keyup", (e) => {
+      if (e.code === "Enter") {
+        const cardId = e.target.closest(".card").id;
+        const teamId = cardId.split("-")[1];
+        NBACodeStars.displayPlayerDetails(teamId);
       }
     });
 
@@ -384,7 +449,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
 };
 
 // Display player details on the screen
-NBACodeStars.displayPlayerDetails = () => {
+NBACodeStars.displayPlayerDetails = (teamId) => {
   // Create player details modal
   // Create close icon -> refactor code from above to manage close icon functionality
   const closeIconElem = document.createElement("i");
@@ -415,10 +480,20 @@ NBACodeStars.displayPlayerDetails = () => {
     }, 500);
   });
 
-  // Make async api call to get player details on page load
-
   // Determine which team was selected
-  // Filter down players on the selected team
+  const teamDetailsObj = NBACodeStars.teamsData.find(
+    (team) => team["TeamID"] === parseInt(teamId)
+  );
+
+  const teamAbbreviation = teamDetailsObj["Key"];
+
+  // Make async api call to get player details on page load
+  const promise = [];
+  promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
+  promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
+
+  const promises = Promise.all(promise);
+
   // Create li element and p elements for name, position, general stats
   // Append p elements to li then li to container and container to screen
 };

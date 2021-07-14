@@ -53,6 +53,10 @@ footer {
   margin: 50px 0px;
 }
 
+.fullscreen {
+  min-height: calc(100vh - 98px);
+}
+
 //***************************************
 // Header styles
 //***************************************
@@ -227,6 +231,8 @@ h1 {
 
 .cardImg {
   width: 100%;
+  height: 350px;
+  padding: 15px;
   transition: all 0.5s;
   overflow: hidden;
   object-fit: contain;
