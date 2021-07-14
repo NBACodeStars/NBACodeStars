@@ -83,17 +83,106 @@ h1 {
   color: $red;
 }
 
-.teamDropdownLabel,
-.teamDropdown {
-  display: block;
-  text-align: center;
-  margin: 10px auto;
-  font-size: 1.5rem;
+// .teamDropdownLabel,
+// .teamDropdown {
+//   display: block;
+//   text-align: center;
+//   margin: 10px auto;
+//   font-size: 1.5rem;
+// }
+
+// .teamDropdown {
+//   width: 300px;
+//   font-size: 1.25rem;
+// }
+
+//***************************************
+// Custom dropdown styles
+//***************************************
+
+.dropdownContainer {
+  position: relative;
+  width: 300px;
+  height: 100px;
+  margin: 0px auto;
 }
 
-.teamDropdown {
+.dropdownLabel {
+  margin: 10px 0px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.dropdown {
+  position: absolute;
   width: 300px;
-  font-size: 1.25rem;
+  height: 55px;
+  font-size: 1.5rem;
+  overflow-y: scroll;
+  background-color: $greyAlt;
+  transition: all 0.5s;
+  z-index: 2;
+  border: 2px solid $offWhite;
+  border-radius: 5px;
+
+  &:hover,
+  &:focus-within {
+    height: 200px;
+  }
+
+  &:hover .dropdownIcon {
+    border-left-color: $greyAlt;
+  }
+}
+
+.dropdownOption {
+  width: 100%;
+  padding: 10px;
+  transition: all 0.3s;
+  border: 2px solid $greyAlt;
+  background-color: $grey;
+  color: $offWhite;
+
+  &:hover,
+  &:focus-within {
+    color: $grey;
+    background-color: $offWhite;
+    cursor: pointer;
+  }
+}
+
+.optionOne {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropdownIcon {
+  border-left: 2px solid $offWhite;
+  padding-left: 10px;
+}
+
+/* Whole scrollbar */
+.dropdown::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  margin-left: 5px;
+  background-color: $greyAlt;
+}
+
+/* Track */
+.dropdown::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* Handle */
+.dropdown::-webkit-scrollbar-thumb {
+  background: $red;
+  border-radius: 5px;
+}
+
+.highlight {
+  background: rgba($red, 0.5);
 }
 
 //***************************************
@@ -257,91 +346,6 @@ h1 {
   cursor: pointer;
   background-color: $grey;
   color: $white;
-}
-
-//***************************************
-// Custom dropdown styles
-//***************************************
-
-.dropdownContainer {
-  position: relative;
-  width: 300px;
-  height: 100px;
-  margin: 0px auto;
-}
-
-.dropdownLabel {
-  margin: 10px 0px;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 400;
-}
-
-.dropdown {
-  position: absolute;
-  width: 300px;
-  height: 55px;
-  font-size: 1.5rem;
-  overflow-y: scroll;
-  background-color: $greyAlt;
-  transition: all 0.5s;
-  z-index: 2;
-  border: 2px solid $offWhite;
-  border-radius: 5px;
-
-  &:hover,
-  &:focus-within {
-    height: 200px;
-  }
-
-  &:hover .dropdownIcon {
-    border-left-color: $greyAlt;
-  }
-}
-
-.dropdownOption {
-  width: 100%;
-  padding: 10px;
-  transition: all 0.3s;
-  border: 2px solid $greyAlt;
-  background-color: $grey;
-  color: $offWhite;
-
-  &:hover,
-  &:focus-within {
-    color: $grey;
-    background-color: rgba($offWhite, 0.9);
-    cursor: pointer;
-  }
-}
-
-.optionOne {
-  display: flex;
-  justify-content: space-between;
-}
-
-.dropdownIcon {
-  border-left: 2px solid $offWhite;
-  padding-left: 10px;
-}
-
-/* Whole scrollbar */
-.dropdown::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  margin-left: 5px;
-  background-color: $greyAlt;
-}
-
-/* Track */
-.dropdown::-webkit-scrollbar-track {
-  border-radius: 5px;
-}
-
-/* Handle */
-.dropdown::-webkit-scrollbar-thumb {
-  background: $red;
-  border-radius: 5px;
 }
 
 //***************************************

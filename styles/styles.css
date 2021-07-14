@@ -336,17 +336,90 @@ h1 {
   color: #f73859;
 }
 
-.teamDropdownLabel,
-.teamDropdown {
-  display: block;
-  text-align: center;
-  margin: 10px auto;
-  font-size: 1.5rem;
+.dropdownContainer {
+  position: relative;
+  width: 300px;
+  height: 100px;
+  margin: 0px auto;
 }
 
-.teamDropdown {
+.dropdownLabel {
+  margin: 10px 0px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.dropdown {
+  position: absolute;
   width: 300px;
-  font-size: 1.25rem;
+  height: 55px;
+  font-size: 1.5rem;
+  overflow-y: scroll;
+  background-color: #404b69;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  z-index: 2;
+  border: 2px solid #dbedf3;
+  border-radius: 5px;
+}
+.dropdown:hover, .dropdown:focus-within {
+  height: 200px;
+}
+.dropdown:hover .dropdownIcon {
+  border-left-color: #404b69;
+}
+
+.dropdownOption {
+  width: 100%;
+  padding: 10px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  border: 2px solid #404b69;
+  background-color: #283149;
+  color: #dbedf3;
+}
+.dropdownOption:hover, .dropdownOption:focus-within {
+  color: #283149;
+  background-color: #dbedf3;
+  cursor: pointer;
+}
+
+.optionOne {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.dropdownIcon {
+  border-left: 2px solid #dbedf3;
+  padding-left: 10px;
+}
+
+/* Whole scrollbar */
+.dropdown::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  margin-left: 5px;
+  background-color: #404b69;
+}
+
+/* Track */
+.dropdown::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* Handle */
+.dropdown::-webkit-scrollbar-thumb {
+  background: #f73859;
+  border-radius: 5px;
+}
+
+.highlight {
+  background: rgba(247, 56, 89, 0.5);
 }
 
 .teamCards {
@@ -535,88 +608,6 @@ h1 {
   cursor: pointer;
   background-color: #283149;
   color: white;
-}
-
-.dropdownContainer {
-  position: relative;
-  width: 300px;
-  height: 100px;
-  margin: 0px auto;
-}
-
-.dropdownLabel {
-  margin: 10px 0px;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 400;
-}
-
-.dropdown {
-  position: absolute;
-  width: 300px;
-  height: 55px;
-  font-size: 1.5rem;
-  overflow-y: scroll;
-  background-color: #404b69;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
-  z-index: 2;
-  border: 2px solid #dbedf3;
-  border-radius: 5px;
-}
-.dropdown:hover, .dropdown:focus-within {
-  height: 200px;
-}
-.dropdown:hover .dropdownIcon {
-  border-left-color: #404b69;
-}
-
-.dropdownOption {
-  width: 100%;
-  padding: 10px;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  border: 2px solid #404b69;
-  background-color: #283149;
-  color: #dbedf3;
-}
-.dropdownOption:hover, .dropdownOption:focus-within {
-  color: #283149;
-  background-color: rgba(219, 237, 243, 0.9);
-  cursor: pointer;
-}
-
-.optionOne {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-
-.dropdownIcon {
-  border-left: 2px solid #dbedf3;
-  padding-left: 10px;
-}
-
-/* Whole scrollbar */
-.dropdown::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  margin-left: 5px;
-  background-color: #404b69;
-}
-
-/* Track */
-.dropdown::-webkit-scrollbar-track {
-  border-radius: 5px;
-}
-
-/* Handle */
-.dropdown::-webkit-scrollbar-thumb {
-  background: #f73859;
-  border-radius: 5px;
 }
 
 footer {

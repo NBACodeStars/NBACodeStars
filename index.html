@@ -35,56 +35,43 @@
 
       <div class="dropdownFormContainer">
         <!-- START: Dropdown form -->
-        <form action="/">
-          <!-- START: Select dropdown -->
-          <label class="teamDropdownLabel" for="teamDropdown"
+        <!-- <form action="/"> -->
+        <!-- START: Select dropdown -->
+        <!-- <label class="teamDropdownLabel" for="teamDropdown"
             >Search for your favourite teams</label
           >
           <select id="teamDropdown" class="teamDropdown" autofocus multiple>
             <option id="all" selected>All</option>
-          </select>
+          </select> -->
 
-          <!-- START: Custom dropdown container -->
-          <!-- Consider accessibility for the custom dropdown -->
-          <div class="dropdownContainer">
-            <h2 class="dropdownLabel">Select your favourite teams</h2>
+        <!-- START: Custom dropdown container -->
+        <!-- Consider accessibility for the custom dropdown -->
 
-            <!-- START: Custom dropdown -->
-            <ul class="dropdown" role="listbox">
-              <li class="dropdownOption optionOne" role="option" tabindex="0">
-                <span>All teams</span>
-                <i class="fas fa-caret-down dropdownIcon"></i>
-              </li>
-              <li class="dropdownOption" role="option" tabindex="0">
-                Atlanta hawks
-              </li>
-              <li class="dropdownOption" role="option" tabindex="0">
-                Boston celtics
-              </li>
-              <li class="dropdownOption" role="option" tabindex="0">
-                Brooklyn nets
-              </li>
-              <li class="dropdownOption" role="option" tabindex="0">
-                Boston celtics
-              </li>
-              <li class="dropdownOption" role="option" tabindex="-1">
-                Boston celtics
-              </li>
-              <li class="dropdownOption" role="option" tabindex="-1">
-                Boston celtics
-              </li>
-              <li class="dropdownOption" role="option" tabindex="-1">
-                Boston celtics
-              </li>
-              <li class="dropdownOption" role="option" tabindex="-1">
-                Boston celtics
-              </li>
-              <li class="dropdownOption" role="option" tabindex="-1">
-                Boston celtics
-              </li>
-            </ul>
-          </div>
-        </form>
+        <div class="dropdownContainer">
+          <h2 class="dropdownLabel">Select your favourite teams</h2>
+
+          <!-- START: Custom dropdown -->
+          <!-- Accessibility resource used: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role -->
+          <ul
+            class="dropdown"
+            role="listbox"
+            aria-multiselectable="true"
+            aria-activedescendant="all"
+          >
+            <li
+              class="dropdownOption optionOne highlight"
+              role="option"
+              tabindex="0"
+              value="all"
+              id="all"
+              aria-selected="true"
+            >
+              <span>All teams</span>
+              <i class="fas fa-caret-down dropdownIcon"></i>
+            </li>
+          </ul>
+        </div>
+        <!-- </form> -->
       </div>
     </header>
 
