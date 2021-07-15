@@ -46,15 +46,54 @@ NBACodeStars.getTeamsData = async () => {
 
   // TODO: Add a throw and catch block
   fetch(url)
-    .then((res) => res.json())
+    .then((res) =>  {
+      if (res.ok) {
+        return res.json()
+      } else {
+        throw new Error (res)
+      }
+      })
     .then((data) => {
+      console.log(data)
       NBACodeStars.teamsData = data;
       NBACodeStars.displayOptions(NBACodeStars.teamsData);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error)
+      NBACodeStars.displaySiteLoadError();
+
+      
       // TODO: Error handling
+      
     });
 };
+// Error handle function
+  NBACodeStars.displaySiteLoadError = () => {
+      // Refactor with displayPlayerDetails
+  // Create close icon -> refactor code from above to manage close icon functionality
+  const errorMessage = document.createElement('p')
+  errorMessage.textContent = "Could not load data. Please try again later!"
+  console.log('YOU MAD BRUH??')
+  const playerDetailsContainerElem = document.createElement("div");
+  playerDetailsContainerElem.classList.add("playerDetailsContainer");
+  playerDetailsContainerElem.append(errorMessage);
+
+  const playerDetailsOuterElem = document.createElement("div");
+  playerDetailsOuterElem.classList.add("playerDetailsOuterContainer");
+  playerDetailsOuterElem.append(playerDetailsContainerElem);
+
+  const bodyElem = document.querySelector("body");
+  bodyElem.prepend(playerDetailsOuterElem);
+
+  }
+
+
+
+
+
+
+
+
 
 // Function that makes the API call get get players data
 NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
@@ -333,6 +372,8 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     // Create team details card
 
     // Create elements to hold team details
+
+    // TODO: REFACTOR THIS CODE TO INNER HTML
     const closeIconElem = document.createElement("i");
     closeIconElem.classList.add("fas", "fa-times", "closeIcon");
     closeIconElem.tabIndex = "0";
@@ -486,17 +527,17 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   const teamAbbreviation = teamDetailsObj["Key"];
 
   // Make async api call to get player details on page load
-  const promise = [];
-  promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
-  promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
+  // const promise = [];
+  // promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
+  // promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
 
-  const promises = Promise.all(promise);
-  promises
-    .then(() => {
-      console.log(NBACodeStars.playerByTeamBiodata);
-      console.log(NBACodeStars.playerByTeamStatsData);
-    })
-    .then(() => NBACodeStars.displayPlayerBio());
+  // const promises = Promise.all(promise);
+  // promises
+  //   .then(() => {
+  //     console.log(NBACodeStars.playerByTeamBiodata);
+  //     console.log(NBACodeStars.playerByTeamStatsData);
+  //   })
+  //   .then(() => NBACodeStars.displayPlayerBio());
 
   //  - Stats data shown (2020-2021 Regular Season stats)
   //    - Games
@@ -521,6 +562,8 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
 };
 
 NBACodeStars.displayPlayerBio = () => {
+
+  
   // Create following elements to create stat table
   //  - div
   //  - table

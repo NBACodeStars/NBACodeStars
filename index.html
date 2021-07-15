@@ -13,6 +13,36 @@
       crossorigin="anonymous"
     />
 
+    <form action="">
+      <label for="bio" class="sr-only">Bio</label>
+      <input type="radio" value="bio">
+      <label for="stats" class="sr-only">Stats</label>
+      <input type="radio" value="stats">
+    </form>
+
+    <div class="toggleContainer">
+      <div class="bioDiv"></div>
+      <div class="statsDiv"></div>
+    </div>
+
+    .toggleContainer {
+      display: flex;
+      width: 40%;
+    }
+
+    .bioDiv, .statsDiv {
+      width: 50%;
+      border: solid 2px red;
+    }
+
+const toggleContainer = document.getElementsByClassName('toggleContainer')
+const bioDiv = document.getElementsByClassName('bioDiv')
+const statsDiv = document.getElementsByClassName(('statsDiv')
+
+   
+
+
+
     <!-- Internal stylesheet -->
     <link rel="stylesheet" href="./styles/styles.css" />
     <title>NBA Code Stars</title>
