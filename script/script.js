@@ -67,8 +67,6 @@ NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
     .then((res) => res.json())
     .then((data) => {
       NBACodeStars.playerByTeamBiodata = data;
-      console.log(NBACodeStars.playerByTeamBiodata);
-      console.log(Array.isArray(NBACodeStars.playerByTeamBiodata));
     })
     .catch(() => {
       // TODO: Error handling
@@ -77,7 +75,7 @@ NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
 
 NBACodeStars.getPlayersByTeamStatsData = async (teamAbbreviation) => {
   const url = new URL(
-    `${NBACodeStars.url}${NBACodeStars.endpoints.playersBio}/${teamAbbreviation}`
+    `${NBACodeStars.url}${NBACodeStars.endpoints.playersSeasonStats}/${teamAbbreviation}`
   );
   url.search = new URLSearchParams({
     key: NBACodeStars.apiKey,
@@ -88,8 +86,6 @@ NBACodeStars.getPlayersByTeamStatsData = async (teamAbbreviation) => {
     .then((res) => res.json())
     .then((data) => {
       NBACodeStars.playerByTeamStatsData = data;
-      console.log(NBACodeStars.playerByTeamStatsData);
-      console.log(Array.isArray(NBACodeStars.playerByTeamStatsData));
     })
     .catch(() => {
       // TODO: Error handling
@@ -421,7 +417,7 @@ NBACodeStars.teamDetailsListener = (btnElement) => {
     teamDetailsBtn.remove();
 
     const aElem = document.createElement("a");
-    aElem.innerHTML = "Player details";
+    aElem.innerHTML = "Roster";
     aElem.classList.add("btn");
     aElem.classList.add("btnPlayerDetails");
     aElem.ariaRole = "button";
@@ -458,7 +454,6 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
 
   const playerDetailsContainerElem = document.createElement("div");
   playerDetailsContainerElem.classList.add("playerDetailsContainer");
-  playerDetailsContainerElem.innerHTML = "Hello";
   playerDetailsContainerElem.append(closeIconElem);
 
   const playerDetailsOuterElem = document.createElement("div");
@@ -493,9 +488,177 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
 
   const promises = Promise.all(promise);
+  promises
+    .then(() => {
+      console.log(NBACodeStars.playerByTeamBiodata);
+      console.log(NBACodeStars.playerByTeamStatsData);
+    })
+    .then(() => NBACodeStars.displayPlayerBio());
 
-  // Create li element and p elements for name, position, general stats
-  // Append p elements to li then li to container and container to screen
+  NBACodeStars.displayPlayerBio();
+
+  //  - Stats data shown (2020-2021 Regular Season stats)
+  //    - Games
+  //    - Started
+  //    - Minutes / Games
+  //    - FieldGoalsPercentage
+  //    - ThreePointersPercentage
+  //    - FreeThrowsPercentage
+  //    - Points / Games
+  //    - Rebounds / Games
+  //    - Assists / Games
+  //    - Steals / Games
+  //    - BlockedShots / Games
+  //    - Turnovers / Games
+  //    - FantasyPointsDraftKings
+  //    - FantasyPointsFanDuel
+  //    - FantasyPointsFantasyDraft
+  //    - FantasyPointsYahoo
+
+  // Internal table fixed with same elements for player img, name
+  //  - make div position absolute
+};
+
+NBACodeStars.displayPlayerBio = () => {
+  // Create following elements to create stat table
+  //  - div
+  //  - table
+  //  - thead
+  //  - tr with th elements
+  //  - tbody
+  //  - tr with td elements
+  //  - wrap img element with span
+  //  - img element for pictures
+  //  - button on top right to toggle from bio data and player data
+  //  - Bio data shown
+  //    - PlayerID
+  //    - img: UsaTodayHeadshotNoBackgroundUrl
+  //    - name FirstName LastName
+  //    - Primary position: Position
+  //    - Jersey
+  //    - BirthDate
+  //    - BirthCountry
+  //    - Experience
+  //    - Salary
+
+  // table header data
+  const tableHeadEl = NBACodeStars.createBioTableHead();
+
+  // table body data
+  const tableBodyEl = NBACodeStars.createBioTableBody();
+  tableBodyEl.classList.add("playerBioTableBody");
+
+  // table
+  const tableEl = document.createElement("table");
+  tableEl.append(tableHeadEl);
+  tableEl.append(tableBodyEl);
+
+  // table container
+  const tableContainerEl = document.createElement("div");
+  tableContainerEl.classList.add("rosterTableContainer");
+  tableContainerEl.append(tableEl);
+
+  // roster header
+  const headerEl = document.createElement("div");
+  headerEl.classList.add("rosterHeader");
+
+  // roster container
+  const playerDetailsContainerEl = document.querySelector(
+    ".playerDetailsContainer"
+  );
+  playerDetailsContainerEl.append(headerEl);
+  playerDetailsContainerEl.append(tableContainerEl);
+};
+
+// Function to create the table heading for the bio data table
+NBACodeStars.createBioTableHead = () => {
+  const tableHeadEl = document.createElement("thead");
+  const trEl = document.createElement("tr");
+
+  const headerObj = [
+    "Player",
+    "Position",
+    "Jersey",
+    "Birthday",
+    "Country",
+    "Experience",
+    "Salary",
+  ];
+
+  headerObj.forEach((heading) => {
+    const thEl = document.createElement("th");
+    thEl.innerText = heading;
+    trEl.append(thEl);
+  });
+
+  tableHeadEl.append(trEl);
+
+  return tableHeadEl;
+};
+
+NBACodeStars.createBioTableBody = () => {
+  const tableBodyEl = document.createElement("tbody");
+
+  //  - Bio data shown
+  //    - PlayerID
+  //    - img: UsaTodayHeadshotNoBackgroundUrl
+  //    - name FirstName LastName
+  //    - Primary position: Position
+  //    - Jersey
+  //    - BirthDate
+  //    - BirthCountry
+  //    - Experience
+  //    - Salary
+
+  NBACodeStars.playerByTeamBiodata.forEach((player) => {
+    const { PlayerID, UsaTodayHeadshotNoBackgroundUrl, FirstName, LastName } =
+      player;
+
+    const statsKeys = [
+      "Position",
+      "Jersey",
+      "Birthday",
+      "BirthCountry",
+      "Experience",
+      "Salary",
+    ];
+
+    // Player name
+    const imgEl = document.createElement("img");
+    imgEl.setAttribute("src", UsaTodayHeadshotNoBackgroundUrl);
+    imgEl.setAttribute("alt", `${FirstName} ${LastName}`);
+
+    const firstNameEl = document.createElement("span");
+    firstNameEl.textContent = FirstName;
+
+    const lastNameEl = document.createElement("span");
+    lastNameEl.textContent = LastName;
+
+    const nameContainerEl = document.createElement("div");
+    nameContainerEl.append(firstNameEl);
+    nameContainerEl.append(lastNameEl);
+
+    const playerNameTdEl = document.createElement("td");
+    // playerNameTdEl.append(imgEl);
+    playerNameTdEl.append(nameContainerEl);
+
+    // Create the table row for the player
+    const trEl = document.createElement("tr");
+    trEl.setAttribute("data-playerId", PlayerID);
+    trEl.append(playerNameTdEl);
+
+    // Player stats
+    statsKeys.forEach((key) => {
+      const stat = player[key];
+      const tdEl = document.createElement("td");
+      tdEl.textContent = stat;
+      trEl.append(tdEl);
+    });
+
+    tableBodyEl.append(trEl);
+  });
+
+  return tableBodyEl;
 };
 
 // 0. Calling the init to hit it off
