@@ -404,20 +404,24 @@ h1 {
 }
 
 /* Whole scrollbar */
-.dropdown::-webkit-scrollbar {
+.dropdown::-webkit-scrollbar,
+.rosterTableScroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
   margin-left: 5px;
   background-color: #404b69;
+  border-radius: 5px;
 }
 
 /* Track */
-.dropdown::-webkit-scrollbar-track {
+.dropdown::-webkit-scrollbar-track,
+.rosterTableScroll::-webkit-track {
   border-radius: 5px;
 }
 
 /* Handle */
-.dropdown::-webkit-scrollbar-thumb {
+.dropdown::-webkit-scrollbar-thumb,
+.rosterTableScroll::-webkit-scrollbar-thumb {
   background: #f73859;
   border-radius: 5px;
 }
@@ -544,7 +548,7 @@ h1 {
 .closeIcon {
   font-size: 1rem;
   padding: 10px;
-  margin: 5px;
+  margin: 10px;
   cursor: pointer;
   border-radius: 5px;
   color: #404b69;
@@ -604,8 +608,8 @@ h1 {
 }
 
 .playerDetailsContainer {
-  min-width: 80vw;
-  min-height: 80vh;
+  width: 80vw;
+  height: 80vh;
   background-color: rgba(219, 237, 243, 0.5);
   font-size: 2rem;
   backdrop-filter: blur(10px);
@@ -625,6 +629,7 @@ h1 {
 
 .rosterHeader {
   width: 100%;
+  min-height: 100px;
   height: 100px;
 }
 
@@ -633,10 +638,96 @@ h1 {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  position: relative;
+  background-color: #404b69;
+  border-radius: 5px;
 }
 
+.rosterTableScroll {
+  margin-top: 50px;
+  overflow: auto;
+  height: calc(80vh - 50px - 100px - 20px * 2);
+}
+
+.rosterTableHead {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 20px;
+  height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #283149;
+  margin-right: -20px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.rosterTableHead tr {
+  padding-right: 20px;
+}
+
+table {
+  text-align: left;
+  table-layout: fixed;
+}
+
+th,
 td {
-  font-size: 0.8rem;
+  font-size: 1rem;
+  padding: 5px;
+}
+
+.nameContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.player {
+  width: 175px;
+}
+
+td.player {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.position,
+.jersey {
+  width: 70px;
+}
+
+.birthday,
+.experience,
+.salary,
+.birthCountry {
+  width: 100px;
+}
+
+.playerImg {
+  margin-right: 10px;
+}
+.playerImg img {
+  width: 70px;
+  height: 70px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -o-object-position: center;
+     object-position: center;
+  background-color: #283149;
+  border-radius: 50%;
 }
 
 footer {

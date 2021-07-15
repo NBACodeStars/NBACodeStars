@@ -46,34 +46,32 @@ NBACodeStars.getTeamsData = async () => {
 
   // TODO: Add a throw and catch block
   fetch(url)
-    .then((res) =>  {
+    .then((res) => {
       if (res.ok) {
-        return res.json()
+        return res.json();
       } else {
-        throw new Error (res)
+        throw new Error(res);
       }
-      })
+    })
     .then((data) => {
-      console.log(data)
+      console.log(data);
       NBACodeStars.teamsData = data;
       NBACodeStars.displayOptions(NBACodeStars.teamsData);
     })
     .catch((error) => {
-      console.log(error)
+      console.log(error);
       NBACodeStars.displaySiteLoadError();
 
-      
       // TODO: Error handling
-      
     });
 };
 // Error handle function
-  NBACodeStars.displaySiteLoadError = () => {
-      // Refactor with displayPlayerDetails
+NBACodeStars.displaySiteLoadError = () => {
+  // Refactor with displayPlayerDetails
   // Create close icon -> refactor code from above to manage close icon functionality
-  const errorMessage = document.createElement('p')
-  errorMessage.textContent = "Could not load data. Please try again later!"
-  console.log('YOU MAD BRUH??')
+  const errorMessage = document.createElement("p");
+  errorMessage.textContent = "Could not load data. Please try again later!";
+  console.log("YOU MAD BRUH??");
   const playerDetailsContainerElem = document.createElement("div");
   playerDetailsContainerElem.classList.add("playerDetailsContainer");
   playerDetailsContainerElem.append(errorMessage);
@@ -84,16 +82,7 @@ NBACodeStars.getTeamsData = async () => {
 
   const bodyElem = document.querySelector("body");
   bodyElem.prepend(playerDetailsOuterElem);
-
-  }
-
-
-
-
-
-
-
-
+};
 
 // Function that makes the API call get get players data
 NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
@@ -527,17 +516,347 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   const teamAbbreviation = teamDetailsObj["Key"];
 
   // Make async api call to get player details on page load
-  // const promise = [];
-  // promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
-  // promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
+  const promise = [];
+  promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
+  promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
 
-  // const promises = Promise.all(promise);
-  // promises
-  //   .then(() => {
-  //     console.log(NBACodeStars.playerByTeamBiodata);
-  //     console.log(NBACodeStars.playerByTeamStatsData);
-  //   })
-  //   .then(() => NBACodeStars.displayPlayerBio());
+  const promises = Promise.all(promise);
+  promises
+    .then(() => {
+      console.log(NBACodeStars.playerByTeamBiodata);
+      console.log(NBACodeStars.playerByTeamStatsData);
+    })
+    .then(() => NBACodeStars.displayPlayerBio());
+
+  // REMOVE: Temp bio data
+  const tempBioData = [
+    {
+      PlayerID: 20000618,
+      SportsDataID: "",
+      Status: "Active",
+      TeamID: 1,
+      Team: "WAS",
+      Jersey: 15,
+      PositionCategory: "C",
+      Position: "C",
+      FirstName: "Robin",
+      LastName: "Lopez",
+      Height: 84,
+      Weight: 281,
+      BirthDate: "1988-04-01T00:00:00",
+      BirthCity: "North Hollywood",
+      BirthState: "CA",
+      BirthCountry: "USA",
+      HighSchool: null,
+      College: "Stanford",
+      Salary: 7300000,
+      PhotoUrl:
+        "https://s3-us-west-2.amazonaws.com/static.fantasydata.com/headshots/nba/low-res/20000618.png",
+      Experience: 12,
+      SportRadarPlayerID: "e521ef3c-7892-4f14-a560-df320872d59a",
+      RotoworldPlayerID: 1494,
+      RotoWirePlayerID: 2919,
+      FantasyAlarmPlayerID: 200125,
+      StatsPlayerID: 330050,
+      SportsDirectPlayerID: 733290,
+      XmlTeamPlayerID: 1950,
+      InjuryStatus: "Scrambled",
+      InjuryBodyPart: "Scrambled",
+      InjuryStartDate: null,
+      InjuryNotes: "Scrambled",
+      FanDuelPlayerID: 9873,
+      DraftKingsPlayerID: 330050,
+      YahooPlayerID: 4477,
+      FanDuelName: "Robin Lopez",
+      DraftKingsName: "Robin Lopez",
+      YahooName: "Robin Lopez",
+      DepthChartPosition: "C",
+      DepthChartOrder: 3,
+      GlobalTeamID: 20000001,
+      FantasyDraftName: "Robin Lopez",
+      FantasyDraftPlayerID: 330050,
+      UsaTodayPlayerID: 8247563,
+      UsaTodayHeadshotUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13477370",
+      UsaTodayHeadshotNoBackgroundUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13515111",
+      UsaTodayHeadshotUpdated: "2019-10-09T17:16:12",
+      UsaTodayHeadshotNoBackgroundUpdated: "2019-10-14T10:08:52",
+      NbaDotComPlayerID: 201577,
+    },
+    {
+      PlayerID: 20000901,
+      SportsDataID: "",
+      Status: "Active",
+      TeamID: 1,
+      Team: "WAS",
+      Jersey: 14,
+      PositionCategory: "G",
+      Position: "PG",
+      FirstName: "Ish",
+      LastName: "Smith",
+      Height: 72,
+      Weight: 175,
+      BirthDate: "1988-07-05T00:00:00",
+      BirthCity: "Charlotte",
+      BirthState: "NC",
+      BirthCountry: "USA",
+      HighSchool: null,
+      College: "Wake Forest",
+      Salary: 6000000,
+      PhotoUrl:
+        "https://s3-us-west-2.amazonaws.com/static.fantasydata.com/headshots/nba/low-res/20000901.png",
+      Experience: 10,
+      SportRadarPlayerID: "05a90cd6-73de-43d5-9d30-bc2588d03262",
+      RotoworldPlayerID: 1781,
+      RotoWirePlayerID: 3175,
+      FantasyAlarmPlayerID: 200472,
+      StatsPlayerID: 329873,
+      SportsDirectPlayerID: 732747,
+      XmlTeamPlayerID: 2930,
+      InjuryStatus: "Scrambled",
+      InjuryBodyPart: "Scrambled",
+      InjuryStartDate: null,
+      InjuryNotes: "Scrambled",
+      FanDuelPlayerID: 12511,
+      DraftKingsPlayerID: 329873,
+      YahooPlayerID: 4800,
+      FanDuelName: "Ish Smith",
+      DraftKingsName: "Ish Smith",
+      YahooName: "Ish Smith",
+      DepthChartPosition: "PG",
+      DepthChartOrder: 3,
+      GlobalTeamID: 20000001,
+      FantasyDraftName: "Ish Smith",
+      FantasyDraftPlayerID: 329873,
+      UsaTodayPlayerID: 8247574,
+      UsaTodayHeadshotUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13477350",
+      UsaTodayHeadshotNoBackgroundUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13514928",
+      UsaTodayHeadshotUpdated: "2019-10-09T17:16:12",
+      UsaTodayHeadshotNoBackgroundUpdated: "2019-10-14T10:01:44",
+      NbaDotComPlayerID: 202397,
+    },
+    {
+      PlayerID: 20001434,
+      SportsDataID: "",
+      Status: "Active",
+      TeamID: 1,
+      Team: "WAS",
+      Jersey: 19,
+      PositionCategory: "G",
+      Position: "PG",
+      FirstName: "Raul",
+      LastName: "Neto",
+      Height: 73,
+      Weight: 180,
+      BirthDate: "1992-05-19T00:00:00",
+      BirthCity: "Belo Horizonte",
+      BirthState: null,
+      BirthCountry: "Brazil",
+      HighSchool: null,
+      College: "None",
+      Salary: 1620564,
+      PhotoUrl:
+        "https://s3-us-west-2.amazonaws.com/static.fantasydata.com/headshots/nba/low-res/20001434.png",
+      Experience: 5,
+      SportRadarPlayerID: "8e7ffd66-f779-418c-bf18-b9f746a1c5fe",
+      RotoworldPlayerID: 2216,
+      RotoWirePlayerID: 3526,
+      FantasyAlarmPlayerID: 200657,
+      StatsPlayerID: 739966,
+      SportsDirectPlayerID: 755629,
+      XmlTeamPlayerID: null,
+      InjuryStatus: "Scrambled",
+      InjuryBodyPart: "Scrambled",
+      InjuryStartDate: null,
+      InjuryNotes: "Scrambled",
+      FanDuelPlayerID: 40208,
+      DraftKingsPlayerID: 739966,
+      YahooPlayerID: 5217,
+      FanDuelName: "Raul Neto",
+      DraftKingsName: "Raul Neto",
+      YahooName: "Raul Neto",
+      DepthChartPosition: "SG",
+      DepthChartOrder: 1,
+      GlobalTeamID: 20000001,
+      FantasyDraftName: "Raul Neto",
+      FantasyDraftPlayerID: 739966,
+      UsaTodayPlayerID: 8247567,
+      UsaTodayHeadshotUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=14627408",
+      UsaTodayHeadshotNoBackgroundUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=14627407",
+      UsaTodayHeadshotUpdated: "2020-07-28T19:01:12",
+      UsaTodayHeadshotNoBackgroundUpdated: "2020-07-28T19:01:11",
+      NbaDotComPlayerID: 203526,
+    },
+    {
+      PlayerID: 20001668,
+      SportsDataID: "",
+      Status: "Active",
+      TeamID: 1,
+      Team: "WAS",
+      Jersey: 42,
+      PositionCategory: "F",
+      Position: "SF",
+      FirstName: "Davis",
+      LastName: "Bertans",
+      Height: 82,
+      Weight: 225,
+      BirthDate: "1992-11-12T00:00:00",
+      BirthCity: "Valmiera",
+      BirthState: null,
+      BirthCountry: "Latvia",
+      HighSchool: null,
+      College: "None",
+      Salary: 15000000,
+      PhotoUrl:
+        "https://s3-us-west-2.amazonaws.com/static.fantasydata.com/headshots/nba/low-res/20001668.png",
+      Experience: 4,
+      SportRadarPlayerID: "c1bb78ed-4ce7-4e8c-b30c-06f8148d550a",
+      RotoworldPlayerID: 1867,
+      RotoWirePlayerID: 3215,
+      FantasyAlarmPlayerID: 200918,
+      StatsPlayerID: 599814,
+      SportsDirectPlayerID: 749277,
+      XmlTeamPlayerID: null,
+      InjuryStatus: "Scrambled",
+      InjuryBodyPart: "Scrambled",
+      InjuryStartDate: null,
+      InjuryNotes: "Scrambled",
+      FanDuelPlayerID: 14543,
+      DraftKingsPlayerID: 599814,
+      YahooPlayerID: 4926,
+      FanDuelName: "Davis Bertans",
+      DraftKingsName: "Davis Bertans",
+      YahooName: "Davis Bertans",
+      DepthChartPosition: "SF",
+      DepthChartOrder: 3,
+      GlobalTeamID: 20000001,
+      FantasyDraftName: "Davis Bertans",
+      FantasyDraftPlayerID: 599814,
+      UsaTodayPlayerID: 8247541,
+      UsaTodayHeadshotUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13477422",
+      UsaTodayHeadshotNoBackgroundUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13514935",
+      UsaTodayHeadshotUpdated: "2019-10-09T17:16:12",
+      UsaTodayHeadshotNoBackgroundUpdated: "2019-10-14T10:02:02",
+      NbaDotComPlayerID: 202722,
+    },
+    {
+      PlayerID: 20001852,
+      SportsDataID: "",
+      Status: "Active",
+      TeamID: 1,
+      Team: "WAS",
+      Jersey: 13,
+      PositionCategory: "C",
+      Position: "C",
+      FirstName: "Thomas",
+      LastName: "Bryant",
+      Height: 82,
+      Weight: 248,
+      BirthDate: "1997-07-31T00:00:00",
+      BirthCity: "Rochester",
+      BirthState: "NY",
+      BirthCountry: "USA",
+      HighSchool: null,
+      College: "Indiana",
+      Salary: 8333333,
+      PhotoUrl:
+        "https://s3-us-west-2.amazonaws.com/static.fantasydata.com/headshots/nba/low-res/20001852.png",
+      Experience: 3,
+      SportRadarPlayerID: "030424b9-7367-45e1-b9d4-c8dee3a89e53",
+      RotoworldPlayerID: 2825,
+      RotoWirePlayerID: 4155,
+      FantasyAlarmPlayerID: 200978,
+      StatsPlayerID: 896601,
+      SportsDirectPlayerID: 766664,
+      XmlTeamPlayerID: null,
+      InjuryStatus: "Scrambled",
+      InjuryBodyPart: "Scrambled",
+      InjuryStartDate: null,
+      InjuryNotes: "Scrambled",
+      FanDuelPlayerID: 67312,
+      DraftKingsPlayerID: 896601,
+      YahooPlayerID: 5855,
+      FanDuelName: "Thomas Bryant",
+      DraftKingsName: "Thomas Bryant",
+      YahooName: "Thomas Bryant",
+      DepthChartPosition: null,
+      DepthChartOrder: null,
+      GlobalTeamID: 20000001,
+      FantasyDraftName: "Thomas Bryant",
+      FantasyDraftPlayerID: 896601,
+      UsaTodayPlayerID: 8247548,
+      UsaTodayHeadshotUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13477375",
+      UsaTodayHeadshotNoBackgroundUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13514946",
+      UsaTodayHeadshotUpdated: "2019-10-09T17:16:12",
+      UsaTodayHeadshotNoBackgroundUpdated: "2019-10-14T10:02:30",
+      NbaDotComPlayerID: 1628418,
+    },
+    {
+      PlayerID: 20001852,
+      SportsDataID: "",
+      Status: "Active",
+      TeamID: 1,
+      Team: "WAS",
+      Jersey: 13,
+      PositionCategory: "C",
+      Position: "C",
+      FirstName: "Thomas",
+      LastName: "Bryant",
+      Height: 82,
+      Weight: 248,
+      BirthDate: "1997-07-31T00:00:00",
+      BirthCity: "Rochester",
+      BirthState: "NY",
+      BirthCountry: "USA",
+      HighSchool: null,
+      College: "Indiana",
+      Salary: 8333333,
+      PhotoUrl:
+        "https://s3-us-west-2.amazonaws.com/static.fantasydata.com/headshots/nba/low-res/20001852.png",
+      Experience: 3,
+      SportRadarPlayerID: "030424b9-7367-45e1-b9d4-c8dee3a89e53",
+      RotoworldPlayerID: 2825,
+      RotoWirePlayerID: 4155,
+      FantasyAlarmPlayerID: 200978,
+      StatsPlayerID: 896601,
+      SportsDirectPlayerID: 766664,
+      XmlTeamPlayerID: null,
+      InjuryStatus: "Scrambled",
+      InjuryBodyPart: "Scrambled",
+      InjuryStartDate: null,
+      InjuryNotes: "Scrambled",
+      FanDuelPlayerID: 67312,
+      DraftKingsPlayerID: 896601,
+      YahooPlayerID: 5855,
+      FanDuelName: "Thomas Bryant",
+      DraftKingsName: "Thomas Bryant",
+      YahooName: "Thomas Bryant",
+      DepthChartPosition: null,
+      DepthChartOrder: null,
+      GlobalTeamID: 20000001,
+      FantasyDraftName: "Thomas Bryant",
+      FantasyDraftPlayerID: 896601,
+      UsaTodayPlayerID: 8247548,
+      UsaTodayHeadshotUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13477375",
+      UsaTodayHeadshotNoBackgroundUrl:
+        "http://cdn.usatsimg.com/api/download/?imageID=13514946",
+      UsaTodayHeadshotUpdated: "2019-10-09T17:16:12",
+      UsaTodayHeadshotNoBackgroundUpdated: "2019-10-14T10:02:30",
+      NbaDotComPlayerID: 1628418,
+    },
+  ];
+  // NBACodeStars.playerByTeamBiodata = tempBioData;
+  // NBACodeStars.displayPlayerBio();
 
   //  - Stats data shown (2020-2021 Regular Season stats)
   //    - Games
@@ -561,50 +880,43 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   //  - make div position absolute
 };
 
+// Function to create and display the table that displays player bio data
 NBACodeStars.displayPlayerBio = () => {
-
-  
-  // Create following elements to create stat table
-  //  - div
-  //  - table
-  //  - thead
-  //  - tr with th elements
-  //  - tbody
-  //  - tr with td elements
-  //  - wrap img element with span
-  //  - img element for pictures
-  //  - button on top right to toggle from bio data and player data
-  //  - Bio data shown
-  //    - PlayerID
-  //    - img: UsaTodayHeadshotNoBackgroundUrl
-  //    - name FirstName LastName
-  //    - Primary position: Position
-  //    - Jersey
-  //    - BirthDate
-  //    - BirthCountry
-  //    - Experience
-  //    - Salary
+  // Mapping array used to align table heading / table data / api keys for loops
+  const bioTableMap = [
+    { header: "Player", className: "player", key: null },
+    { header: "Position", className: "position", key: "Position" },
+    { header: "Jersey", className: "jersey", key: "Jersey" },
+    { header: "Birthday", className: "birthday", key: "BirthDate" },
+    { header: "Country", className: "birthCountry", key: "BirthCountry" },
+    { header: "Experience", className: "experience", key: "Experience" },
+    { header: "Salary", className: "salary", key: "Salary" },
+  ];
 
   // table header data
-  const tableHeadEl = NBACodeStars.createBioTableHead();
+  const tableHeadEl = NBACodeStars.createBioTableHead(bioTableMap);
+  tableHeadEl.classList.add("rosterTableHead");
 
   // table body data
-  const tableBodyEl = NBACodeStars.createBioTableBody();
-  tableBodyEl.classList.add("playerBioTableBody");
+  const tableBodyEl = NBACodeStars.createBioTableBody(bioTableMap);
+  tableBodyEl.classList.add("rosterTableBody");
 
   // table
   const tableEl = document.createElement("table");
   tableEl.append(tableHeadEl);
   tableEl.append(tableBodyEl);
 
+  // table vertical scrollbar
+  const tableScrollEl = document.createElement("div");
+  tableScrollEl.classList.add("rosterTableScroll");
+  tableScrollEl.append(tableEl);
+
   // table container
   const tableContainerEl = document.createElement("div");
   tableContainerEl.classList.add("rosterTableContainer");
-  tableContainerEl.append(tableEl);
+  tableContainerEl.append(tableScrollEl);
 
   // roster header
-  const toggleContainer = document.createElement('div')
-  toggleContainer.innerHTML = 'i'
   const headerEl = document.createElement("div");
   headerEl.classList.add("rosterHeader");
 
@@ -616,64 +928,41 @@ NBACodeStars.displayPlayerBio = () => {
   playerDetailsContainerEl.append(tableContainerEl);
 };
 
-
-
 // Function to create the table heading for the bio data table
-NBACodeStars.createBioTableHead = () => {
+NBACodeStars.createBioTableHead = (bioTableMap) => {
   const tableHeadEl = document.createElement("thead");
   const trEl = document.createElement("tr");
 
-  const headerObj = [
-    "Player",
-    "Position",
-    "Jersey",
-    "Birthday",
-    "Country",
-    "Experience",
-    "Salary",
-  ];
+  // Loop through each heading and create a th element with the class name
+  bioTableMap.forEach((obj) => {
+    const { header, className } = obj;
 
-  headerObj.forEach((heading) => {
     const thEl = document.createElement("th");
-    thEl.innerText = heading;
+    thEl.innerText = header;
+    thEl.classList.add(className);
     trEl.append(thEl);
   });
 
   tableHeadEl.append(trEl);
-
   return tableHeadEl;
 };
 
-NBACodeStars.createBioTableBody = () => {
+// Function to create the table body for the bio data table
+NBACodeStars.createBioTableBody = (bioTableMap) => {
   const tableBodyEl = document.createElement("tbody");
 
-  //  - Bio data shown
-  //    - PlayerID
-  //    - img: UsaTodayHeadshotNoBackgroundUrl
-  //    - name FirstName LastName
-  //    - Primary position: Position
-  //    - Jersey
-  //    - BirthDate
-  //    - BirthCountry
-  //    - Experience
-  //    - Salary
-
+  // Loop through each player received from the API pull and create a table row for each one
   NBACodeStars.playerByTeamBiodata.forEach((player) => {
     const { PlayerID, PhotoUrl, FirstName, LastName } = player;
-
-    const statsKeys = [
-      "Position",
-      "Jersey",
-      "Birthday",
-      "BirthCountry",
-      "Experience",
-      "Salary",
-    ];
 
     // Player name
     const imgEl = document.createElement("img");
     imgEl.setAttribute("src", PhotoUrl);
     imgEl.setAttribute("alt", `${FirstName} ${LastName}`);
+
+    const imgContainer = document.createElement("div");
+    imgContainer.append(imgEl);
+    imgContainer.classList.add("playerImg");
 
     const firstNameEl = document.createElement("span");
     firstNameEl.textContent = FirstName;
@@ -684,22 +973,43 @@ NBACodeStars.createBioTableBody = () => {
     const nameContainerEl = document.createElement("div");
     nameContainerEl.append(firstNameEl);
     nameContainerEl.append(lastNameEl);
+    nameContainerEl.classList.add("nameContainer");
 
     const playerNameTdEl = document.createElement("td");
-    playerNameTdEl.append(imgEl);
+    playerNameTdEl.append(imgContainer);
     playerNameTdEl.append(nameContainerEl);
+    playerNameTdEl.classList.add("player");
 
     // Create the table row for the player
     const trEl = document.createElement("tr");
     trEl.setAttribute("data-playerId", PlayerID);
     trEl.append(playerNameTdEl);
 
-    // Player stats
-    statsKeys.forEach((key) => {
-      const stat = player[key];
-      const tdEl = document.createElement("td");
-      tdEl.textContent = stat;
-      trEl.append(tdEl);
+    // Loop through each player bio data point to create and display a td element
+    bioTableMap.forEach((obj) => {
+      const { className, key } = obj;
+
+      if (key !== null) {
+        let data = player[key];
+        let formatData = "N/A";
+        const tdEl = document.createElement("td");
+
+        // Error handling: proceed if data has a value
+        if (data) {
+          // Format api data based on the nature of the data
+          if (key === "BirthDate") {
+            formatData = data.split("T")[0];
+          } else if (key === "Salary") {
+            formatData = NBACodeStars.numberWithCommas(data);
+          } else {
+            formatData = data;
+          }
+        }
+
+        tdEl.textContent = formatData;
+        tdEl.classList.add(className);
+        trEl.append(tdEl);
+      }
     });
 
     tableBodyEl.append(trEl);
@@ -708,11 +1018,17 @@ NBACodeStars.createBioTableBody = () => {
   return tableBodyEl;
 };
 
+// Function to add commas to a number
+// Credits to stackoverflow author for providing this function: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+NBACodeStars.numberWithCommas = (number) => {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 // 0. Calling the init to hit it off
 NBACodeStars.init();
 
 // TODO:
-// Error handling on landing to the page
+// Error handling on data not loading or data missing
 // Format the bio modal
 //  - have a darker hover state over the cell highlighted
 //  - add scroll bar to modal
