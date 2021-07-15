@@ -16,12 +16,13 @@ NBACodeStars.init = () => {
   NBACodeStars.getTeamsData();
   NBACodeStars.getUserSelections();
   NBACodeStars.getSelection();
+ 
 };
 
 // Global variables
 NBACodeStars.dropdownElem = document.getElementsByClassName("dropdown")[0];
 NBACodeStars.cardsContainerElem =
-  document.getElementsByClassName("teamCards")[0];
+document.getElementsByClassName("teamCards")[0];
 NBACodeStars.teamsSelected = ["all"]; // default state is all teams are selected
 NBACodeStars.teamsData = null;
 NBACodeStars.playerByTeamBiodata = null;
@@ -708,6 +709,47 @@ NBACodeStars.createBioTableBody = () => {
   return tableBodyEl;
 };
 
+
+NBACodeStars.displayToggleButton = () => {
+  const toggleButtonContainer = document.createElement('div')
+    const toggleButtonHtml = `
+  <input class="input" id="toggle" type="checkbox">
+<label class="label" for="toggle">
+  <div class="left">
+    Option A
+  </div>
+
+  <div class="switch">
+    <span class="slider round"></span>
+  </div>
+
+  <div class="right">
+    Option B
+  </div>
+</label>
+  `;
+
+  toggleButtonContainer.innerHTML = toggleButtonHtml;
+
+
+  toggleButtonLocation = document.querySelector('.teamCardsSection')
+  toggleButtonLocation.append(toggleButtonContainer)
+}
+
+NBACodeStars.displayToggleButton();
+console.log(displayToggleButton)
+
+
+
+
+
+
+
+
+
+
+
+
 // 0. Calling the init to hit it off
 NBACodeStars.init();
 
@@ -738,3 +780,8 @@ NBACodeStars.init();
 // 	2. A button in the top right hand corner of the screen with Nicholas Cages face that says CAGE FINDER
 // 	3. It throws up 10 movie posters of Nicholas Cage with titles
 // 	4. There is a button that says back to basketball which takes us back to the original site.
+
+
+
+
+
