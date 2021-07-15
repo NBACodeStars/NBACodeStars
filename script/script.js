@@ -603,6 +603,8 @@ NBACodeStars.displayPlayerBio = () => {
   tableContainerEl.append(tableEl);
 
   // roster header
+  const toggleContainer = document.createElement('div')
+  toggleContainer.innerHTML = 'i'
   const headerEl = document.createElement("div");
   headerEl.classList.add("rosterHeader");
 
@@ -613,6 +615,8 @@ NBACodeStars.displayPlayerBio = () => {
   playerDetailsContainerEl.append(headerEl);
   playerDetailsContainerEl.append(tableContainerEl);
 };
+
+
 
 // Function to create the table heading for the bio data table
 NBACodeStars.createBioTableHead = () => {
