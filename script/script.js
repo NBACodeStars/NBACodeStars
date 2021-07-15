@@ -5,7 +5,10 @@
 //    - Wrap API calls in promises that dont proceed with showing page until they are resolved
 //    - Create a loading spinner
 
-// Todo: Check if caps is good with mentors
+// ASK: Does .remove() get rid of the event listener on the close icon as well?
+// ASK: Check if caps is good with mentors
+// ASK: How to make js files split into multiple files?
+
 const NBACodeStars = {};
 
 // 1. init method that kicks everything off
@@ -495,8 +498,6 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
     })
     .then(() => NBACodeStars.displayPlayerBio());
 
-  NBACodeStars.displayPlayerBio();
-
   //  - Stats data shown (2020-2021 Regular Season stats)
   //    - Games
   //    - Started
@@ -611,8 +612,7 @@ NBACodeStars.createBioTableBody = () => {
   //    - Salary
 
   NBACodeStars.playerByTeamBiodata.forEach((player) => {
-    const { PlayerID, UsaTodayHeadshotNoBackgroundUrl, FirstName, LastName } =
-      player;
+    const { PlayerID, PhotoUrl, FirstName, LastName } = player;
 
     const statsKeys = [
       "Position",
@@ -625,7 +625,7 @@ NBACodeStars.createBioTableBody = () => {
 
     // Player name
     const imgEl = document.createElement("img");
-    imgEl.setAttribute("src", UsaTodayHeadshotNoBackgroundUrl);
+    imgEl.setAttribute("src", PhotoUrl);
     imgEl.setAttribute("alt", `${FirstName} ${LastName}`);
 
     const firstNameEl = document.createElement("span");
@@ -639,7 +639,7 @@ NBACodeStars.createBioTableBody = () => {
     nameContainerEl.append(lastNameEl);
 
     const playerNameTdEl = document.createElement("td");
-    // playerNameTdEl.append(imgEl);
+    playerNameTdEl.append(imgEl);
     playerNameTdEl.append(nameContainerEl);
 
     // Create the table row for the player
@@ -663,6 +663,17 @@ NBACodeStars.createBioTableBody = () => {
 
 // 0. Calling the init to hit it off
 NBACodeStars.init();
+
+// TODO:
+// Error handling on landing to the page
+// Format the bio modal
+//  - have a darker hover state over the cell highlighted
+//  - add scroll bar to modal
+// Create a button on the modal to flip between stats and bio data
+// Display stats data when stats button is clicked
+//  - Format stats data
+// Error handling when trying to retrieve roster stats
+// Loading spinner
 
 // STRETCH GOALS
 //  1. Show players to the user after they have clicked the show player button.
