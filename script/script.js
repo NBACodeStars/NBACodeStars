@@ -516,19 +516,19 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   const teamAbbreviation = teamDetailsObj["Key"];
 
   // Make async api call to get player details on page load
-  const promise = [];
-  promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
-  promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
+  // const promise = [];
+  // promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
+  // promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
 
-  const promises = Promise.all(promise);
-  promises
-    .then(() => {
-      console.log(NBACodeStars.playerByTeamBiodata);
-      console.log(NBACodeStars.playerByTeamStatsData);
-    })
-    .then(() => NBACodeStars.displayPlayerBio());
+  // const promises = Promise.all(promise);
+  // promises
+  //   .then(() => {
+  //     console.log(NBACodeStars.playerByTeamBiodata);
+  //     console.log(NBACodeStars.playerByTeamStatsData);
+  //   })
+  //   .then(() => NBACodeStars.displayPlayerBio());
 
-  // REMOVE: Temp bio data
+  // REMOVE: Temp bio and stats data
   const tempBioData = [
     {
       PlayerID: 20000618,
@@ -858,6 +858,312 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   // NBACodeStars.playerByTeamBiodata = tempBioData;
   // NBACodeStars.displayPlayerBio();
 
+  const tempStatsData = [
+    {
+      StatID: 812816,
+      TeamID: 3,
+      PlayerID: 20001989,
+      SeasonType: 1,
+      Season: 2021,
+      Name: "Trae Young",
+      Team: "ATL",
+      Position: "PG",
+      Started: 63,
+      GlobalTeamID: 20000003,
+      Updated: "2021-07-15T22:20:38",
+      Games: 63,
+      FantasyPoints: 1641.8,
+      Minutes: 1317,
+      Seconds: 25,
+      FieldGoalsMade: 301.9,
+      FieldGoalsAttempted: 689.4,
+      FieldGoalsPercentage: 27.2,
+      EffectiveFieldGoalsPercentage: 30.9,
+      TwoPointersMade: 217.6,
+      TwoPointersAttempted: 443.3,
+      TwoPointersPercentage: 30.4,
+      ThreePointersMade: 84.3,
+      ThreePointersAttempted: 246.1,
+      ThreePointersPercentage: 21.3,
+      FreeThrowsMade: 300.1,
+      FreeThrowsAttempted: 338.5,
+      FreeThrowsPercentage: 54.9,
+      OffensiveRebounds: 23.6,
+      DefensiveRebounds: 128.3,
+      Rebounds: 151.9,
+      OffensiveReboundsPercentage: 0.8,
+      DefensiveReboundsPercentage: 4,
+      TotalReboundsPercentage: 2.4,
+      Assists: 368.3,
+      Steals: 32.9,
+      BlockedShots: 4.6,
+      Turnovers: 161.8,
+      PersonalFouls: 68.8,
+      Points: 988.3,
+      TrueShootingAttempts: 838.4,
+      TrueShootingPercentage: 36.5,
+      PlayerEfficiencyRating: 17,
+      AssistsPercentage: 28.2,
+      StealsPercentage: 0.5,
+      BlocksPercentage: 0.2,
+      TurnOversPercentage: 10,
+      UsageRatePercentage: 20.6,
+      FantasyPointsFanDuel: 1682.1,
+      FantasyPointsDraftKings: 1798.5,
+      FantasyPointsYahoo: 1682.1,
+      PlusMinus: 165.5,
+      DoubleDoubles: 17.4,
+      TripleDoubles: 0,
+      FantasyPointsFantasyDraft: 1798.5,
+      IsClosed: false,
+      LineupConfirmed: null,
+      LineupStatus: "Scrambled",
+    },
+    {
+      StatID: 813118,
+      TeamID: 3,
+      PlayerID: 20001993,
+      SeasonType: 1,
+      Season: 2021,
+      Name: "Kevin Huerter",
+      Team: "ATL",
+      Position: "SG",
+      Started: 49,
+      GlobalTeamID: 20000003,
+      Updated: "2021-07-15T22:20:38",
+      Games: 69,
+      FantasyPoints: 980.7,
+      Minutes: 1318,
+      Seconds: 35,
+      FieldGoalsMade: 195.9,
+      FieldGoalsAttempted: 453.2,
+      FieldGoalsPercentage: 26.8,
+      EffectiveFieldGoalsPercentage: 32.7,
+      TwoPointersMade: 109.1,
+      TwoPointersAttempted: 213.9,
+      TwoPointersPercentage: 31.6,
+      ThreePointersMade: 86.8,
+      ThreePointersAttempted: 239.3,
+      ThreePointersPercentage: 22.5,
+      FreeThrowsMade: 31,
+      FreeThrowsAttempted: 39.7,
+      FreeThrowsPercentage: 48.4,
+      OffensiveRebounds: 23.6,
+      DefensiveRebounds: 119.7,
+      Rebounds: 143.2,
+      OffensiveReboundsPercentage: 0.8,
+      DefensiveReboundsPercentage: 3.7,
+      TotalReboundsPercentage: 2.3,
+      Assists: 149.4,
+      Steals: 50.8,
+      BlockedShots: 11.2,
+      Turnovers: 49,
+      PersonalFouls: 102.3,
+      Points: 509.6,
+      TrueShootingAttempts: 470.7,
+      TrueShootingPercentage: 33.6,
+      PlayerEfficiencyRating: 5.6,
+      AssistsPercentage: 10.1,
+      StealsPercentage: 0.7,
+      BlocksPercentage: 0.3,
+      TurnOversPercentage: 3.6,
+      UsageRatePercentage: 10.7,
+      FantasyPointsFanDuel: 1042.7,
+      FantasyPointsDraftKings: 1058.5,
+      FantasyPointsYahoo: 1042.7,
+      PlusMinus: 42.8,
+      DoubleDoubles: 1.2,
+      TripleDoubles: 0,
+      FantasyPointsFantasyDraft: 1058.5,
+      IsClosed: false,
+      LineupConfirmed: null,
+      LineupStatus: "Scrambled",
+    },
+    {
+      StatID: 812936,
+      TeamID: 3,
+      PlayerID: 20002155,
+      SeasonType: 1,
+      Season: 2021,
+      Name: "Brandon Goodwin",
+      Team: "ATL",
+      Position: "PG",
+      Started: 5,
+      GlobalTeamID: 20000003,
+      Updated: "2021-07-15T22:20:38",
+      Games: 47,
+      FantasyPoints: 278.6,
+      Minutes: 384,
+      Seconds: 20,
+      FieldGoalsMade: 52.1,
+      FieldGoalsAttempted: 138.3,
+      FieldGoalsPercentage: 23.4,
+      EffectiveFieldGoalsPercentage: 27.8,
+      TwoPointersMade: 32.2,
+      TwoPointersAttempted: 74.4,
+      TwoPointersPercentage: 26.8,
+      ThreePointersMade: 19.8,
+      ThreePointersAttempted: 63.9,
+      ThreePointersPercentage: 19.3,
+      FreeThrowsMade: 17.4,
+      FreeThrowsAttempted: 26.7,
+      FreeThrowsPercentage: 40.4,
+      OffensiveRebounds: 3.1,
+      DefensiveRebounds: 37.8,
+      Rebounds: 42.8,
+      OffensiveReboundsPercentage: 0.6,
+      DefensiveReboundsPercentage: 4.1,
+      TotalReboundsPercentage: 2.3,
+      Assists: 58.9,
+      Steals: 6.2,
+      BlockedShots: 0,
+      Turnovers: 22.3,
+      PersonalFouls: 25.4,
+      Points: 141.4,
+      TrueShootingAttempts: 150,
+      TrueShootingPercentage: 29.2,
+      PlayerEfficiencyRating: 4.4,
+      AssistsPercentage: 13.4,
+      StealsPercentage: 0.5,
+      BlocksPercentage: 0,
+      TurnOversPercentage: 5,
+      UsageRatePercentage: 12.2,
+      FantasyPointsFanDuel: 288.5,
+      FantasyPointsDraftKings: 301.8,
+      FantasyPointsYahoo: 288.5,
+      PlusMinus: -37.8,
+      DoubleDoubles: 0,
+      TripleDoubles: 0,
+      FantasyPointsFantasyDraft: 301.8,
+      IsClosed: false,
+      LineupConfirmed: null,
+      LineupStatus: "Scrambled",
+    },
+    {
+      StatID: 813052,
+      TeamID: 3,
+      PlayerID: 20002268,
+      SeasonType: 1,
+      Season: 2021,
+      Name: "De'Andre Hunter",
+      Team: "ATL",
+      Position: "SF",
+      Started: 19,
+      GlobalTeamID: 20000003,
+      Updated: "2021-07-15T22:20:38",
+      Games: 23,
+      FantasyPoints: 356.5,
+      Minutes: 420,
+      Seconds: 32,
+      FieldGoalsMade: 74.4,
+      FieldGoalsAttempted: 153.8,
+      FieldGoalsPercentage: 30,
+      EffectiveFieldGoalsPercentage: 34,
+      TwoPointersMade: 55.2,
+      TwoPointersAttempted: 94.9,
+      TwoPointersPercentage: 36.1,
+      ThreePointersMade: 19.2,
+      ThreePointersAttempted: 58.9,
+      ThreePointersPercentage: 20.2,
+      FreeThrowsMade: 45.3,
+      FreeThrowsAttempted: 52.7,
+      FreeThrowsPercentage: 53.3,
+      OffensiveRebounds: 10.5,
+      DefensiveRebounds: 57.7,
+      Rebounds: 68.2,
+      OffensiveReboundsPercentage: 1.1,
+      DefensiveReboundsPercentage: 5.7,
+      TotalReboundsPercentage: 3.4,
+      Assists: 27.3,
+      Steals: 11.8,
+      BlockedShots: 4.6,
+      Turnovers: 18,
+      PersonalFouls: 36.6,
+      Points: 213.3,
+      TrueShootingAttempts: 176.9,
+      TrueShootingPercentage: 37.3,
+      PlayerEfficiencyRating: 11.5,
+      AssistsPercentage: 3.7,
+      StealsPercentage: 0.5,
+      BlocksPercentage: 0.6,
+      TurnOversPercentage: 3.5,
+      UsageRatePercentage: 12.6,
+      FantasyPointsFanDuel: 375.7,
+      FantasyPointsDraftKings: 379.4,
+      FantasyPointsYahoo: 375.7,
+      PlusMinus: 52.1,
+      DoubleDoubles: 0.4,
+      TripleDoubles: 0,
+      FantasyPointsFantasyDraft: 379.4,
+      IsClosed: false,
+      LineupConfirmed: null,
+      LineupStatus: "Scrambled",
+    },
+    {
+      StatID: 812960,
+      TeamID: 3,
+      PlayerID: 20002276,
+      SeasonType: 1,
+      Season: 2021,
+      Name: "Cam Reddish",
+      Team: "ATL",
+      Position: "SF",
+      Started: 21,
+      GlobalTeamID: 20000003,
+      Updated: "2021-07-15T22:20:38",
+      Games: 26,
+      FantasyPoints: 322,
+      Minutes: 465,
+      Seconds: 11,
+      FieldGoalsMade: 59.5,
+      FieldGoalsAttempted: 163.1,
+      FieldGoalsPercentage: 22.6,
+      EffectiveFieldGoalsPercentage: 26.4,
+      TwoPointersMade: 39.1,
+      TwoPointersAttempted: 84.9,
+      TwoPointersPercentage: 28.5,
+      ThreePointersMade: 20.5,
+      ThreePointersAttempted: 78.1,
+      ThreePointersPercentage: 16.2,
+      FreeThrowsMade: 41.5,
+      FreeThrowsAttempted: 50.8,
+      FreeThrowsPercentage: 50.7,
+      OffensiveRebounds: 13.6,
+      DefensiveRebounds: 50.8,
+      Rebounds: 64.5,
+      OffensiveReboundsPercentage: 1.3,
+      DefensiveReboundsPercentage: 4.5,
+      TotalReboundsPercentage: 2.9,
+      Assists: 21.7,
+      Steals: 20.5,
+      BlockedShots: 3.5,
+      Turnovers: 21.1,
+      PersonalFouls: 42.2,
+      Points: 181,
+      TrueShootingAttempts: 185.4,
+      TrueShootingPercentage: 30.3,
+      PlayerEfficiencyRating: 4.4,
+      AssistsPercentage: 2.5,
+      StealsPercentage: 0.8,
+      BlocksPercentage: 0.4,
+      TurnOversPercentage: 3.9,
+      UsageRatePercentage: 12,
+      FantasyPointsFanDuel: 348,
+      FantasyPointsDraftKings: 346,
+      FantasyPointsYahoo: 348,
+      PlusMinus: -30.4,
+      DoubleDoubles: 0,
+      TripleDoubles: 0,
+      FantasyPointsFantasyDraft: 346,
+      IsClosed: false,
+      LineupConfirmed: null,
+      LineupStatus: "Scrambled",
+    },
+  ];
+
+  NBACodeStars.playerByTeamStatsData = tempStatsData;
+  NBACodeStars.displayPlayerStats();
+
   //  - Stats data shown (2020-2021 Regular Season stats)
   //    - Games
   //    - Started
@@ -875,6 +1181,34 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   //    - FantasyPointsFanDuel
   //    - FantasyPointsFantasyDraft
   //    - FantasyPointsYahoo
+
+  // {
+  //   PlayerID: 20001989,
+  //   Season: 2021,
+  //   Games: 63,
+  //   Started: 63,
+  //   Minutes: 1317,
+  //   TrueShootingPercentage: 36.5,
+  //   EffectiveFieldGoalsPercentage: 30.9,
+  //   FieldGoalsPercentage: 27.2,
+  //   ThreePointersPercentage: 21.3,
+  //   FreeThrowsPercentage: 54.9,
+  //   Points: 988.3,
+  //   Rebounds: 151.9,
+  //   OffensiveRebounds: 23.6,
+  //   DefensiveRebounds: 128.3,
+  //   Assists: 368.3,
+  //   Steals: 32.9,
+  //   BlockedShots: 4.6,
+  //   Turnovers: 161.8,
+  //   PersonalFouls: 68.8,
+  //   PlayerEfficiencyRating: 17,
+  //   PlusMinus: 165.5,
+  //   FantasyPointsFanDuel: 1682.1,
+  //   FantasyPointsDraftKings: 1798.5,
+  //   FantasyPointsYahoo: 1682.1,
+  //   FantasyPointsFantasyDraft: 1798.5,
+  // },
 
   // Internal table fixed with same elements for player img, name
   //  - make div position absolute
@@ -937,9 +1271,14 @@ NBACodeStars.createBioTableHead = (bioTableMap) => {
   bioTableMap.forEach((obj) => {
     const { header, className } = obj;
 
+    const spanEl = document.createElement("span");
+    spanEl.innerText = header;
+    spanEl.classList.add(className);
+    spanEl.classList.add("header");
+
     const thEl = document.createElement("th");
-    thEl.innerText = header;
-    thEl.classList.add(className);
+    thEl.append(spanEl);
+
     trEl.append(thEl);
   });
 
@@ -979,6 +1318,7 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
     playerNameTdEl.append(imgContainer);
     playerNameTdEl.append(nameContainerEl);
     playerNameTdEl.classList.add("player");
+    playerNameTdEl.classList.add("data");
 
     // Create the table row for the player
     const trEl = document.createElement("tr");
@@ -992,7 +1332,6 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
       if (key !== null) {
         let data = player[key];
         let formatData = "N/A";
-        const tdEl = document.createElement("td");
 
         // Error handling: proceed if data has a value
         if (data) {
@@ -1006,8 +1345,14 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
           }
         }
 
-        tdEl.textContent = formatData;
-        tdEl.classList.add(className);
+        const spanEl = document.createElement("span");
+        spanEl.innerText = formatData;
+        spanEl.classList.add(className);
+        spanEl.classList.add("data");
+
+        const tdEl = document.createElement("td");
+        tdEl.append(spanEl);
+
         trEl.append(tdEl);
       }
     });
@@ -1016,6 +1361,60 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
   });
 
   return tableBodyEl;
+};
+
+// ------------------------------------------------------
+// Functions to create player stats table
+// ------------------------------------------------------
+
+// REFACTOR WITH DISPLAYPLAYERBIO
+// ************TODO: LEFT HEREEEEEE*********
+// Function to create and display the table that displays player bio data
+NBACodeStars.displayPlayerStats = () => {
+  // Mapping array used to align table heading / table data / api keys for loops
+  const statsTableMap = [
+    { header: "Player", className: "player", key: null },
+    { header: "Position", className: "position", key: "Position" },
+    { header: "Jersey", className: "jersey", key: "Jersey" },
+    { header: "Birthday", className: "birthday", key: "BirthDate" },
+    { header: "Country", className: "birthCountry", key: "BirthCountry" },
+    { header: "Experience", className: "experience", key: "Experience" },
+    { header: "Salary", className: "salary", key: "Salary" },
+  ];
+
+  // table header data
+  const tableHeadEl = NBACodeStars.createStatsTableHead(statsTableMap);
+  tableHeadEl.classList.add("rosterTableHead");
+
+  // table body data
+  const tableBodyEl = NBACodeStars.createStatsTableBody(statsTableMap);
+  tableBodyEl.classList.add("rosterTableBody");
+
+  // table
+  const tableEl = document.createElement("table");
+  tableEl.append(tableHeadEl);
+  tableEl.append(tableBodyEl);
+
+  // table vertical scrollbar
+  const tableScrollEl = document.createElement("div");
+  tableScrollEl.classList.add("rosterTableScroll");
+  tableScrollEl.append(tableEl);
+
+  // table container
+  const tableContainerEl = document.createElement("div");
+  tableContainerEl.classList.add("rosterTableContainer");
+  tableContainerEl.append(tableScrollEl);
+
+  // roster header
+  const headerEl = document.createElement("div");
+  headerEl.classList.add("rosterHeader");
+
+  // roster container
+  const playerDetailsContainerEl = document.querySelector(
+    ".playerDetailsContainer"
+  );
+  playerDetailsContainerEl.append(headerEl);
+  playerDetailsContainerEl.append(tableContainerEl);
 };
 
 // Function to add commas to a number
