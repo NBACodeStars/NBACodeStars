@@ -24,7 +24,7 @@ NBACodeStars.cardsContainerElem =
   document.getElementsByClassName("teamCards")[0];
 NBACodeStars.teamsSelected = ["all"]; // default state is all teams are selected
 NBACodeStars.teamsData = null;
-NBACodeStars.playerByTeamBiodata = null;
+NBACodeStars.playerByTeamBioData = null;
 NBACodeStars.playerByTeamStatsData = null;
 NBACodeStars.defaultSeason = 2021;
 
@@ -54,7 +54,6 @@ NBACodeStars.getTeamsData = async () => {
       }
     })
     .then((data) => {
-      console.log(data);
       NBACodeStars.teamsData = data;
       NBACodeStars.displayOptions(NBACodeStars.teamsData);
     })
@@ -97,7 +96,7 @@ NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
   return fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      NBACodeStars.playerByTeamBiodata = data;
+      NBACodeStars.playerByTeamBioData = data;
     })
     .catch(() => {
       // TODO: Error handling
@@ -516,17 +515,20 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   const teamAbbreviation = teamDetailsObj["Key"];
 
   // Make async api call to get player details on page load
-  // const promise = [];
-  // promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
-  // promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
+  const promise = [];
+  promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
+  promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
 
-  // const promises = Promise.all(promise);
-  // promises
-  //   .then(() => {
-  //     console.log(NBACodeStars.playerByTeamBiodata);
-  //     console.log(NBACodeStars.playerByTeamStatsData);
-  //   })
-  //   .then(() => NBACodeStars.displayPlayerBio());
+  const promises = Promise.all(promise);
+  promises
+    .then(() => {
+      console.log(NBACodeStars.playerByTeamBiodata);
+      console.log(NBACodeStars.playerByTeamStatsData);
+    })
+    .then(() => {
+      // NBACodeStars.displayPlayerBio();
+      NBACodeStars.displayPlayerStats();
+    });
 
   // REMOVE: Temp bio and stats data
   const tempBioData = [
@@ -585,7 +587,7 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
       NbaDotComPlayerID: 201577,
     },
     {
-      PlayerID: 20000901,
+      PlayerID: 20001989,
       SportsDataID: "",
       Status: "Active",
       TeamID: 1,
@@ -855,8 +857,9 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
       NbaDotComPlayerID: 1628418,
     },
   ];
-  // NBACodeStars.playerByTeamBiodata = tempBioData;
+  // NBACodeStars.playerByTeamBioData = tempBioData;
   // NBACodeStars.displayPlayerBio();
+  // console.log(NBACodeStars.playerByTeamBioData);
 
   const tempStatsData = [
     {
@@ -1161,8 +1164,9 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
     },
   ];
 
-  NBACodeStars.playerByTeamStatsData = tempStatsData;
-  NBACodeStars.displayPlayerStats();
+  // NBACodeStars.playerByTeamStatsData = tempStatsData;
+  // console.log(NBACodeStars.playerByTeamStatsData);
+  // NBACodeStars.displayPlayerStats();
 
   //  - Stats data shown (2020-2021 Regular Season stats)
   //    - Games
@@ -1291,7 +1295,7 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
   const tableBodyEl = document.createElement("tbody");
 
   // Loop through each player received from the API pull and create a table row for each one
-  NBACodeStars.playerByTeamBiodata.forEach((player) => {
+  NBACodeStars.playerByTeamBioData.forEach((player) => {
     const { PlayerID, PhotoUrl, FirstName, LastName } = player;
 
     // Player name
@@ -1322,7 +1326,7 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
 
     // Create the table row for the player
     const trEl = document.createElement("tr");
-    trEl.setAttribute("data-playerId", PlayerID);
+    trEl.setAttribute("data-bio-playerId", PlayerID);
     trEl.append(playerNameTdEl);
 
     // Loop through each player bio data point to create and display a td element
@@ -1372,14 +1376,80 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
 // Function to create and display the table that displays player bio data
 NBACodeStars.displayPlayerStats = () => {
   // Mapping array used to align table heading / table data / api keys for loops
+  // { header: null, className: null, key: "PlayerID" },
+
   const statsTableMap = [
     { header: "Player", className: "player", key: null },
-    { header: "Position", className: "position", key: "Position" },
-    { header: "Jersey", className: "jersey", key: "Jersey" },
-    { header: "Birthday", className: "birthday", key: "BirthDate" },
-    { header: "Country", className: "birthCountry", key: "BirthCountry" },
-    { header: "Experience", className: "experience", key: "Experience" },
-    { header: "Salary", className: "salary", key: "Salary" },
+    { header: "Games", className: "games", key: "Games" },
+    { header: "Started", className: "started", key: "Started" },
+    { header: "Minutes", className: "minutes", key: "Minutes" },
+    {
+      header: "True Shooting %",
+      className: "trueShootingPercentage",
+      key: "TrueShootingPercentage",
+    },
+    {
+      header: "Effective FG %",
+      className: "effectiveFieldGoalsPercentage",
+      key: "EffectiveFieldGoalsPercentage",
+    },
+    {
+      header: "FG%",
+      className: "fieldGoalsPercentage",
+      key: "FieldGoalsPercentage",
+    },
+    {
+      header: "3P%",
+      className: "threePointersPercentage",
+      key: "ThreePointersPercentage",
+    },
+    {
+      header: "FT%",
+      className: "freeThrowsPercentage",
+      key: "FreeThrowsPercentage",
+    },
+    { header: "Points", className: "points", key: "Points" },
+    { header: "Rebounds", className: "rebounds", key: "Rebounds" },
+    {
+      header: "Offensive Rebounds",
+      className: "offensiveRebounds",
+      key: "OffensiveRebounds",
+    },
+    {
+      header: "Defensive Rebounds",
+      className: "defensiveRebounds",
+      key: "DefensiveRebounds",
+    },
+    { header: "Assists", className: "assists", key: "Assists" },
+    { header: "Steals", className: "steals", key: "Steals" },
+    { header: "Blocks", className: "blockedShots", key: "BlockedShots" },
+    { header: "Turnovers", className: "turnovers", key: "Turnovers" },
+    {
+      header: "Personal Fouls",
+      className: "personalFouls",
+      key: "PersonalFouls",
+    },
+    {
+      header: "Player Efficiency Rating",
+      className: "playerEfficiencyRating",
+      key: "PlayerEfficiencyRating",
+    },
+    { header: "Plus Minus", className: "plusMinus", key: "PlusMinus" },
+    {
+      header: "Fantasy Points Fan Duel",
+      className: "fantasyPointsFanDuel",
+      key: "FantasyPointsFanDuel",
+    },
+    {
+      header: "Fantasy Points Draft Kings",
+      className: "fantasyPointsDraftKings",
+      key: "FantasyPointsDraftKings",
+    },
+    {
+      header: "Fantasy Points Yahoo",
+      className: "fantasyPointsYahoo",
+      key: "FantasyPointsYahoo",
+    },
   ];
 
   // table header data
@@ -1416,6 +1486,116 @@ NBACodeStars.displayPlayerStats = () => {
   playerDetailsContainerEl.append(headerEl);
   playerDetailsContainerEl.append(tableContainerEl);
 };
+
+// TODO: Refactor with createBioTableHead
+// Function to create the table heading for the stats data table
+NBACodeStars.createStatsTableHead = (statsTableMap) => {
+  const tableHeadEl = document.createElement("thead");
+  const trEl = document.createElement("tr");
+
+  // Loop through each heading and create a th element with the class name
+  statsTableMap.forEach((obj) => {
+    const { header, className } = obj;
+
+    const spanEl = document.createElement("span");
+    spanEl.innerText = header;
+    spanEl.classList.add(className);
+    spanEl.classList.add("header");
+
+    const thEl = document.createElement("th");
+    thEl.append(spanEl);
+
+    trEl.append(thEl);
+  });
+
+  tableHeadEl.append(trEl);
+  return tableHeadEl;
+};
+
+// Function to create the table body for the bio data table
+NBACodeStars.createStatsTableBody = (statsTableMap) => {
+  const tableBodyEl = document.createElement("tbody");
+
+  // Loop through each player received from the API pull and create a table row for each one
+  NBACodeStars.playerByTeamStatsData.forEach((statsObj) => {
+    const { PlayerID } = statsObj;
+
+    const playerObj = NBACodeStars.playerByTeamBioData.find(
+      (player) => player.PlayerID === PlayerID
+    );
+
+    console.log(PlayerID);
+    console.log(playerObj);
+
+    // Show player stats if their name and image are located
+    if (playerObj) {
+      const { FirstName, LastName, PhotoUrl } = playerObj;
+
+      // Player name
+      const imgEl = document.createElement("img");
+      imgEl.setAttribute("src", PhotoUrl);
+      imgEl.setAttribute("alt", `${FirstName} ${LastName}`);
+
+      const imgContainer = document.createElement("div");
+      imgContainer.append(imgEl);
+      imgContainer.classList.add("playerImg");
+
+      const firstNameEl = document.createElement("span");
+      firstNameEl.textContent = FirstName;
+
+      const lastNameEl = document.createElement("span");
+      lastNameEl.textContent = LastName;
+
+      const nameContainerEl = document.createElement("div");
+      nameContainerEl.append(firstNameEl);
+      nameContainerEl.append(lastNameEl);
+      nameContainerEl.classList.add("nameContainer");
+
+      const playerNameTdEl = document.createElement("td");
+      playerNameTdEl.append(imgContainer);
+      playerNameTdEl.append(nameContainerEl);
+      playerNameTdEl.classList.add("player");
+      playerNameTdEl.classList.add("data");
+
+      // Create the table row for the player
+      const trEl = document.createElement("tr");
+      trEl.setAttribute("data-stats-playerId", PlayerID);
+      trEl.append(playerNameTdEl);
+
+      // Loop through each player bio data point to create and display a td element
+      statsTableMap.forEach((obj) => {
+        const { className, key } = obj;
+
+        // Key === null if we do not want to display the data point to the user from the table map
+        if (key !== null) {
+          let data = statsObj[key];
+
+          const spanEl = document.createElement("span");
+
+          // Error handling: proceed if data has a value
+          spanEl.innerText = data ? NBACodeStars.numberWithCommas(data) : "N/A";
+          spanEl.classList.add(className);
+          spanEl.classList.add("data");
+
+          const tdEl = document.createElement("td");
+          tdEl.append(spanEl);
+
+          trEl.append(tdEl);
+        }
+      });
+
+      tableBodyEl.append(trEl);
+    }
+  });
+
+  console.log(tableBodyEl);
+
+  return tableBodyEl;
+};
+
+// ------------------------------------------------------
+// Utils
+// ------------------------------------------------------
 
 // Function to add commas to a number
 // Credits to stackoverflow author for providing this function: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript

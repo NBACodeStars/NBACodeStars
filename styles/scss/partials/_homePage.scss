@@ -399,11 +399,13 @@ table {
   position: relative;
 }
 
-// Making table header sticky credits: https://css-tricks.com/position-sticky-and-table-headers/
+// Making table header sticky by making thead element position: relative and th element top:0 with position:stick -> see CSS tricks reference below
+// credits: https://css-tricks.com/position-sticky-and-table-headers/
 th {
   position: sticky;
   top: 0;
   overflow: hidden;
+  background-color: $grey;
 }
 
 th,

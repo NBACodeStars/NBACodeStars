@@ -669,6 +669,7 @@ th {
   position: sticky;
   top: 0;
   overflow: hidden;
+  background-color: #283149;
 }
 
 th,
