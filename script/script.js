@@ -27,6 +27,7 @@ NBACodeStars.teamsData = null;
 NBACodeStars.playerByTeamBioData = null;
 NBACodeStars.playerByTeamStatsData = null;
 NBACodeStars.defaultSeason = 2021;
+NBACodeStars.teamAbbreviation = null; // traks the player details container of the team being viewed
 
 // Team details API
 NBACodeStars.url = "https://fly.sportsdata.io";
@@ -484,8 +485,11 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   closeIconElem.classList.add("fas", "fa-times", "closeIcon");
   closeIconElem.tabIndex = "0";
 
+  const toggleButtonElem = NBACodeStars.displayToggleButton();
+
   const playerDetailsContainerElem = document.createElement("div");
   playerDetailsContainerElem.classList.add("playerDetailsContainer");
+  playerDetailsContainerElem.append(toggleButtonElem);
   playerDetailsContainerElem.append(closeIconElem);
 
   const playerDetailsOuterElem = document.createElement("div");
@@ -507,28 +511,48 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
     }, 500);
   });
 
+  // table container
+  const tableContainerEl = document.createElement("div");
+  tableContainerEl.classList.add("rosterTableContainer");
+
+  // roster header
+  const headerEl = document.createElement("div");
+  headerEl.classList.add("rosterHeader");
+
+  // roster container
+  const playerDetailsContainerEl = document.querySelector(
+    ".playerDetailsContainer"
+  );
+  playerDetailsContainerEl.append(headerEl);
+  playerDetailsContainerEl.append(tableContainerEl);
+
   // Determine which team was selected
   const teamDetailsObj = NBACodeStars.teamsData.find(
     (team) => team["TeamID"] === parseInt(teamId)
   );
 
-  const teamAbbreviation = teamDetailsObj["Key"];
+  NBACodeStars.teamAbbreviation = teamDetailsObj["Key"];
 
   // Make async api call to get player details on page load
-  const promise = [];
-  promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
-  promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
+  const promise = NBACodeStars.getPlayersByTeamBiodata(
+    NBACodeStars.teamAbbreviation
+  );
+  promise.then(() => NBACodeStars.displayPlayerBio());
 
-  const promises = Promise.all(promise);
-  promises
-    .then(() => {
-      console.log(NBACodeStars.playerByTeamBiodata);
-      console.log(NBACodeStars.playerByTeamStatsData);
-    })
-    .then(() => {
-      // NBACodeStars.displayPlayerBio();
-      NBACodeStars.displayPlayerStats();
-    });
+  // const promise = [];
+  // promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));
+  // promise.push(NBACodeStars.getPlayersByTeamStatsData(teamAbbreviation));
+
+  // const promises = Promise.all(promise);
+  // promises
+  //   .then(() => {
+  //     console.log(NBACodeStars.playerByTeamBiodata);
+  //     console.log(NBACodeStars.playerByTeamStatsData);
+  //   })
+  //   .then(() => {
+  //     NBACodeStars.displayPlayerBio();
+  //     NBACodeStars.displayPlayerStats();
+  //   });
 
   // REMOVE: Temp bio and stats data
   const tempBioData = [
@@ -1167,55 +1191,6 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   // NBACodeStars.playerByTeamStatsData = tempStatsData;
   // console.log(NBACodeStars.playerByTeamStatsData);
   // NBACodeStars.displayPlayerStats();
-
-  //  - Stats data shown (2020-2021 Regular Season stats)
-  //    - Games
-  //    - Started
-  //    - Minutes / Games
-  //    - FieldGoalsPercentage
-  //    - ThreePointersPercentage
-  //    - FreeThrowsPercentage
-  //    - Points / Games
-  //    - Rebounds / Games
-  //    - Assists / Games
-  //    - Steals / Games
-  //    - BlockedShots / Games
-  //    - Turnovers / Games
-  //    - FantasyPointsDraftKings
-  //    - FantasyPointsFanDuel
-  //    - FantasyPointsFantasyDraft
-  //    - FantasyPointsYahoo
-
-  // {
-  //   PlayerID: 20001989,
-  //   Season: 2021,
-  //   Games: 63,
-  //   Started: 63,
-  //   Minutes: 1317,
-  //   TrueShootingPercentage: 36.5,
-  //   EffectiveFieldGoalsPercentage: 30.9,
-  //   FieldGoalsPercentage: 27.2,
-  //   ThreePointersPercentage: 21.3,
-  //   FreeThrowsPercentage: 54.9,
-  //   Points: 988.3,
-  //   Rebounds: 151.9,
-  //   OffensiveRebounds: 23.6,
-  //   DefensiveRebounds: 128.3,
-  //   Assists: 368.3,
-  //   Steals: 32.9,
-  //   BlockedShots: 4.6,
-  //   Turnovers: 161.8,
-  //   PersonalFouls: 68.8,
-  //   PlayerEfficiencyRating: 17,
-  //   PlusMinus: 165.5,
-  //   FantasyPointsFanDuel: 1682.1,
-  //   FantasyPointsDraftKings: 1798.5,
-  //   FantasyPointsYahoo: 1682.1,
-  //   FantasyPointsFantasyDraft: 1798.5,
-  // },
-
-  // Internal table fixed with same elements for player img, name
-  //  - make div position absolute
 };
 
 // Function to create and display the table that displays player bio data
@@ -1250,20 +1225,21 @@ NBACodeStars.displayPlayerBio = () => {
   tableScrollEl.append(tableEl);
 
   // table container
-  const tableContainerEl = document.createElement("div");
-  tableContainerEl.classList.add("rosterTableContainer");
+  const tableContainerEl = document.querySelector(".rosterTableContainer");
+  tableContainerEl.innerHTML = "";
   tableContainerEl.append(tableScrollEl);
 
-  // roster header
-  const headerEl = document.createElement("div");
-  headerEl.classList.add("rosterHeader");
+  // // roster header
+  // const headerEl = document.createElement("div");
+  // headerEl.classList.add("rosterHeader");
 
-  // roster container
-  const playerDetailsContainerEl = document.querySelector(
-    ".playerDetailsContainer"
-  );
-  playerDetailsContainerEl.append(headerEl);
-  playerDetailsContainerEl.append(tableContainerEl);
+  // // roster container
+  // const playerDetailsContainerEl = document.querySelector(
+  //   ".playerDetailsContainer"
+  // );
+  // playerDetailsContainerEl.append(headerEl);
+  // playerDetailsContainerEl.append(tableContainerEl);
+  // console.log(playerDetailsContainerEl);
 };
 
 // Function to create the table heading for the bio data table
@@ -1471,20 +1447,21 @@ NBACodeStars.displayPlayerStats = () => {
   tableScrollEl.append(tableEl);
 
   // table container
-  const tableContainerEl = document.createElement("div");
-  tableContainerEl.classList.add("rosterTableContainer");
+  const tableContainerEl = document.querySelector(".rosterTableContainer");
+  // tableContainerEl.classList.add("rosterTableContainer");
+  tableContainerEl.innerHTML = "";
   tableContainerEl.append(tableScrollEl);
 
-  // roster header
-  const headerEl = document.createElement("div");
-  headerEl.classList.add("rosterHeader");
+  // // roster header
+  // const headerEl = document.createElement("div");
+  // headerEl.classList.add("rosterHeader");
 
-  // roster container
-  const playerDetailsContainerEl = document.querySelector(
-    ".playerDetailsContainer"
-  );
-  playerDetailsContainerEl.append(headerEl);
-  playerDetailsContainerEl.append(tableContainerEl);
+  // // roster container
+  // const playerDetailsContainerEl = document.querySelector(
+  //   ".playerDetailsContainer"
+  // );
+  // playerDetailsContainerEl.append(headerEl);
+  // playerDetailsContainerEl.append(tableContainerEl);
 };
 
 // TODO: Refactor with createBioTableHead
@@ -1523,9 +1500,6 @@ NBACodeStars.createStatsTableBody = (statsTableMap) => {
     const playerObj = NBACodeStars.playerByTeamBioData.find(
       (player) => player.PlayerID === PlayerID
     );
-
-    console.log(PlayerID);
-    console.log(playerObj);
 
     // Show player stats if their name and image are located
     if (playerObj) {
@@ -1588,8 +1562,6 @@ NBACodeStars.createStatsTableBody = (statsTableMap) => {
     }
   });
 
-  console.log(tableBodyEl);
-
   return tableBodyEl;
 };
 
@@ -1601,6 +1573,64 @@ NBACodeStars.createStatsTableBody = (statsTableMap) => {
 // Credits to stackoverflow author for providing this function: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 NBACodeStars.numberWithCommas = (number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+// Function to create the toggle button between bio and stats
+// Credits to stackoverflow author for providing this toggle button: https://stackoverflow.com/questions/63410507/how-to-connect-two-options-and-toggle-switch-buttons
+NBACodeStars.displayToggleButton = () => {
+  const toggleButtonContainer = document.createElement("div");
+  toggleButtonContainer.classList.add("toggleBtnContainer");
+
+  const inputEle = document.createElement("input");
+  inputEle.setAttribute("class", "input");
+  inputEle.setAttribute("id", "toggle");
+  inputEle.setAttribute("type", "checkbox");
+
+  const toggleButtonHtml = `
+    <label class="label" for="toggle">
+    <div class="left">
+        Bio
+      </div>
+
+      <div class="switch">
+        <span class="slider round"></span>
+      </div>
+      
+      <div class="right">
+        Stats
+      </div>
+    </label>
+    `;
+
+  toggleButtonContainer.append(inputEle);
+  toggleButtonContainer.innerHTML += toggleButtonHtml;
+  toggleButtonContainer.addEventListener(
+    "click",
+    NBACodeStars.togglePlayerDetails
+  );
+
+  return toggleButtonContainer;
+};
+
+NBACodeStars.togglePlayerDetails = () => {
+  const inputEle = document.getElementById("toggle");
+  const isChecked = inputEle.checked;
+
+  if (isChecked) {
+    const promise = NBACodeStars.getPlayersByTeamStatsData(
+      NBACodeStars.teamAbbreviation
+    );
+    promise.then(() => {
+      NBACodeStars.displayPlayerStats();
+    });
+  } else {
+    const promise = NBACodeStars.getPlayersByTeamBiodata(
+      NBACodeStars.teamAbbreviation
+    );
+    promise.then(() => {
+      NBACodeStars.displayPlayerBio();
+    });
+  }
 };
 
 // 0. Calling the init to hit it off
