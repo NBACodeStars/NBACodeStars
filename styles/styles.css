@@ -314,6 +314,10 @@ footer {
   min-height: calc(100vh - 98px);
 }
 
+.hide {
+  display: none !important;
+}
+
 .logoContainer::before,
 .logoContainer::after {
   content: "{";
@@ -840,86 +844,34 @@ input:checked + .label .slider:before {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 50%;
+  width: 100vw;
+  height: 100vh;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-
-.loadingPositionFlex {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 100%;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .fas.fa-basketball-ball {
-  font-size: 40px;
-  color: white;
+  font-size: calc(5rem + 2vw);
+  color: #fa8320;
   -webkit-animation-name: loading;
           animation-name: loading;
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
-  -webkit-animation-duration: 3s;
-          animation-duration: 3s;
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
   -webkit-animation-timing-function: linear;
           animation-timing-function: linear;
-  position: relative;
-}
-
-.fas.fa-spinner {
-  font-size: 40px;
-  color: white;
-  -webkit-animation-name: loading;
-          animation-name: loading;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-  -webkit-animation-duration: 3s;
-          animation-duration: 3s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  position: relative;
-}
-
-.uMadBruh {
-  -webkit-animation-name: loading;
-          animation-name: loading;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-  -webkit-animation-duration: 3s;
-          animation-duration: 3s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  position: relative;
-  font-size: 40px;
-  color: white;
-  color: red;
-}
-
-.fas.fa-adjust {
-  font-size: 40px;
-  color: white;
-  -webkit-animation-name: loading;
-          animation-name: loading;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  position: relative;
 }
 
 @-webkit-keyframes loading {
@@ -943,10 +895,6 @@ input:checked + .label .slider:before {
             transform: rotate(360deg);
   }
 }
-.nbaLettering {
-  width: 70%;
-}
-
 @media screen and (max-width: 860px) {
   .teamCards {
     grid-template-columns: repeat(2, 1fr);

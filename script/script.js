@@ -5,10 +5,6 @@
 //    - Wrap API calls in promises that dont proceed with showing page until they are resolved
 //    - Create a loading spinner
 
-// ASK: Does .remove() get rid of the event listener on the close icon as well?
-// ASK: Check if caps is good with mentors
-// ASK: How to make js files split into multiple files?
-
 const NBACodeStars = {};
 
 // 1. init method that kicks everything off
@@ -28,6 +24,8 @@ NBACodeStars.playerByTeamBioData = null;
 NBACodeStars.playerByTeamStatsData = null;
 NBACodeStars.defaultSeason = 2021;
 NBACodeStars.teamAbbreviation = null; // traks the player details container of the team being viewed
+NBACodeStars.loaderEle = document.getElementById("loader");
+NBACodeStars.mainEle = document.querySelector("main");
 
 // Team details API
 NBACodeStars.url = "https://fly.sportsdata.io";
@@ -40,6 +38,8 @@ NBACodeStars.apiKey = "44c04f59b59b46e0b83d9f530f7c8e27";
 
 // Function that makes the API call get get teams data
 NBACodeStars.getTeamsData = async () => {
+  NBACodeStars.showLoader();
+
   const url = new URL(`${NBACodeStars.url}${NBACodeStars.endpoints.teams}`);
   url.search = new URLSearchParams({
     key: NBACodeStars.apiKey,
@@ -48,6 +48,9 @@ NBACodeStars.getTeamsData = async () => {
   // TODO: Add a throw and catch block
   fetch(url)
     .then((res) => {
+      // Hide loading spinner once data is retrieved
+      NBACodeStars.hideLoader();
+
       if (res.ok) {
         return res.json();
       } else {
@@ -60,21 +63,40 @@ NBACodeStars.getTeamsData = async () => {
     })
     .catch((error) => {
       console.log(error);
-      NBACodeStars.displaySiteLoadError();
-
-      // TODO: Error handling
+      const errorMessage = "Could not load data. Please try again later!";
+      const showCloseIcon = false;
+      NBACodeStars.displaySiteLoadError(errorMessage, showCloseIcon);
     });
 };
 // Error handle function
-NBACodeStars.displaySiteLoadError = () => {
+NBACodeStars.displaySiteLoadError = (message, showCloseIcon = true) => {
   // Refactor with displayPlayerDetails
   // Create close icon -> refactor code from above to manage close icon functionality
   const errorMessage = document.createElement("p");
-  errorMessage.textContent = "Could not load data. Please try again later!";
-  console.log("YOU MAD BRUH??");
+  errorMessage.textContent = message;
+
+  if (showCloseIcon) {
+    const closeIconElem = document.createElement("i");
+    closeIconElem.classList.add("fas", "fa-times", "closeIcon");
+    closeIconElem.tabIndex = "0";
+    closeIconElem.addEventListener("click", (e) => {
+      const playerDetailsOuterContainerElem = e.target.closest(
+        ".playerDetailsOuterContainer"
+      );
+
+      // Refactor to create a general fadeout animation
+      playerDetailsOuterContainerElem.classList.add("fadeOut");
+      setTimeout(function () {
+        playerDetailsOuterContainerElem.remove();
+      }, 500);
+    });
+  }
+
   const playerDetailsContainerElem = document.createElement("div");
   playerDetailsContainerElem.classList.add("playerDetailsContainer");
+  playerDetailsContainerElem.innerHTML = "";
   playerDetailsContainerElem.append(errorMessage);
+  playerDetailsContainerElem.append(closeIconElem);
 
   const playerDetailsOuterElem = document.createElement("div");
   playerDetailsOuterElem.classList.add("playerDetailsOuterContainer");
@@ -84,8 +106,21 @@ NBACodeStars.displaySiteLoadError = () => {
   bodyElem.prepend(playerDetailsOuterElem);
 };
 
+NBACodeStars.showLoader = () => {
+  NBACodeStars.mainEle.setAttribute("aria-busy", false);
+  NBACodeStars.loaderEle.classList.remove("hide");
+};
+
+NBACodeStars.hideLoader = () => {
+  NBACodeStars.mainEle.setAttribute("aria-busy", true);
+  NBACodeStars.loaderEle.classList.add("hide");
+};
+
 // Function that makes the API call get get players data
 NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
+  // Show loading screen when fetching data
+  NBACodeStars.showLoader();
+
   const url = new URL(
     `${NBACodeStars.url}${NBACodeStars.endpoints.playersBio}/${teamAbbreviation}`
   );
@@ -95,16 +130,32 @@ NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
 
   // TODO: Add a throw and catch block
   return fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      NBACodeStars.playerByTeamBioData = data;
+    .then((res) => {
+      NBACodeStars.hideLoader();
+
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(res);
+      }
     })
-    .catch(() => {
-      // TODO: Error handling
+    .then((data) => {
+      // Hide loading screen once data is retrieved
+      NBACodeStars.playerByTeamBioData = data;
+      NBACodeStars.displayPlayerBio();
+    })
+    .catch((error) => {
+      console.log(error);
+      const errorMessage =
+        "Could not retrieve player bio data. Please try again later!";
+      NBACodeStars.displaySiteLoadError(errorMessage);
     });
 };
 
 NBACodeStars.getPlayersByTeamStatsData = async (teamAbbreviation) => {
+  // Show loading screen when fetching data
+  NBACodeStars.showLoader();
+
   const url = new URL(
     `${NBACodeStars.url}${NBACodeStars.endpoints.playersSeasonStats}/${teamAbbreviation}`
   );
@@ -116,6 +167,8 @@ NBACodeStars.getPlayersByTeamStatsData = async (teamAbbreviation) => {
   return fetch(url)
     .then((res) => res.json())
     .then((data) => {
+      // Hide loading screen once data is retrieved
+      NBACodeStars.hideLoader();
       NBACodeStars.playerByTeamStatsData = data;
     })
     .catch(() => {
@@ -537,7 +590,12 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   const promise = NBACodeStars.getPlayersByTeamBiodata(
     NBACodeStars.teamAbbreviation
   );
-  promise.then(() => NBACodeStars.displayPlayerBio());
+
+  // console.log(promise);
+
+  // promise.then((res) => {
+  //   NBACodeStars.displayPlayerBio();
+  // });
 
   // const promise = [];
   // promise.push(NBACodeStars.getPlayersByTeamBiodata(teamAbbreviation));

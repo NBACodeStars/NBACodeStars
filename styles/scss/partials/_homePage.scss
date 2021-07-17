@@ -57,6 +57,10 @@ footer {
   min-height: calc(100vh - 98px);
 }
 
+.hide {
+  display: none !important;
+}
+
 //***************************************
 // Header styles
 //***************************************
@@ -586,63 +590,69 @@ input:checked + .label .slider:before {
 
 .loadingContainer {
   display: flex;
-  width: 50%;
+  width: 100vw;
+  height: 100vh;
   justify-content: center;
   align-items: center;
-  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba($black, 0.8);
 }
 
-.loadingPositionFlex {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-}
+// .loadingPositionFlex {
+//   display: flex;
+//   width: 100%;
+//   justify-content: center;
+//   align-items: center;
+// }
 
 .fas.fa-basketball-ball {
-  font-size: 40px;
-  color: white;
+  font-size: calc(5rem + 2vw);
+  color: $orange;
 
   animation-name: loading;
   animation-iteration-count: infinite;
-  animation-duration: 3s;
+  animation-duration: 2s;
   animation-timing-function: linear;
-  position: relative;
 }
 
-.fas.fa-spinner {
-  font-size: 40px;
-  color: white;
+// .fas.fa-spinner {
+//   font-size: 40px;
+//   color: white;
 
-  animation-name: loading;
-  animation-iteration-count: infinite;
-  animation-duration: 3s;
-  animation-timing-function: linear;
-  position: relative;
-}
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 3s;
+//   animation-timing-function: linear;
+//   position: relative;
+// }
 
-.uMadBruh {
-  animation-name: loading;
-  animation-iteration-count: infinite;
-  animation-duration: 3s;
-  animation-timing-function: linear;
-  position: relative;
+// .uMadBruh {
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 3s;
+//   animation-timing-function: linear;
+//   position: relative;
 
-  font-size: 40px;
-  color: white;
-  color: red;
-}
+//   font-size: 40px;
+//   color: white;
+//   color: red;
+// }
 
-.fas.fa-adjust {
-  font-size: 40px;
-  color: white;
+// .fas.fa-adjust {
+//   font-size: 40px;
+//   color: white;
 
-  animation-name: loading;
-  animation-iteration-count: infinite;
-  animation-duration: 1s;
-  animation-timing-function: linear;
-  position: relative;
-}
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 1s;
+//   animation-timing-function: linear;
+//   position: relative;
+// }
 
 @keyframes loading {
   from {
@@ -653,6 +663,6 @@ input:checked + .label .slider:before {
   }
 }
 
-.nbaLettering {
-  width: 70%;
-}
+// .nbaLettering {
+//   width: 70%;
+// }
