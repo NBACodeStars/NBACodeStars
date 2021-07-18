@@ -1,0 +1,64 @@
+
+.cageBody {
+
+    width: 100%;
+    position: static;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+
+    .cageWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+
+ 
+
+    .cageHeader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+
+        h1 {
+            color: black;
+        }
+    }
+
+    .cageWrapper {
+        width: 100%;
+    }
+
+    .cageHeader {
+        width: 70%;
+    }
+
+    .cageMain {
+        width: 60%;
+    }
+}
+
+.cageLoaderImage{
+
+animation-name: loading;
+animation-iteration-count: infinite;
+animation-duration: 1s;
+animation-timing-function: linear;
+position: relative;
+}
+
+
+@keyframes loading {
+from {
+  transform: rotate(0);
+}
+to {
+  transform: rotate(360deg);
+}
+}

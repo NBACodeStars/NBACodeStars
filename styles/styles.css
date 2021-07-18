@@ -631,6 +631,63 @@ footer {
   text-align: center;
 }
 
+.cageBody {
+  width: 100%;
+  position: static;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: white;
+}
+.cageBody .cageWrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+.cageBody .cageHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+.cageBody .cageHeader h1 {
+  color: black;
+}
+.cageBody .cageWrapper {
+  width: 100%;
+}
+.cageBody .cageHeader {
+  width: 70%;
+}
+.cageBody .cageMain {
+  width: 60%;
+}
+
 @media screen and (max-width: 860px) {
   .teamCards {
     grid-template-columns: repeat(2, 1fr);
