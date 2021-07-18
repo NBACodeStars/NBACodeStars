@@ -40,7 +40,7 @@ li {
 
 .wrapper {
   margin: 0px auto;
-  max-width: 1200px;
+  max-width: $maxScreenWidth;
   width: 90%;
 }
 
@@ -59,6 +59,24 @@ footer {
 
 .hide {
   display: none !important;
+}
+
+.skipLink {
+  position: absolute;
+  left: -100%;
+  top: 0px;
+  z-index: 999;
+  width: 100%;
+  text-align: center;
+  background: $red;
+  color: $offWhite;
+  text-decoration: none;
+  padding: 20px;
+  font-size: 2rem;
+}
+
+.skipLink:focus {
+  left: 0;
 }
 
 //***************************************
@@ -262,7 +280,7 @@ h1 {
 
 // Team details styles
 
-.teamDetailsCard {
+.teamDetailsContainer {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -336,10 +354,20 @@ h1 {
 }
 
 //***************************************
+// Modal styles
+//***************************************
+.errorMessage {
+  text-align: center;
+  font-weight: 700;
+  font-size: 3rem;
+}
+
+//***************************************
 // Roster styles
 //***************************************
 
-.playerDetailsOuterContainer {
+.playerDetailsOuterContainer,
+.modalOuterContainer {
   position: fixed;
   z-index: 3;
   top: 0;
@@ -352,7 +380,9 @@ h1 {
   background-color: rgba($grey, 0.8);
 }
 
-.playerDetailsContainer {
+.playerDetailsContainer,
+.modalInnerContainer {
+  max-width: $maxScreenWidth;
   width: 80vw;
   height: 80vh;
   background-color: rgba($offWhite, 0.5);
@@ -364,6 +394,8 @@ h1 {
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .rosterHeader {

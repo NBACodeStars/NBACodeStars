@@ -5,133 +5,97 @@
 //    - Wrap API calls in promises that dont proceed with showing page until they are resolved
 //    - Create a loading spinner
 
-const NBACodeStars = {};
+// ******************************************************
+// IMPORTS
+// ******************************************************
 
-// 1. init method that kicks everything off
-NBACodeStars.init = () => {
-  NBACodeStars.getTeamsData();
-  NBACodeStars.getUserSelections();
-  NBACodeStars.getSelection();
+import { showLoader, hideLoader } from "./modules/loader.js";
+import { fetchTeamsData } from "./modules/api.js";
+import { displayErrorModal } from "./modules/modal.js";
+import { displayDropdownOption } from "./modules/dropdown.js";
+import { displayTeamCard } from "./modules/card.js";
+
+// ******************************************************
+// NAMESPACE APP
+// ******************************************************
+
+const nbaCodeStars = {};
+
+// ******************************************************
+// GLOBAL VARIABLES
+// ******************************************************
+
+nbaCodeStars.dropdownEl = document.getElementsByClassName("dropdown")[0];
+nbaCodeStars.cardsContainerEl = document.getElementsByClassName("teamCards")[0];
+nbaCodeStars.teamsSelected = ["all"]; // default state is all teams are selected
+nbaCodeStars.teamsData = null;
+nbaCodeStars.playerByTeamBioData = null;
+nbaCodeStars.playerByTeamStatsData = null;
+nbaCodeStars.defaultSeason = 2021;
+nbaCodeStars.teamAbbreviation = null; // traks the player details container of the team being viewed
+nbaCodeStars.loaderEle = document.getElementById("loader");
+nbaCodeStars.mainEle = document.querySelector("main");
+
+// ******************************************************
+// FUNCTIONS
+// ******************************************************
+
+// Init method that kicks everything off
+nbaCodeStars.init = () => {
+  nbaCodeStars.displayTeamData();
+
+  nbaCodeStars.getUserSelections();
+  nbaCodeStars.getSelection();
 };
 
-// Global variables
-NBACodeStars.dropdownElem = document.getElementsByClassName("dropdown")[0];
-NBACodeStars.cardsContainerElem =
-  document.getElementsByClassName("teamCards")[0];
-NBACodeStars.teamsSelected = ["all"]; // default state is all teams are selected
-NBACodeStars.teamsData = null;
-NBACodeStars.playerByTeamBioData = null;
-NBACodeStars.playerByTeamStatsData = null;
-NBACodeStars.defaultSeason = 2021;
-NBACodeStars.teamAbbreviation = null; // traks the player details container of the team being viewed
-NBACodeStars.loaderEle = document.getElementById("loader");
-NBACodeStars.mainEle = document.querySelector("main");
+// Function to get team data from the api and them load the team cards to the screen
+nbaCodeStars.displayTeamData = () => {
+  // Api call to get team data
+  const teamDataPromise = fetchTeamsData();
 
-// Team details API
-NBACodeStars.url = "https://fly.sportsdata.io";
-NBACodeStars.endpoints = {
-  teams: "/v3/nba/scores/json/teams",
-  playersBio: "/v3/nba/stats/json/Players",
-  playersSeasonStats: `/v3/nba/stats/json/PlayerSeasonStatsByTeam/${NBACodeStars.defaultSeason}`,
-};
-NBACodeStars.apiKey = "44c04f59b59b46e0b83d9f530f7c8e27";
-
-// Function that makes the API call get get teams data
-NBACodeStars.getTeamsData = async () => {
-  NBACodeStars.showLoader();
-
-  const url = new URL(`${NBACodeStars.url}${NBACodeStars.endpoints.teams}`);
-  url.search = new URLSearchParams({
-    key: NBACodeStars.apiKey,
-  });
-
-  // TODO: Add a throw and catch block
-  fetch(url)
-    .then((res) => {
-      // Hide loading spinner once data is retrieved
-      NBACodeStars.hideLoader();
-
-      if (res.ok) {
-        return res.json();
-      } else {
-        throw new Error(res);
-      }
-    })
-    .then((data) => {
-      NBACodeStars.teamsData = data;
-      NBACodeStars.displayOptions(NBACodeStars.teamsData);
-    })
-    .catch((error) => {
-      console.log(error);
-      const errorMessage = "Could not load data. Please try again later!";
+  teamDataPromise.then((res) => {
+    // If there is an error, show the error modal
+    if (res instanceof Error) {
       const showCloseIcon = false;
-      NBACodeStars.displaySiteLoadError(errorMessage, showCloseIcon);
-    });
-};
-// Error handle function
-NBACodeStars.displaySiteLoadError = (message, showCloseIcon = true) => {
-  // Refactor with displayPlayerDetails
-  // Create close icon -> refactor code from above to manage close icon functionality
-  const errorMessage = document.createElement("p");
-  errorMessage.textContent = message;
+      const errorMessage = "Could not retrieve data. Please try again later!";
+      displayErrorModal(errorMessage, showCloseIcon);
+      console.log(res);
+    }
 
-  if (showCloseIcon) {
-    const closeIconElem = document.createElement("i");
-    closeIconElem.classList.add("fas", "fa-times", "closeIcon");
-    closeIconElem.tabIndex = "0";
-    closeIconElem.addEventListener("click", (e) => {
-      const playerDetailsOuterContainerElem = e.target.closest(
-        ".playerDetailsOuterContainer"
-      );
+    // Show the team cards if there is no error
+    else {
+      // Save the data retrieve
+      nbaCodeStars.teamsData = res;
 
-      // Refactor to create a general fadeout animation
-      playerDetailsOuterContainerElem.classList.add("fadeOut");
-      setTimeout(function () {
-        playerDetailsOuterContainerElem.remove();
-      }, 500);
-    });
-  }
-
-  const playerDetailsContainerElem = document.createElement("div");
-  playerDetailsContainerElem.classList.add("playerDetailsContainer");
-  playerDetailsContainerElem.innerHTML = "";
-  playerDetailsContainerElem.append(errorMessage);
-  playerDetailsContainerElem.append(closeIconElem);
-
-  const playerDetailsOuterElem = document.createElement("div");
-  playerDetailsOuterElem.classList.add("playerDetailsOuterContainer");
-  playerDetailsOuterElem.append(playerDetailsContainerElem);
-
-  const bodyElem = document.querySelector("body");
-  bodyElem.prepend(playerDetailsOuterElem);
+      // Loop through each team to show the dropdown option and tam card
+      nbaCodeStars.teamsData.forEach((team) => {
+        displayDropdownOption(team, nbaCodeStars.dropdownEl);
+        displayTeamCard(team, nbaCodeStars.cardsContainerEl);
+      });
+    }
+  });
 };
 
-NBACodeStars.showLoader = () => {
-  NBACodeStars.mainEle.setAttribute("aria-busy", false);
-  NBACodeStars.loaderEle.classList.remove("hide");
-};
-
-NBACodeStars.hideLoader = () => {
-  NBACodeStars.mainEle.setAttribute("aria-busy", true);
-  NBACodeStars.loaderEle.classList.add("hide");
-};
+// ******************************************************
+// LEFT HERE
+// ******************************************************
 
 // Function that makes the API call get get players data
-NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
+nbaCodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
   // Show loading screen when fetching data
-  NBACodeStars.showLoader();
+  showLoader();
 
   const url = new URL(
-    `${NBACodeStars.url}${NBACodeStars.endpoints.playersBio}/${teamAbbreviation}`
+    `${nbaCodeStars.url}${nbaCodeStars.endpoints.playersBio}/${teamAbbreviation}`
   );
   url.search = new URLSearchParams({
-    key: NBACodeStars.apiKey,
+    key: nbaCodeStars.apiKey,
   });
 
   // TODO: Add a throw and catch block
   return fetch(url)
     .then((res) => {
-      NBACodeStars.hideLoader();
+      hideLoader();
 
       if (res.ok) {
         return res.json();
@@ -141,26 +105,26 @@ NBACodeStars.getPlayersByTeamBiodata = async (teamAbbreviation) => {
     })
     .then((data) => {
       // Hide loading screen once data is retrieved
-      NBACodeStars.playerByTeamBioData = data;
-      NBACodeStars.displayPlayerBio();
+      nbaCodeStars.playerByTeamBioData = data;
+      nbaCodeStars.displayPlayerBio();
     })
     .catch((error) => {
       console.log(error);
       const errorMessage =
         "Could not retrieve player bio data. Please try again later!";
-      NBACodeStars.displaySiteLoadError(errorMessage);
+      nbaCodeStars.displayFetchError(errorMessage);
     });
 };
 
-NBACodeStars.getPlayersByTeamStatsData = async (teamAbbreviation) => {
+nbaCodeStars.getPlayersByTeamStatsData = async (teamAbbreviation) => {
   // Show loading screen when fetching data
-  NBACodeStars.showLoader();
+  showLoader();
 
   const url = new URL(
-    `${NBACodeStars.url}${NBACodeStars.endpoints.playersSeasonStats}/${teamAbbreviation}`
+    `${nbaCodeStars.url}${nbaCodeStars.endpoints.playersSeasonStats}/${teamAbbreviation}`
   );
   url.search = new URLSearchParams({
-    key: NBACodeStars.apiKey,
+    key: nbaCodeStars.apiKey,
   });
 
   // TODO: Add a throw and catch block
@@ -168,64 +132,38 @@ NBACodeStars.getPlayersByTeamStatsData = async (teamAbbreviation) => {
     .then((res) => res.json())
     .then((data) => {
       // Hide loading screen once data is retrieved
-      NBACodeStars.hideLoader();
-      NBACodeStars.playerByTeamStatsData = data;
+      hideLoader();
+      nbaCodeStars.playerByTeamStatsData = data;
     })
     .catch(() => {
       // TODO: Error handling
     });
 };
 
-// Function that displays the teams in the dropdown
-NBACodeStars.displayOptions = (teams) => {
-  teams.forEach((team) => {
-    const teamName = `${team["City"]} ${team["Name"]}`;
-    const id = team["TeamID"];
-    const optionLi = document.createElement("li");
-
-    // This could be any header element or a button
-    optionLi.textContent = teamName;
-
-    // Do we still need a value here if they are not option elements
-    optionLi.value = id;
-    optionLi.tabIndex = "0";
-    optionLi.setAttribute("id", id);
-    optionLi.setAttribute("role", "option");
-    optionLi.setAttribute("aria-selected", "false");
-    optionLi.classList.add("dropdownOption");
-
-    // This will be the css class background color toggled on or off
-    NBACodeStars.dropdownElem.append(optionLi);
-
-    // This still needs to be called
-    NBACodeStars.displayTeamCard(team);
-  });
-};
-
 // Function that updates the dropdown and team cards based on the selections made
-NBACodeStars.getUserSelections = () => {
-  NBACodeStars.dropdownElem.addEventListener("click", (event) => {
+nbaCodeStars.getUserSelections = () => {
+  nbaCodeStars.dropdownEl.addEventListener("click", (event) => {
     // Get the element selected
     const selectedEl = event.target.closest("li");
 
-    NBACodeStars.updateDropdown(selectedEl);
-    NBACodeStars.updateTeamCards();
+    nbaCodeStars.updateDropdown(selectedEl);
+    nbaCodeStars.displayTeamCards();
   });
 
-  NBACodeStars.dropdownElem.addEventListener("keyup", (event) => {
+  nbaCodeStars.dropdownEl.addEventListener("keyup", (event) => {
     if (event.code === "Space" || event.code === "Enter") {
       // Get the element selected
       const selectedEl = event.target.closest("li");
 
-      NBACodeStars.updateDropdown(selectedEl);
-      NBACodeStars.updateTeamCards();
+      nbaCodeStars.updateDropdown(selectedEl);
+      nbaCodeStars.displayTeamCards();
     }
 
     console.log("pressed");
   });
 
   // Prevents the dropdown from scrolling when spacebar is selected
-  NBACodeStars.dropdownElem.addEventListener("keydown", (event) => {
+  nbaCodeStars.dropdownEl.addEventListener("keydown", (event) => {
     if (event.code === "Space") {
       event.preventDefault();
     }
@@ -233,7 +171,7 @@ NBACodeStars.getUserSelections = () => {
 };
 
 // Function updates the dropdown itself each time the user makes a selection from the dropdown
-NBACodeStars.updateDropdown = (selectedEl) => {
+nbaCodeStars.updateDropdown = (selectedEl) => {
   // Store the user's selection
   const teamId = selectedEl.id;
   const isSelected = selectedEl.getAttribute("aria-selected") === "false"; // true if its being selected; false if de-selected
@@ -253,11 +191,11 @@ NBACodeStars.updateDropdown = (selectedEl) => {
     // empty selections if all teams is selected
     if (teamId === "all") {
       // Empty all the teams
-      NBACodeStars.teamsSelected = [];
+      nbaCodeStars.teamsSelected = [];
 
       // Remove highlight from all the teams and update aria-selected attribute
       const highlightedEl =
-        NBACodeStars.dropdownElem.querySelectorAll(".highlight");
+        nbaCodeStars.dropdownEl.querySelectorAll(".highlight");
 
       highlightedEl.forEach((element) => {
         if (element.id !== "all") {
@@ -270,32 +208,32 @@ NBACodeStars.updateDropdown = (selectedEl) => {
     // Scenario 2: A specific team is selected
     else {
       // remove "all" selection if a specific team is selected
-      const index = NBACodeStars.teamsSelected.indexOf("all");
-      index !== -1 && NBACodeStars.teamsSelected.splice(index, 1);
+      const index = nbaCodeStars.teamsSelected.indexOf("all");
+      index !== -1 && nbaCodeStars.teamsSelected.splice(index, 1);
 
       // remove highlight from "all" selection and update aria-selected attribute
-      const allSelectionEl = NBACodeStars.dropdownElem.querySelector("#all");
+      const allSelectionEl = nbaCodeStars.dropdownEl.querySelector("#all");
       allSelectionEl.classList.remove("highlight");
       allSelectionEl.setAttribute("aria-selected", "false");
     }
 
     // Update the teamsSelected array
-    NBACodeStars.teamsSelected.push(teamId);
+    nbaCodeStars.teamsSelected.push(teamId);
   }
 
   // Scenario 3: User deselects
   else {
     // Remove team
-    const index = NBACodeStars.teamsSelected.indexOf(teamId);
-    NBACodeStars.teamsSelected.splice(index, 1);
+    const index = nbaCodeStars.teamsSelected.indexOf(teamId);
+    nbaCodeStars.teamsSelected.splice(index, 1);
 
     // Scenario 3.1: User deselects and does not have any teams selected
     // Add "all" teams if the teamsSelected is empty after removing the most recent team
-    if (NBACodeStars.teamsSelected.length === 0) {
-      NBACodeStars.teamsSelected.push("all");
+    if (nbaCodeStars.teamsSelected.length === 0) {
+      nbaCodeStars.teamsSelected.push("all");
 
       // Add highlight from "all" selection
-      const allSelectionEl = NBACodeStars.dropdownElem.querySelector("#all");
+      const allSelectionEl = nbaCodeStars.dropdownEl.querySelector("#all");
       allSelectionEl.classList.add("highlight");
       allSelectionEl.setAttribute("aria-selected", "true");
     }
@@ -303,71 +241,34 @@ NBACodeStars.updateDropdown = (selectedEl) => {
 };
 
 // Function updated the team cards shown on the screen each time the user makes a selection from the dropdown
-NBACodeStars.updateTeamCards = () => {
+nbaCodeStars.displayTeamCards = () => {
   // Display team card's based on user's selection from the dropdown
-  NBACodeStars.cardsContainerElem.innerHTML = "";
+  nbaCodeStars.cardsContainerEl.innerHTML = "";
 
   // Display all the teams by looping through all 30 NBA teams
-  if (NBACodeStars.teamsSelected[0] === "all") {
-    NBACodeStars.teamsData.forEach((team) => {
-      NBACodeStars.displayTeamCard(team);
+  if (nbaCodeStars.teamsSelected[0] === "all") {
+    nbaCodeStars.teamsData.forEach((team) => {
+      displayTeamCard(team, nbaCodeStars.cardsContainerEl);
     });
   }
   // Display only the teams selected by looping through the specific team selected
   else {
-    NBACodeStars.teamsSelected.forEach((id) => {
-      const team = NBACodeStars.teamsData.find((team) => {
+    nbaCodeStars.teamsSelected.forEach((id) => {
+      const team = nbaCodeStars.teamsData.find((team) => {
         return team["TeamID"] === parseInt(id);
       });
-      NBACodeStars.displayTeamCard(team);
+      displayTeamCard(team, nbaCodeStars.cardsContainerEl);
     });
   }
 };
 
-// Function that displays the teams card
-NBACodeStars.displayTeamCard = (team) => {
-  const teamName = `${team["City"]} ${team["Name"]}`;
-
-  const h3Elem = document.createElement("h3");
-  h3Elem.innerText = teamName;
-  h3Elem.classList.add("cardTeamName");
-
-  const imageURL = team["WikipediaLogoUrl"];
-  const imgElem = document.createElement("img");
-  imgElem.src = imageURL;
-  imgElem.alt = `${teamName} team logo`;
-  imgElem.classList.add("cardImg");
-
-  const cardInnerContainerElem = document.createElement("div");
-  cardInnerContainerElem.classList.add("cardInnerContainer");
-  cardInnerContainerElem.append(imgElem);
-
-  const aElem = document.createElement("a");
-  aElem.innerHTML = "Team details";
-  aElem.classList.add("btn");
-  aElem.classList.add("btnTeamDetails");
-  aElem.ariaRole = "button";
-  aElem.tabIndex = "0";
-
-  NBACodeStars.teamDetailsListener(aElem);
-
-  const liElem = document.createElement("li");
-  liElem.classList.add("card");
-  liElem.id = `card-${team["TeamID"]}`;
-  liElem.append(cardInnerContainerElem);
-  liElem.append(aElem);
-  liElem.append(h3Elem);
-
-  NBACodeStars.cardsContainerElem.append(liElem);
-};
-
 // Function to set up event listener on the select dropdown
-NBACodeStars.getSelection = () => {
-  NBACodeStars.dropdownElem.addEventListener("change", () => {
+nbaCodeStars.getSelection = () => {
+  nbaCodeStars.dropdownEl.addEventListener("change", () => {
     const options = document.querySelectorAll("li");
     let noSelection = true;
 
-    NBACodeStars.cardsContainerElem.innerHTML = "";
+    nbaCodeStars.cardsContainerEl.innerHTML = "";
 
     // Display all the team cards selected
     for (const option in options) {
@@ -379,20 +280,20 @@ NBACodeStars.getSelection = () => {
 
         noSelection = false;
 
-        const teamData = NBACodeStars.teamsData.find((team) => {
+        const teamData = nbaCodeStars.teamsData.find((team) => {
           console.log(team["TeamID"]);
           console.log(typeof team["TeamID"]);
 
           return team["TeamID"] === id && team;
         });
-        NBACodeStars.displayTeamCard(teamData);
+        displayTeamCard(teamData, nbaCodeStars.cardsContainerEl);
       }
     }
 
     // Display all team cards if no specific team is selected
     if (noSelection) {
-      NBACodeStars.teamsData.forEach((team) => {
-        NBACodeStars.displayTeamCard(team);
+      nbaCodeStars.teamsData.forEach((team) => {
+        displayTeamCard(team, nbaCodeStars.cardsContainerEl);
       });
     }
   });
@@ -400,145 +301,16 @@ NBACodeStars.getSelection = () => {
 
 // Add event listener to the team details buttons populated
 // Call the function when team details button has been created
-NBACodeStars.teamDetailsListener = (btnElement) => {
-  btnElement.addEventListener("click", (e) => {
-    // Determine which team was selected based on the id of the card it is in
-    const cardId = e.target.closest(".card").id;
-    const teamId = cardId.split("-")[1];
-
-    // Collect team details in a variable
-    const teamDetailsObj = NBACodeStars.teamsData.find(
-      (team) => team["TeamID"] === parseInt(teamId)
-    );
-
-    // Create team details card
-
-    // Create elements to hold team details
-
-    // TODO: REFACTOR THIS CODE TO INNER HTML
-    const closeIconElem = document.createElement("i");
-    closeIconElem.classList.add("fas", "fa-times", "closeIcon");
-    closeIconElem.tabIndex = "0";
-
-    const cityElem = document.createElement("p");
-    cityElem.innerHTML = teamDetailsObj["City"];
-    cityElem.classList.add("city");
-
-    const cityLabelElem = document.createElement("p");
-    cityLabelElem.innerHTML = "City";
-    cityLabelElem.classList.add("teamDetailsLabel");
-
-    const conferenceElem = document.createElement("p");
-    conferenceElem.innerHTML = teamDetailsObj["Conference"];
-    conferenceElem.classList.add("conference");
-
-    const conferenceLabelElem = document.createElement("p");
-    conferenceLabelElem.innerHTML = "Conference";
-    conferenceLabelElem.classList.add("teamDetailsLabel");
-
-    const divisionElem = document.createElement("p");
-    divisionElem.innerHTML = teamDetailsObj["Division"];
-    divisionElem.classList.add("division");
-
-    const divisionLabelElem = document.createElement("p");
-    divisionLabelElem.innerHTML = "Division";
-    divisionLabelElem.classList.add("teamDetailsLabel");
-
-    // Create an overlay container to hold team details and append details into it
-    const teamDetailsCardElem = document.createElement("div");
-    teamDetailsCardElem.classList.add("teamDetailsCard");
-    teamDetailsCardElem.append(closeIconElem);
-    teamDetailsCardElem.append(cityLabelElem);
-    teamDetailsCardElem.append(cityElem);
-
-    teamDetailsCardElem.append(conferenceLabelElem);
-    teamDetailsCardElem.append(conferenceElem);
-
-    teamDetailsCardElem.append(divisionLabelElem);
-    teamDetailsCardElem.append(divisionElem);
-
-    // append overlay to card inner div for the card selected
-    const cardElem = document.getElementById(cardId);
-    const cardInnerContainer =
-      cardElem.getElementsByClassName("cardInnerContainer")[0];
-
-    cardInnerContainer.append(teamDetailsCardElem);
-
-    // Event listener to close the team details card when close icon is clicked
-    // ASK: Does .remove() get rid of the event listener on the close icon as well?
-    closeIconElem.addEventListener("click", (e) => {
-      const teamDetailsCard = e.target.closest(".teamDetailsCard");
-
-      // Refactor to create a general fadeout animation
-      teamDetailsCard.classList.add("fadeOut");
-      setTimeout(function () {
-        teamDetailsCard.remove();
-      }, 500);
-
-      // Remove the team details button and add the player details button
-      // Refactor with team details button being removed and player details being added
-      const playerDetailsBtn =
-        cardElem.getElementsByClassName("btnPlayerDetails")[0];
-      playerDetailsBtn.remove();
-
-      const aElem = document.createElement("a");
-      aElem.innerHTML = "Team details";
-      aElem.classList.add("btn");
-      aElem.classList.add("btnTeamDetails");
-      aElem.ariaRole = "button";
-      aElem.tabIndex = "0";
-
-      cardInnerContainer.parentNode.insertBefore(
-        aElem,
-        cardInnerContainer.nextSibling
-      );
-
-      // Add event listener to the team details button
-      NBACodeStars.teamDetailsListener(aElem);
-    });
-
-    // Remove the team details button and add the player details button
-    // Refactor this code with the player details event listener code
-    const teamDetailsBtn = cardElem.getElementsByClassName("btnTeamDetails")[0];
-    teamDetailsBtn.remove();
-
-    const aElem = document.createElement("a");
-    aElem.innerHTML = "Roster";
-    aElem.classList.add("btn");
-    aElem.classList.add("btnPlayerDetails");
-    aElem.ariaRole = "button";
-    aElem.tabIndex = "0";
-
-    aElem.addEventListener("click", (e) => {
-      const cardId = e.target.closest(".card").id;
-      const teamId = cardId.split("-")[1];
-
-      NBACodeStars.displayPlayerDetails(teamId);
-    });
-    aElem.addEventListener("keyup", (e) => {
-      if (e.code === "Enter") {
-        const cardId = e.target.closest(".card").id;
-        const teamId = cardId.split("-")[1];
-        NBACodeStars.displayPlayerDetails(teamId);
-      }
-    });
-
-    cardInnerContainer.parentNode.insertBefore(
-      aElem,
-      cardInnerContainer.nextSibling
-    );
-  });
-};
 
 // Display player details on the screen
-NBACodeStars.displayPlayerDetails = (teamId) => {
+nbaCodeStars.displayPlayerDetails = (teamId) => {
   // Create player details modal
   // Create close icon -> refactor code from above to manage close icon functionality
   const closeIconElem = document.createElement("i");
   closeIconElem.classList.add("fas", "fa-times", "closeIcon");
   closeIconElem.tabIndex = "0";
 
-  const toggleButtonElem = NBACodeStars.displayToggleButton();
+  const toggleButtonElem = nbaCodeStars.displayToggleButton();
 
   const playerDetailsContainerElem = document.createElement("div");
   playerDetailsContainerElem.classList.add("playerDetailsContainer");
@@ -580,15 +352,15 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
   playerDetailsContainerEl.append(tableContainerEl);
 
   // Determine which team was selected
-  const teamDetailsObj = NBACodeStars.teamsData.find(
+  const teamDetailsObj = nbaCodeStars.teamsData.find(
     (team) => team["TeamID"] === parseInt(teamId)
   );
 
-  NBACodeStars.teamAbbreviation = teamDetailsObj["Key"];
+  nbaCodeStars.teamAbbreviation = teamDetailsObj["Key"];
 
   // Make async api call to get player details on page load
-  const promise = NBACodeStars.getPlayersByTeamBiodata(
-    NBACodeStars.teamAbbreviation
+  const promise = nbaCodeStars.getPlayersByTeamBiodata(
+    nbaCodeStars.teamAbbreviation
   );
 
   // console.log(promise);
@@ -1252,7 +1024,7 @@ NBACodeStars.displayPlayerDetails = (teamId) => {
 };
 
 // Function to create and display the table that displays player bio data
-NBACodeStars.displayPlayerBio = () => {
+nbaCodeStars.displayPlayerBio = () => {
   // Mapping array used to align table heading / table data / api keys for loops
   const bioTableMap = [
     { header: "Player", className: "player", key: null },
@@ -1265,11 +1037,11 @@ NBACodeStars.displayPlayerBio = () => {
   ];
 
   // table header data
-  const tableHeadEl = NBACodeStars.createBioTableHead(bioTableMap);
+  const tableHeadEl = nbaCodeStars.createBioTableHead(bioTableMap);
   tableHeadEl.classList.add("rosterTableHead");
 
   // table body data
-  const tableBodyEl = NBACodeStars.createBioTableBody(bioTableMap);
+  const tableBodyEl = nbaCodeStars.createBioTableBody(bioTableMap);
   tableBodyEl.classList.add("rosterTableBody");
 
   // table
@@ -1301,7 +1073,7 @@ NBACodeStars.displayPlayerBio = () => {
 };
 
 // Function to create the table heading for the bio data table
-NBACodeStars.createBioTableHead = (bioTableMap) => {
+nbaCodeStars.createBioTableHead = (bioTableMap) => {
   const tableHeadEl = document.createElement("thead");
   const trEl = document.createElement("tr");
 
@@ -1325,11 +1097,11 @@ NBACodeStars.createBioTableHead = (bioTableMap) => {
 };
 
 // Function to create the table body for the bio data table
-NBACodeStars.createBioTableBody = (bioTableMap) => {
+nbaCodeStars.createBioTableBody = (bioTableMap) => {
   const tableBodyEl = document.createElement("tbody");
 
   // Loop through each player received from the API pull and create a table row for each one
-  NBACodeStars.playerByTeamBioData.forEach((player) => {
+  nbaCodeStars.playerByTeamBioData.forEach((player) => {
     const { PlayerID, PhotoUrl, FirstName, LastName } = player;
 
     // Player name
@@ -1377,7 +1149,7 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
           if (key === "BirthDate") {
             formatData = data.split("T")[0];
           } else if (key === "Salary") {
-            formatData = NBACodeStars.numberWithCommas(data);
+            formatData = nbaCodeStars.numberWithCommas(data);
           } else {
             formatData = data;
           }
@@ -1408,7 +1180,7 @@ NBACodeStars.createBioTableBody = (bioTableMap) => {
 // REFACTOR WITH DISPLAYPLAYERBIO
 // ************TODO: LEFT HEREEEEEE*********
 // Function to create and display the table that displays player bio data
-NBACodeStars.displayPlayerStats = () => {
+nbaCodeStars.displayPlayerStats = () => {
   // Mapping array used to align table heading / table data / api keys for loops
   // { header: null, className: null, key: "PlayerID" },
 
@@ -1487,11 +1259,11 @@ NBACodeStars.displayPlayerStats = () => {
   ];
 
   // table header data
-  const tableHeadEl = NBACodeStars.createStatsTableHead(statsTableMap);
+  const tableHeadEl = nbaCodeStars.createStatsTableHead(statsTableMap);
   tableHeadEl.classList.add("rosterTableHead");
 
   // table body data
-  const tableBodyEl = NBACodeStars.createStatsTableBody(statsTableMap);
+  const tableBodyEl = nbaCodeStars.createStatsTableBody(statsTableMap);
   tableBodyEl.classList.add("rosterTableBody");
 
   // table
@@ -1524,7 +1296,7 @@ NBACodeStars.displayPlayerStats = () => {
 
 // TODO: Refactor with createBioTableHead
 // Function to create the table heading for the stats data table
-NBACodeStars.createStatsTableHead = (statsTableMap) => {
+nbaCodeStars.createStatsTableHead = (statsTableMap) => {
   const tableHeadEl = document.createElement("thead");
   const trEl = document.createElement("tr");
 
@@ -1548,14 +1320,14 @@ NBACodeStars.createStatsTableHead = (statsTableMap) => {
 };
 
 // Function to create the table body for the bio data table
-NBACodeStars.createStatsTableBody = (statsTableMap) => {
+nbaCodeStars.createStatsTableBody = (statsTableMap) => {
   const tableBodyEl = document.createElement("tbody");
 
   // Loop through each player received from the API pull and create a table row for each one
-  NBACodeStars.playerByTeamStatsData.forEach((statsObj) => {
+  nbaCodeStars.playerByTeamStatsData.forEach((statsObj) => {
     const { PlayerID } = statsObj;
 
-    const playerObj = NBACodeStars.playerByTeamBioData.find(
+    const playerObj = nbaCodeStars.playerByTeamBioData.find(
       (player) => player.PlayerID === PlayerID
     );
 
@@ -1605,7 +1377,7 @@ NBACodeStars.createStatsTableBody = (statsTableMap) => {
           const spanEl = document.createElement("span");
 
           // Error handling: proceed if data has a value
-          spanEl.innerText = data ? NBACodeStars.numberWithCommas(data) : "N/A";
+          spanEl.innerText = data ? nbaCodeStars.numberWithCommas(data) : "N/A";
           spanEl.classList.add(className);
           spanEl.classList.add("data");
 
@@ -1629,13 +1401,13 @@ NBACodeStars.createStatsTableBody = (statsTableMap) => {
 
 // Function to add commas to a number
 // Credits to stackoverflow author for providing this function: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-NBACodeStars.numberWithCommas = (number) => {
+nbaCodeStars.numberWithCommas = (number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 // Function to create the toggle button between bio and stats
 // Credits to stackoverflow author for providing this toggle button: https://stackoverflow.com/questions/63410507/how-to-connect-two-options-and-toggle-switch-buttons
-NBACodeStars.displayToggleButton = () => {
+nbaCodeStars.displayToggleButton = () => {
   const toggleButtonContainer = document.createElement("div");
   toggleButtonContainer.classList.add("toggleBtnContainer");
 
@@ -1664,35 +1436,35 @@ NBACodeStars.displayToggleButton = () => {
   toggleButtonContainer.innerHTML += toggleButtonHtml;
   toggleButtonContainer.addEventListener(
     "click",
-    NBACodeStars.togglePlayerDetails
+    nbaCodeStars.togglePlayerDetails
   );
 
   return toggleButtonContainer;
 };
 
-NBACodeStars.togglePlayerDetails = () => {
+nbaCodeStars.togglePlayerDetails = () => {
   const inputEle = document.getElementById("toggle");
   const isChecked = inputEle.checked;
 
   if (isChecked) {
-    const promise = NBACodeStars.getPlayersByTeamStatsData(
-      NBACodeStars.teamAbbreviation
+    const promise = nbaCodeStars.getPlayersByTeamStatsData(
+      nbaCodeStars.teamAbbreviation
     );
     promise.then(() => {
-      NBACodeStars.displayPlayerStats();
+      nbaCodeStars.displayPlayerStats();
     });
   } else {
-    const promise = NBACodeStars.getPlayersByTeamBiodata(
-      NBACodeStars.teamAbbreviation
+    const promise = nbaCodeStars.getPlayersByTeamBiodata(
+      nbaCodeStars.teamAbbreviation
     );
     promise.then(() => {
-      NBACodeStars.displayPlayerBio();
+      nbaCodeStars.displayPlayerBio();
     });
   }
 };
 
 // 0. Calling the init to hit it off
-NBACodeStars.init();
+nbaCodeStars.init();
 
 // TODO:
 // Error handling on data not loading or data missing
