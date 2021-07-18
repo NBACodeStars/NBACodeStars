@@ -310,6 +310,14 @@ footer {
   margin: 50px 0px;
 }
 
+.fullscreen {
+  min-height: calc(100vh - 98px);
+}
+
+.hide {
+  display: none !important;
+}
+
 .logoContainer::before,
 .logoContainer::after {
   content: "{";
@@ -400,20 +408,24 @@ h1 {
 }
 
 /* Whole scrollbar */
-.dropdown::-webkit-scrollbar {
+.dropdown::-webkit-scrollbar,
+.rosterTableScroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
   margin-left: 5px;
   background-color: #404b69;
+  border-radius: 5px;
 }
 
 /* Track */
-.dropdown::-webkit-scrollbar-track {
+.dropdown::-webkit-scrollbar-track,
+.rosterTableScroll::-webkit-track {
   border-radius: 5px;
 }
 
 /* Handle */
-.dropdown::-webkit-scrollbar-thumb {
+.dropdown::-webkit-scrollbar-thumb,
+.rosterTableScroll::-webkit-scrollbar-thumb {
   background: #f73859;
   border-radius: 5px;
 }
@@ -468,6 +480,8 @@ h1 {
 
 .cardImg {
   width: 100%;
+  height: 350px;
+  padding: 15px;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   overflow: hidden;
@@ -538,7 +552,7 @@ h1 {
 .closeIcon {
   font-size: 1rem;
   padding: 10px;
-  margin: 5px;
+  margin: 10px;
   cursor: pointer;
   border-radius: 5px;
   color: #404b69;
@@ -551,38 +565,6 @@ h1 {
 }
 .closeIcon:hover {
   color: #f73859;
-}
-
-.playerDetailsOuterContainer {
-  position: fixed;
-  z-index: 3;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background-color: rgba(40, 49, 73, 0.8);
-}
-
-.playerDetailsContainer {
-  min-width: 80vw;
-  min-height: 80vh;
-  background-color: rgba(219, 237, 243, 0.5);
-  font-size: 2rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
-  padding: 20px;
-  border-radius: 10px;
 }
 
 .btn {
@@ -610,6 +592,149 @@ h1 {
   color: white;
 }
 
+.playerDetailsOuterContainer {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(40, 49, 73, 0.8);
+}
+
+.playerDetailsContainer {
+  width: 80vw;
+  height: 80vh;
+  background-color: rgba(219, 237, 243, 0.5);
+  font-size: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  padding: 20px;
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.rosterHeader {
+  min-height: 100px;
+  height: 100px;
+}
+
+.rosterTableContainer {
+  width: 100%;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  background-color: #404b69;
+  border-radius: 5px;
+}
+
+table {
+  text-align: left;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.rosterTableScroll {
+  overflow: auto;
+  height: calc(80vh - 40px - 100px);
+  border-top-left-radius: 5px;
+}
+
+.rosterTableScroll::-webkit-scrollbar-corner {
+  background-color: #404b69;
+  border-bottom-right-radius: 5px;
+}
+
+.rosterTableHead {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #283149;
+  position: relative;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  background-color: #283149;
+}
+
+th,
+td {
+  font-size: 1rem;
+  width: 100%;
+  padding: 0;
+}
+
+.header,
+.data {
+  width: 100%;
+  display: block;
+  padding: 10px 10px;
+}
+
+.header {
+  background-color: #283149;
+}
+
+.nameContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.player {
+  border-top-left-radius: 5px;
+}
+
+td.player {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.playerImg {
+  margin-right: 10px;
+}
+.playerImg img {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -o-object-position: center;
+     object-position: center;
+  background-color: rgba(219, 237, 243, 0.4);
+  border-radius: 50%;
+}
+
+.birthday {
+  width: 100px;
+}
+
 footer {
   margin-bottom: 0px;
   color: #283149;
@@ -622,6 +747,154 @@ footer {
   text-align: center;
 }
 
+.toggleBtnContainer {
+  cursor: pointer;
+  position: absolute;
+  display: inline-block;
+  top: 80px;
+  right: 0;
+}
+
+.label {
+  pointer-events: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.switch,
+.input:checked + .label .left,
+.input:not(:checked) + .label .right {
+  pointer-events: all;
+}
+
+/* most of the stuff below is the same as the W3Schools stuff,
+   but modified a bit to reflect changed HTML structure */
+.input {
+  display: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .label .slider {
+  background-color: #2196f3;
+}
+
+.toggleBtnContainer:focus-within,
+input:focus + .label .slider {
+  -webkit-box-shadow: 0 0 1px #2196f3;
+          box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .label .slider:before {
+  -webkit-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* styling to make it look like your screenshot */
+.left,
+.right {
+  margin: 0 0.5em;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: sans-serif;
+}
+
+.loadingContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.fas.fa-basketball-ball {
+  font-size: calc(5rem + 2vw);
+  color: #fa8320;
+  -webkit-animation-name: loading;
+          animation-name: loading;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+}
+
+@-webkit-keyframes loading {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes loading {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
 @media screen and (max-width: 860px) {
   .teamCards {
     grid-template-columns: repeat(2, 1fr);

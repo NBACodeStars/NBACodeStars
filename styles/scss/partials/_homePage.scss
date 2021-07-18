@@ -53,6 +53,14 @@ footer {
   margin: 50px 0px;
 }
 
+.fullscreen {
+  min-height: calc(100vh - 98px);
+}
+
+.hide {
+  display: none !important;
+}
+
 //***************************************
 // Header styles
 //***************************************
@@ -163,20 +171,24 @@ h1 {
 }
 
 /* Whole scrollbar */
-.dropdown::-webkit-scrollbar {
+.dropdown::-webkit-scrollbar,
+.rosterTableScroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
   margin-left: 5px;
   background-color: $greyAlt;
+  border-radius: 5px;
 }
 
 /* Track */
-.dropdown::-webkit-scrollbar-track {
+.dropdown::-webkit-scrollbar-track,
+.rosterTableScroll::-webkit-track {
   border-radius: 5px;
 }
 
 /* Handle */
-.dropdown::-webkit-scrollbar-thumb {
+.dropdown::-webkit-scrollbar-thumb,
+.rosterTableScroll::-webkit-scrollbar-thumb {
   background: $red;
   border-radius: 5px;
 }
@@ -227,6 +239,8 @@ h1 {
 
 .cardImg {
   width: 100%;
+  height: 350px;
+  padding: 15px;
   transition: all 0.5s;
   overflow: hidden;
   object-fit: contain;
@@ -282,7 +296,7 @@ h1 {
 .closeIcon {
   font-size: 1rem;
   padding: 10px;
-  margin: 5px;
+  margin: 10px;
   cursor: pointer;
   border-radius: 5px;
   color: $greyAlt;
@@ -295,33 +309,6 @@ h1 {
   &:hover {
     color: $red;
   }
-}
-
-// Player details styles
-
-.playerDetailsOuterContainer {
-  position: fixed;
-  z-index: 3;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba($grey, 0.8);
-}
-
-.playerDetailsContainer {
-  min-width: 80vw;
-  min-height: 80vh;
-  background-color: rgba($offWhite, 0.5);
-  font-size: 2rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.5s;
-  padding: 20px;
-  border-radius: 10px;
 }
 
 .btn {
@@ -349,6 +336,144 @@ h1 {
 }
 
 //***************************************
+// Roster styles
+//***************************************
+
+.playerDetailsOuterContainer {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($grey, 0.8);
+}
+
+.playerDetailsContainer {
+  width: 80vw;
+  height: 80vh;
+  background-color: rgba($offWhite, 0.5);
+  font-size: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.5s;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.rosterHeader {
+  // width: 100%;
+  min-height: 100px;
+  height: 100px;
+}
+
+.rosterTableContainer {
+  width: 100%;
+  flex-grow: 1;
+  background-color: $greyAlt;
+  border-radius: 5px;
+}
+
+table {
+  text-align: left;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.rosterTableScroll {
+  overflow: auto;
+  height: calc(80vh - 40px - 100px);
+  border-top-left-radius: 5px;
+}
+
+.rosterTableScroll::-webkit-scrollbar-corner {
+  background-color: $greyAlt;
+  border-bottom-right-radius: 5px;
+}
+
+.rosterTableHead {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: $grey;
+  position: relative;
+}
+
+// Making table header sticky by making thead element position: relative and th element top:0 with position:stick -> see CSS tricks reference below
+// credits: https://css-tricks.com/position-sticky-and-table-headers/
+th {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  background-color: $grey;
+}
+
+th,
+td {
+  font-size: 1rem;
+  width: 100%;
+  padding: 0;
+}
+
+.header,
+.data {
+  width: 100%;
+  display: block;
+  padding: 10px 10px;
+}
+
+.header {
+  background-color: $grey;
+}
+
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.player {
+  border-top-left-radius: 5px;
+}
+
+td.player {
+  display: flex;
+  align-items: center;
+}
+
+// .position,
+// .jersey {
+//   width: 70px;
+// }
+
+// .birthday,
+// .experience,
+// .salary,
+// .birthCountry {
+//   width: 100px;
+// }
+
+.playerImg {
+  margin-right: 10px;
+
+  img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    object-position: center;
+    background-color: rgba($offWhite, 0.4);
+    border-radius: 50%;
+  }
+}
+
+.birthday {
+  width: 100px;
+}
+
+//***************************************
 // Footer styles
 //***************************************
 
@@ -363,3 +488,181 @@ footer {
   font-size: 1rem;
   text-align: center;
 }
+
+//***************************************
+// Modal toggle button styles
+//***************************************
+.toggleBtnContainer {
+  cursor: pointer;
+  position: absolute;
+  display: inline-block;
+  top: 80px;
+  right: 0;
+}
+
+.label {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.switch,
+.input:checked + .label .left,
+.input:not(:checked) + .label .right {
+  pointer-events: all;
+}
+
+/* most of the stuff below is the same as the W3Schools stuff,
+   but modified a bit to reflect changed HTML structure */
+
+.input {
+  display: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .label .slider {
+  background-color: #2196f3;
+}
+
+.toggleBtnContainer:focus-within,
+input:focus + .label .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .label .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* styling to make it look like your screenshot */
+
+.left,
+.right {
+  margin: 0 0.5em;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: sans-serif;
+}
+
+// TODO: SELECT THE LOADING SPINNER TO KEEP
+//***************************************
+// Loading screen animation
+//***************************************
+
+.loadingContainer {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba($black, 0.8);
+}
+
+// .loadingPositionFlex {
+//   display: flex;
+//   width: 100%;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+.fas.fa-basketball-ball {
+  font-size: calc(5rem + 2vw);
+  color: $orange;
+
+  animation-name: loading;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+}
+
+// .fas.fa-spinner {
+//   font-size: 40px;
+//   color: white;
+
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 3s;
+//   animation-timing-function: linear;
+//   position: relative;
+// }
+
+// .uMadBruh {
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 3s;
+//   animation-timing-function: linear;
+//   position: relative;
+
+//   font-size: 40px;
+//   color: white;
+//   color: red;
+// }
+
+// .fas.fa-adjust {
+//   font-size: 40px;
+//   color: white;
+
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 1s;
+//   animation-timing-function: linear;
+//   position: relative;
+// }
+
+@keyframes loading {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// .nbaLettering {
+//   width: 70%;
+// }

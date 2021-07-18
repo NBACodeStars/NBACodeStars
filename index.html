@@ -18,71 +18,83 @@
     <title>NBA Code Stars</title>
   </head>
   <body>
-    <header class="wrapper">
-      <nav>
-        <!-- START: Logo container -->
-        <div class="logoContainer">
-          <img
-            class="logo"
-            src="./assets/nba-logo.png"
-            alt="nba code stars logo"
-          />
-        </div>
-      </nav>
+    <div class="fullscreen">
+      <header class="wrapper">
+        <nav>
+          <!-- START: Logo container -->
+          <div class="logoContainer">
+            <img
+              class="logo"
+              src="./assets/nba-logo.png"
+              alt="nba code stars logo"
+            />
+          </div>
+        </nav>
 
-      <!-- START: Website name -->
-      <h1>NBA Code Stars</h1>
+        <!-- START: Website name -->
+        <h1>NBA Code Stars</h1>
 
-      <div class="dropdownFormContainer">
-        <!-- START: Dropdown form -->
-        <!-- <form action="/"> -->
-        <!-- START: Select dropdown -->
-        <!-- <label class="teamDropdownLabel" for="teamDropdown"
+        <div class="dropdownFormContainer">
+          <!-- START: Dropdown form -->
+          <!-- <form action="/"> -->
+          <!-- START: Select dropdown -->
+          <!-- <label class="teamDropdownLabel" for="teamDropdown"
             >Search for your favourite teams</label
           >
           <select id="teamDropdown" class="teamDropdown" autofocus multiple>
             <option id="all" selected>All</option>
           </select> -->
 
-        <!-- START: Custom dropdown container -->
-        <!-- Consider accessibility for the custom dropdown -->
+          <!-- START: Custom dropdown container -->
+          <!-- Consider accessibility for the custom dropdown -->
 
-        <div class="dropdownContainer">
-          <h2 class="dropdownLabel">Select your favourite teams</h2>
+          <div class="dropdownContainer">
+            <h2 class="dropdownLabel">Select your favourite teams</h2>
 
-          <!-- START: Custom dropdown -->
-          <!-- Accessibility resource used: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role -->
-          <ul
-            class="dropdown"
-            role="listbox"
-            aria-multiselectable="true"
-            aria-activedescendant="all"
-          >
-            <li
-              class="dropdownOption optionOne highlight"
-              role="option"
-              tabindex="0"
-              value="all"
-              id="all"
-              aria-selected="true"
+            <!-- START: Custom dropdown -->
+            <!-- Accessibility resource used: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role -->
+            <ul
+              class="dropdown"
+              role="listbox"
+              aria-multiselectable="true"
+              aria-activedescendant="all"
             >
-              <span>All teams</span>
-              <i class="fas fa-caret-down dropdownIcon"></i>
-            </li>
-          </ul>
-        </div>
-        <!-- </form> -->
-      </div>
-    </header>
+              <li
+                class="dropdownOption optionOne highlight"
+                role="option"
+                tabindex="0"
+                value="all"
+                id="all"
+                aria-selected="true"
+              >
+                <span>All teams</span>
+                <i class="fas fa-caret-down dropdownIcon"></i>
+              </li>
+            </ul>
+          </div>
+          <!-- </form> -->
 
-    <!-- START: Main -->
-    <main class="wrapper">
-      <!-- START: Team cards section -->
-      <section class="teamCardsSection">
-        <!-- START: Container to hold team cards -->
-        <ul class="teamCards"></ul>
-      </section>
-    </main>
+          <!-- <img src="./assets/nbaLettering.png" class="nbaLettering" alt="" /> -->
+        </div>
+      </header>
+
+      <!-- START: Main -->
+      <main class="wrapper" aria-live="polite" aria-busy="false">
+        <!-- START: Team cards section -->
+        <section class="teamCardsSection">
+          <!-- START: Container to hold team cards -->
+          <ul class="teamCards"></ul>
+        </section>
+      </main>
+    </div>
+
+    <!-- TODO: SELECT WHICH LOADING SPINNER TO KEEP -->
+    <!-- <div id="loader" class="loadingPositionFlex"> -->
+    <div id="loader" class="loadingContainer">
+      <i class="fas fa-basketball-ball"></i>
+    </div>
+    <!-- </div> -->
+
     <!-- START: Footer -->
     <footer>
       <p class="footerText">Created at Juno College 2021</p>
