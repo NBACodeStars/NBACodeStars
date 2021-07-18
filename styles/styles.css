@@ -610,6 +610,11 @@ h1 {
   color: white;
 }
 
+.btnPlayerDetails {
+  background-color: #dbedf3;
+  color: #f73859;
+}
+
 .errorMessage {
   text-align: center;
   font-weight: 700;

@@ -1,5 +1,6 @@
-// Function to create an icon that closes elements
+// Function to create an icon that comes with event listener to close elements
 export const createCloseIcon = (closingEl) => {
+  // Create the icon element
   const iconEl = document.createElement("i");
   iconEl.classList.add("fas", "fa-times", "closeIcon");
   iconEl.tabIndex = "0";
@@ -21,7 +22,6 @@ export const createCloseIcon = (closingEl) => {
 
 // Function that adds a fadeout animation when removing elements from the page
 const removeElement = (closingEl) => {
-  console.log(closingEl);
   closingEl.classList.add("fadeOut");
   setTimeout(function () {
     closingEl.remove();
@@ -30,4 +30,14 @@ const removeElement = (closingEl) => {
 
 export const getTeamById = (teamData, teamId) => {
   return teamData.find((team) => team.TeamID === parseInt(teamId));
+};
+
+export const createBtn = () => {
+  const btn = document.createElement("a");
+  btn.innerHTML = "Button";
+  btn.classList.add("btn");
+  btn.ariaRole = "button";
+  btn.tabIndex = "0";
+
+  return btn;
 };

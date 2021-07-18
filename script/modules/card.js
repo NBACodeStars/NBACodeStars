@@ -1,4 +1,4 @@
-import { createCloseIcon } from "./utils.js";
+import { createCloseIcon, createBtn } from "./utils.js";
 
 // Function that displays the teams card
 export const displayTeamCard = (team, cardsContainerEl) => {
@@ -21,23 +21,14 @@ export const displayTeamCard = (team, cardsContainerEl) => {
   cardInnerEl.classList.add("cardInnerContainer");
   cardInnerEl.append(teamImgEl);
 
-  // Team details button
-  const teamBtnEl = document.createElement("a");
-  teamBtnEl.innerHTML = "Team details";
-  teamBtnEl.classList.add("btn");
-  teamBtnEl.classList.add("btnTeamDetails");
-  teamBtnEl.ariaRole = "button";
-  teamBtnEl.tabIndex = "0";
-  teamBtnEl.addEventListener("click", () => {
-    displayTeamDetails(team, cardInnerEl);
-  });
-
-  // nbaCodeStars.teamDetailsListener(teamBtnEl);
-
   // Team card
   const cardEl = document.createElement("li");
+
+  // Team details button
+  const teamBtnEl = createTeamDetailsBtn(team, cardInnerEl, cardEl);
+
+  // Append elements to the card
   cardEl.classList.add("card");
-  // cardEl.id = `card-${TeamID}`;
   cardEl.setAttribute("data-card-id", TeamID);
   cardEl.append(cardInnerEl);
   cardEl.append(teamBtnEl);
@@ -47,7 +38,19 @@ export const displayTeamCard = (team, cardsContainerEl) => {
   cardsContainerEl.append(cardEl);
 };
 
-const displayTeamDetails = (team, cardInnerEl) => {
+// Function to create a button that shows team details card
+const createTeamDetailsBtn = (team, cardInnerEl, cardEl) => {
+  const teamBtnEl = createBtn();
+  teamBtnEl.innerHTML = "Team details";
+  teamBtnEl.classList.add("btnTeamDetails");
+  teamBtnEl.addEventListener("click", () => {
+    displayTeamDetails(team, cardInnerEl, cardEl);
+  });
+
+  return teamBtnEl;
+};
+
+const displayTeamDetails = (team, cardInnerEl, cardEl) => {
   const { TeamID, City, Conference, Division } = team;
 
   // Team details container
@@ -56,22 +59,64 @@ const displayTeamDetails = (team, cardInnerEl) => {
 
   // Team details container
   teamDetailsContainer.innerHTML += `
-  <p class="teamDetailsLabel">City</p>
-  <p class="city">${City}</p>
-  
-  <p class="teamDetailsLabel">Conference</p>
-  <p class="city">${Conference}</p>
-  
-  <p class="teamDetailsLabel">Division</p>
-  <p class="city">${Division}</p>
+    <p class="teamDetailsLabel">City</p>
+    <p class="city">${City}</p>
+    
+    <p class="teamDetailsLabel">Conference</p>
+    <p class="city">${Conference}</p>
+    
+    <p class="teamDetailsLabel">Division</p>
+    <p class="city">${Division}</p>
   `;
 
-  // Close Icon
+  // Create close icon that shows team details button again and closes team details container
   const closeIconEl = createCloseIcon(teamDetailsContainer);
+  closeIconEl.addEventListener("click", () => {
+    const playerBtn = cardEl.getElementsByClassName("btnPlayerDetails")[0];
+    playerBtn.remove();
+
+    const teamBtnEl = createTeamDetailsBtn(team, cardInnerEl, cardEl);
+    cardEl.append(teamBtnEl);
+    cardInnerEl.parentNode.insertBefore(teamBtnEl, cardInnerEl.nextSibling);
+  });
+
+  closeIconEl.addEventListener("keyup", (e) => {
+    if (e.code === "Enter") {
+      const playerBtn = cardEl.getElementsByClassName("btnPlayerDetails")[0];
+      playerBtn.remove();
+
+      const teamBtnEl = createTeamDetailsBtn(team, cardInnerEl, cardEl);
+      cardInnerEl.parentNode.insertBefore(teamBtnEl, cardInnerEl.nextSibling);
+    }
+  });
+
   teamDetailsContainer.append(closeIconEl);
 
   // Display the card to the user
   cardInnerEl.append(teamDetailsContainer);
+
+  // Change team details to player details button
+  const teamBtn = cardEl.getElementsByClassName("btnTeamDetails")[0];
+  teamBtn.remove();
+
+  // Player details button
+  const playerBtnEl = createBtn();
+  playerBtnEl.innerHTML = "Player details";
+  playerBtnEl.classList.add("btnPlayerDetails");
+
+  // playerBtnEl.addEventListener("click", () => {
+  //   displayTeamDetails(team, cardInnerEl);
+  // });
+
+  // const aElem = document.createElement("a");
+  // aElem.innerHTML = "Team details";
+  // aElem.classList.add("btn");
+  // aElem.classList.add("btnTeamDetails");
+  // aElem.ariaRole = "button";
+  // aElem.tabIndex = "0";
+
+  // Show the button between the inner container and team name
+  cardInnerEl.parentNode.insertBefore(playerBtnEl, cardInnerEl.nextSibling);
 
   // Event listener to close the team details card when close icon is clicked
   // ASK: Does .remove() get rid of the event listener on the close icon as well?
