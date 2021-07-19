@@ -21,10 +21,20 @@
     <title>NBA Code Stars</title>
   </head>
   <body>
+    <!-- Skip link -->
+    <a href="#nbaMain" class="skipLink">Skip to main content</a>
+
+    <!-- Loading spinner -->
+    <div id="loader" class="loadingContainer">
+      <i class="fas fa-basketball-ball"></i>
+    </div>
+
+    <!-- Wrapper to achieve full screen view -->
     <div class="fullscreen">
+      <!-- Header -->
       <header class="wrapper">
         <nav>
-          <!-- START: Logo container -->
+          <!-- Logo container -->
           <div class="logoContainer">
             <img
               class="logo"
@@ -34,74 +44,52 @@
           </div>
         </nav>
 
-        <!-- START: Website name -->
+        <!-- Website name -->
         <h1>NBA Code Stars</h1>
 
-        <div class="dropdownFormContainer">
-          <!-- START: Dropdown form -->
-          <!-- <form action="/"> -->
-          <!-- START: Select dropdown -->
-          <!-- <label class="teamDropdownLabel" for="teamDropdown"
-            >Search for your favourite teams</label
+        <!-- Teams dropdown container -->
+        <div class="dropdownContainer">
+          <h2 class="dropdownLabel">Select your favourite teams</h2>
+
+          <!-- Custom dropdown -->
+          <!-- Dropdown accessibility resource used: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role -->
+          <ul
+            class="dropdown"
+            role="listbox"
+            aria-multiselectable="true"
+            aria-activedescendant="all"
           >
-          <select id="teamDropdown" class="teamDropdown" autofocus multiple>
-            <option id="all" selected>All</option>
-          </select> -->
-
-          <!-- START: Custom dropdown container -->
-          <!-- Consider accessibility for the custom dropdown -->
-
-          <div class="dropdownContainer">
-            <h2 class="dropdownLabel">Select your favourite teams</h2>
-
-            <!-- START: Custom dropdown -->
-            <!-- Accessibility resource used: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role -->
-            <ul
-              class="dropdown"
-              role="listbox"
-              aria-multiselectable="true"
-              aria-activedescendant="all"
+            <li
+              class="dropdownOption optionOne highlight"
+              role="option"
+              tabindex="0"
+              value="all"
+              id="all"
+              aria-selected="true"
             >
-              <li
-                class="dropdownOption optionOne highlight"
-                role="option"
-                tabindex="0"
-                value="all"
-                id="all"
-                aria-selected="true"
-              >
-                <span>All teams</span>
-                <i class="fas fa-caret-down dropdownIcon"></i>
-              </li>
-            </ul>
-          </div>
-          <!-- </form> -->
-
-          <!-- <img src="./assets/nbaLettering.png" class="nbaLettering" alt="" /> -->
+              <span>All teams</span>
+              <i class="fas fa-caret-down dropdownIcon"></i>
+            </li>
+          </ul>
         </div>
       </header>
 
-      <!-- START: Main -->
-      <main class="wrapper" aria-live="polite" aria-busy="false">
-        <!-- START: Team cards section -->
+      <!-- Main -->
+      <main id="nbaMain" class="wrapper" aria-live="polite" aria-busy="false">
+        <!-- Team cards section -->
         <section class="teamCardsSection">
-          <!-- START: Container to hold team cards -->
+          <!-- Team cards container -->
           <ul class="teamCards"></ul>
         </section>
       </main>
     </div>
 
-    <!-- TODO: SELECT WHICH LOADING SPINNER TO KEEP -->
-    <!-- <div id="loader" class="loadingPositionFlex"> -->
-    <div id="loader" class="loadingContainer">
-      <i class="fas fa-basketball-ball"></i>
-    </div>
-    <!-- </div> -->
-
-    <!-- START: Footer -->
+    <!-- Footer -->
     <footer>
       <p class="footerText">Created at Juno College 2021</p>
     </footer>
-    <script src="./script/script.js"></script>
+
+    <!-- JS scripts -->
+    <script type="module" src="./script/script.js"></script>
   </body>
 </html>

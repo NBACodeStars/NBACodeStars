@@ -318,6 +318,24 @@ footer {
   display: none !important;
 }
 
+.skipLink {
+  position: absolute;
+  left: -100%;
+  top: 0px;
+  z-index: 999;
+  width: 100%;
+  text-align: center;
+  background: #f73859;
+  color: #dbedf3;
+  text-decoration: none;
+  padding: 20px;
+  font-size: 2rem;
+}
+
+.skipLink:focus {
+  left: 0;
+}
+
 .logoContainer::before,
 .logoContainer::after {
   content: "{";
@@ -510,7 +528,7 @@ h1 {
   border: 2px solid #dbedf3;
 }
 
-.teamDetailsCard {
+.teamDetailsContainer {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -563,7 +581,7 @@ h1 {
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
-.closeIcon:hover {
+.closeIcon:hover, .closeIcon:focus {
   color: #f73859;
 }
 
@@ -586,13 +604,30 @@ h1 {
   z-index: 1;
 }
 
-.btn:hover {
+.btn:hover,
+.btn:focus {
   cursor: pointer;
   background-color: #283149;
   color: white;
 }
 
-.playerDetailsOuterContainer {
+.btnPlayerDetails {
+  background-color: #dbedf3;
+  color: #f73859;
+}
+.btnPlayerDetails:hover, .btnPlayerDetails:focus {
+  background-color: #283149;
+  color: #dbedf3;
+}
+
+.errorMessage {
+  text-align: center;
+  font-weight: 700;
+  font-size: 3rem;
+}
+
+.playerDetailsOuterContainer,
+.modalOuterContainer {
   position: fixed;
   z-index: 3;
   top: 0;
@@ -611,7 +646,9 @@ h1 {
   background-color: rgba(40, 49, 73, 0.8);
 }
 
-.playerDetailsContainer {
+.playerDetailsContainer,
+.modalInnerContainer {
+  max-width: 1200px;
   width: 80vw;
   height: 80vh;
   background-color: rgba(219, 237, 243, 0.5);
@@ -629,6 +666,12 @@ h1 {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .rosterHeader {
@@ -719,6 +762,12 @@ td.player {
 
 .playerImg {
   margin-right: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 .playerImg img {
   width: 50px;
@@ -751,8 +800,8 @@ footer {
   cursor: pointer;
   position: absolute;
   display: inline-block;
-  top: 80px;
-  right: 0;
+  top: 4vh;
+  left: 1vw;
 }
 
 .label {
@@ -852,7 +901,7 @@ input:checked + .label .slider:before {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;
