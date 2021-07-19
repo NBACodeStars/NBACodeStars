@@ -1,12 +1,42 @@
-import { createCloseIcon, createBtn } from "./utils.js";
+import { createCloseIcon, createBtn, getTeamByTeamId } from "./utils.js";
 import { displayRoster } from "./roster.js";
+
+// *************************************************
+// GLOBAL VARIABLES
+// *************************************************
+
+const cardsContainerEl = document.getElementsByClassName("teamCards")[0];
+
+// *************************************************
+// DISPLAY CARDS FUNCTIONS
+// *************************************************
+
+// Function updates the team cards shown on the screen each time the user makes a selection from the dropdown
+export const displayTeamCards = (teamsSelected, teamsData) => {
+  // Display team card's based on user's selection from the dropdown
+  cardsContainerEl.innerHTML = "";
+
+  // Display all the teams by looping through all 30 NBA teams
+  if (teamsSelected[0] === "all") {
+    teamsData.forEach((team) => {
+      displayTeamCard(team, cardsContainerEl);
+    });
+  }
+  // Display only the teams selected by looping through the specific team selected
+  else {
+    teamsSelected.forEach((teamId) => {
+      const team = getTeamByTeamId(teamsData, teamId);
+      displayTeamCard(team, cardsContainerEl);
+    });
+  }
+};
 
 // *************************************************
 // TEAM CARD FUNCTIONS
 // *************************************************
 
 // Function that displays the teams card
-export const displayTeamCard = (team, cardsContainerEl) => {
+export const displayTeamCard = (team) => {
   const { City, Name, WikipediaLogoUrl, TeamID } = team;
   const teamName = `${City} ${Name}`;
 

@@ -28,14 +28,17 @@ const removeElement = (closingEl) => {
   }, 500);
 };
 
-export const getTeamByTeamId = (teamData, teamId) => {
-  return teamData.find((team) => team.TeamID === parseInt(teamId));
+// Retrieve the team data object based on the team id provided
+export const getTeamByTeamId = (teamsData, teamId) => {
+  return teamsData.find((team) => team.TeamID === parseInt(teamId));
 };
 
+// Retrieve the player data object based on the player id provided
 export const getPlayerByPlayerId = (teamData, playerId) => {
   return teamData.find((team) => team.PlayerID === parseInt(playerId));
 };
 
+// Create a button
 export const createBtn = () => {
   const btn = document.createElement("a");
   btn.innerHTML = "Button";
@@ -46,6 +49,8 @@ export const createBtn = () => {
   return btn;
 };
 
+// Format a number to have commas
+// Credits: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 export const numberWithCommas = (number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
