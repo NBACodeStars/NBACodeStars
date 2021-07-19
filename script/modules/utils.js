@@ -28,8 +28,12 @@ const removeElement = (closingEl) => {
   }, 500);
 };
 
-export const getTeamById = (teamData, teamId) => {
+export const getTeamByTeamId = (teamData, teamId) => {
   return teamData.find((team) => team.TeamID === parseInt(teamId));
+};
+
+export const getPlayerByPlayerId = (teamData, playerId) => {
+  return teamData.find((team) => team.PlayerID === parseInt(playerId));
 };
 
 export const createBtn = () => {
@@ -40,4 +44,8 @@ export const createBtn = () => {
   btn.tabIndex = "0";
 
   return btn;
+};
+
+export const numberWithCommas = (number) => {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

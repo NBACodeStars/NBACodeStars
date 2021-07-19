@@ -581,7 +581,7 @@ h1 {
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
-.closeIcon:hover {
+.closeIcon:hover, .closeIcon:focus {
   color: #f73859;
 }
 
@@ -604,7 +604,8 @@ h1 {
   z-index: 1;
 }
 
-.btn:hover {
+.btn:hover,
+.btn:focus {
   cursor: pointer;
   background-color: #283149;
   color: white;
@@ -613,6 +614,10 @@ h1 {
 .btnPlayerDetails {
   background-color: #dbedf3;
   color: #f73859;
+}
+.btnPlayerDetails:hover, .btnPlayerDetails:focus {
+  background-color: #283149;
+  color: #dbedf3;
 }
 
 .errorMessage {
@@ -757,6 +762,12 @@ td.player {
 
 .playerImg {
   margin-right: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 .playerImg img {
   width: 50px;
@@ -789,8 +800,8 @@ footer {
   cursor: pointer;
   position: absolute;
   display: inline-block;
-  top: 80px;
-  right: 0;
+  top: 4vh;
+  left: 1vw;
 }
 
 .label {
@@ -890,7 +901,7 @@ input:checked + .label .slider:before {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;

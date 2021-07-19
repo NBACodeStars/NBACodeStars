@@ -1,4 +1,9 @@
 import { createCloseIcon, createBtn } from "./utils.js";
+import { displayRoster } from "./roster.js";
+
+// *************************************************
+// TEAM CARD FUNCTIONS
+// *************************************************
 
 // Function that displays the teams card
 export const displayTeamCard = (team, cardsContainerEl) => {
@@ -38,18 +43,31 @@ export const displayTeamCard = (team, cardsContainerEl) => {
   cardsContainerEl.append(cardEl);
 };
 
+// *************************************************
+// DISPLAY TEAM DETAILS FUNCTIONS
+// *************************************************
+
 // Function to create a button that shows team details card
 const createTeamDetailsBtn = (team, cardInnerEl, cardEl) => {
+  // Create the button that shows team details
   const teamBtnEl = createBtn();
   teamBtnEl.innerHTML = "Team details";
   teamBtnEl.classList.add("btnTeamDetails");
+
+  // Add event listeners to show the team details for clicks and enter keypress
   teamBtnEl.addEventListener("click", () => {
     displayTeamDetails(team, cardInnerEl, cardEl);
+  });
+  teamBtnEl.addEventListener("keyup", (e) => {
+    if (e.code === "Enter") {
+      displayTeamDetails(team, cardInnerEl, cardEl);
+    }
   });
 
   return teamBtnEl;
 };
 
+// Function displays the team details to the user
 const displayTeamDetails = (team, cardInnerEl, cardEl) => {
   const { TeamID, City, Conference, Division } = team;
 
@@ -72,21 +90,14 @@ const displayTeamDetails = (team, cardInnerEl, cardEl) => {
   // Create close icon that shows team details button again and closes team details container
   const closeIconEl = createCloseIcon(teamDetailsContainer);
   closeIconEl.addEventListener("click", () => {
-    const playerBtn = cardEl.getElementsByClassName("btnPlayerDetails")[0];
-    playerBtn.remove();
-
-    const teamBtnEl = createTeamDetailsBtn(team, cardInnerEl, cardEl);
-    cardEl.append(teamBtnEl);
-    cardInnerEl.parentNode.insertBefore(teamBtnEl, cardInnerEl.nextSibling);
+    // Function to replace the player details button with team details button
+    handleCloseIconClick(team, cardInnerEl, cardEl);
   });
 
   closeIconEl.addEventListener("keyup", (e) => {
     if (e.code === "Enter") {
-      const playerBtn = cardEl.getElementsByClassName("btnPlayerDetails")[0];
-      playerBtn.remove();
-
-      const teamBtnEl = createTeamDetailsBtn(team, cardInnerEl, cardEl);
-      cardInnerEl.parentNode.insertBefore(teamBtnEl, cardInnerEl.nextSibling);
+      // Function to replace the player details button with team details button
+      handleCloseIconClick(team, cardInnerEl, cardEl);
     }
   });
 
@@ -95,91 +106,35 @@ const displayTeamDetails = (team, cardInnerEl, cardEl) => {
   // Display the card to the user
   cardInnerEl.append(teamDetailsContainer);
 
-  // Change team details to player details button
+  // Change team details to player details button by removing team details button and creating player details button
   const teamBtn = cardEl.getElementsByClassName("btnTeamDetails")[0];
   teamBtn.remove();
 
   // Player details button
   const playerBtnEl = createBtn();
-  playerBtnEl.innerHTML = "Player details";
+  playerBtnEl.innerHTML = "Roster";
   playerBtnEl.classList.add("btnPlayerDetails");
 
-  // playerBtnEl.addEventListener("click", () => {
-  //   displayTeamDetails(team, cardInnerEl);
-  // });
-
-  // const aElem = document.createElement("a");
-  // aElem.innerHTML = "Team details";
-  // aElem.classList.add("btn");
-  // aElem.classList.add("btnTeamDetails");
-  // aElem.ariaRole = "button";
-  // aElem.tabIndex = "0";
+  // Event listener to show player details to the user on click or keyup
+  playerBtnEl.addEventListener("click", () => {
+    displayRoster(team);
+  });
+  playerBtnEl.addEventListener("keyup", (e) => {
+    if (e.code === "Enter") {
+      displayRoster(team);
+    }
+  });
 
   // Show the button between the inner container and team name
   cardInnerEl.parentNode.insertBefore(playerBtnEl, cardInnerEl.nextSibling);
+};
 
-  // Event listener to close the team details card when close icon is clicked
-  // ASK: Does .remove() get rid of the event listener on the close icon as well?
-  // closeIconElem.addEventListener("click", (e) => {
-  //   const teamDetailsCard = e.target.closest(".teamDetailsCard");
+// Function to replace the player details button with team details button
+const handleCloseIconClick = (team, cardInnerEl, cardEl) => {
+  const playerBtn = cardEl.getElementsByClassName("btnPlayerDetails")[0];
+  playerBtn.remove();
 
-  //   // Refactor to create a general fadeout animation
-  //   teamDetailsCard.classList.add("fadeOut");
-  //   setTimeout(function () {
-  //     teamDetailsCard.remove();
-  //   }, 500);
-
-  //   // Remove the team details button and add the player details button
-  //   // Refactor with team details button being removed and player details being added
-  //   const playerDetailsBtn =
-  //     cardElem.getElementsByClassName("btnPlayerDetails")[0];
-  //   playerDetailsBtn.remove();
-
-  //   const aElem = document.createElement("a");
-  //   aElem.innerHTML = "Team details";
-  //   aElem.classList.add("btn");
-  //   aElem.classList.add("btnTeamDetails");
-  //   aElem.ariaRole = "button";
-  //   aElem.tabIndex = "0";
-
-  //   cardInnerContainer.parentNode.insertBefore(
-  //     aElem,
-  //     cardInnerContainer.nextSibling
-  //   );
-
-  //   // Add event listener to the team details button
-  //   nbaCodeStars.teamDetailsListener(aElem);
-  // });
-
-  // Remove the team details button and add the player details button
-  // Refactor this code with the player details event listener code
-  // const teamDetailsBtn = cardElem.getElementsByClassName("btnTeamDetails")[0];
-  // teamDetailsBtn.remove();
-
-  // const aElem = document.createElement("a");
-  // aElem.innerHTML = "Roster";
-  // aElem.classList.add("btn");
-  // aElem.classList.add("btnPlayerDetails");
-  // aElem.ariaRole = "button";
-  // aElem.tabIndex = "0";
-
-  // aElem.addEventListener("click", (e) => {
-  //   const cardId = e.target.closest(".card").id;
-  //   const teamId = cardId.split("-")[1];
-
-  //   nbaCodeStars.displayPlayerDetails(teamId);
-  // });
-  // aElem.addEventListener("keyup", (e) => {
-  //   if (e.code === "Enter") {
-  //     const cardId = e.target.closest(".card").id;
-  //     const teamId = cardId.split("-")[1];
-  //     nbaCodeStars.displayPlayerDetails(teamId);
-  //   }
-  // });
-
-  // cardInnerContainer.parentNode.insertBefore(
-  //   aElem,
-  //   cardInnerContainer.nextSibling
-  // );
-  // });
+  const teamBtnEl = createTeamDetailsBtn(team, cardInnerEl, cardEl);
+  cardEl.append(teamBtnEl);
+  cardInnerEl.parentNode.insertBefore(teamBtnEl, cardInnerEl.nextSibling);
 };
