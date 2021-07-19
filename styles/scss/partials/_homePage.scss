@@ -46,6 +46,9 @@ li {
 
 nav {
   margin: 10px 0px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 section,
@@ -56,6 +59,36 @@ footer {
 //***************************************
 // Header styles
 //***************************************
+
+.logoContainer {
+  width: 100%;
+}
+
+.cageLink {
+  align-self: flex-end;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.cageMainPageButton {
+  width: 35%;
+}
+
+.nbaLettering {
+  width: 17%;
+  text-align: center;
+  z-index: -10;
+  position: relative;
+  bottom: 0px;
+  
+}
+
+.letteringFlex {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
 .logoContainer::before,
 .logoContainer::after {
@@ -81,6 +114,7 @@ h1 {
   font-weight: 700;
   font-size: 4rem;
   color: $red;
+  background-color: rgb(40, 49, 73);
 }
 
 .teamDropdownLabel,
@@ -361,10 +395,3 @@ footer {
 }
 
 
-.cageMainPageButton {
-  width: 30%;
-}
-
-.nbaLettering {
-  width: 10%;
-}

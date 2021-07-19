@@ -303,11 +303,56 @@ li {
 
 nav {
   margin: 10px 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
 }
 
 section,
 footer {
   margin: 50px 0px;
+}
+
+.logoContainer {
+  width: 100%;
+}
+
+.cageLink {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  width: 100%;
+}
+
+.cageMainPageButton {
+  width: 35%;
+}
+
+.nbaLettering {
+  width: 17%;
+  text-align: center;
+  z-index: -10;
+  position: relative;
+  bottom: 0px;
+}
+
+.letteringFlex {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .logoContainer::before,
@@ -334,6 +379,7 @@ h1 {
   font-weight: 700;
   font-size: 4rem;
   color: #f73859;
+  background-color: #283149;
 }
 
 .teamDropdownLabel,
@@ -631,21 +677,34 @@ footer {
   text-align: center;
 }
 
-.cageBody {
-  width: 100%;
-  position: static;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background-color: white;
+.cagesBody {
+  background-color: #5c3c92;
 }
-.cageBody .cageWrapper {
+
+.cageButton {
+  margin-bottom: 60px;
+  border-radius: 50%;
+  margin-bottom: 60px;
+  padding: 20px;
+  background-color: #a2d5c6;
+  font-size: 20px;
+  width: 160px;
+  border: none;
+  -webkit-box-shadow: 0px 10px black;
+          box-shadow: 0px 10px black;
+  background-color: #a2d5c6;
+  margin-top: 20px;
+}
+
+.cageHeading {
+  background-color: #5c3c92;
+  color: white;
+  font-family: "Anonymous Pro", monospace;
+  text-transform: uppercase;
+  font-size: 100px;
+}
+
+.cageContainer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -656,38 +715,57 @@ footer {
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
-  margin: 0px !important;
-  padding: 0px !important;
-}
-.cageBody .cageHeader {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 100%;
-}
-.cageBody .cageHeader h1 {
-  color: black;
-}
-.cageBody .cageWrapper {
-  width: 100%;
-}
-.cageBody .cageHeader {
-  width: 70%;
-}
-.cageBody .cageMain {
-  width: 60%;
 }
 
+.theFinalCage {
+  width: 400px;
+}
+
+.nbaLetters {
+  margin: 40px;
+  width: 100px;
+  height: 100px;
+}
+
+.cageLoaderImage {
+  width: 150px;
+  height: 150px;
+  -webkit-animation-name: loading;
+          animation-name: loading;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-duration: 3s;
+          animation-duration: 3s;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+  position: relative;
+}
+
+@-webkit-keyframes loading {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes loading {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
 @media screen and (max-width: 860px) {
   .teamCards {
     grid-template-columns: repeat(2, 1fr);

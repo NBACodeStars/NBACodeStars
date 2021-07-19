@@ -4,28 +4,31 @@
   <meta charset="UTF-8">
   <title>Cage Finder</title>
   <link rel="stylesheet" href="./styles/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap" rel="stylesheet">
 </head>
-<body class="cageBody">
-    <div class="cageWrapper">
-  <header class="cageHeader">
-      <h1 id="page-title">Cage Finder</h1>
-      <p>Serving all your Nicholas Cage needs since July 2021</p>
+<body class="cagesBody">  
+  <header>
 
-        <label for="cageButton"></label>
-        <button id="cageButton">MORE<span>CAGE</span></button>
+    <div class="nbaFlex">
+      <a href="index.html"><img src="./assets/nbaLettering.png" class="nbaLetters" alt=""></a>
+      
+    </div>
+
+    <div class="cageContainer">
+      <img src="./assets/theFinalCage.png" class="theFinalCage" alt="">
+      <h1 class="cageHeading">Cage Finder</h1>
+      <button class="cageButton">More Cage</button>
+      <ul class="cageList">
+
+      </ul>
+      <img src="./assets/41AUw0wNduL._AC_.png" class="cageLoaderImage" alt="">
+    </div>
   </header>
 
-  <!-- cage load spinner -->
-
-  <img src="./assets/cageImages/41AUw0wNduL._AC_.png" class="cageLoaderImage" alt="">
-
-  <main class="cageMain">
-    <ul class="cageUl" id="movies">
-
-    </ul>
-  </main>
-  <script src="./script/cageFinder.js"></script>
-
-    </div>
+  
+  
+  <script src="cagefinder.js"></script>
 </body>
 </html>
