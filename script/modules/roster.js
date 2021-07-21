@@ -121,49 +121,47 @@ const displayRosterModal = (team) => {
 };
 
 // Function to create the toggle button between roster bio and stats
-// Credits to stackoverflow author for providing this toggle button: https://stackoverflow.com/questions/63410507/how-to-connect-two-options-and-toggle-switch-buttons
 const displayToggleBtn = (team) => {
   // Create toggle container
-  const btnContainer = document.createElement("div");
-  btnContainer.classList.add("toggleBtnContainer");
+  const toggleContainer = document.createElement("div");
+  toggleContainer.classList.add("toggleContainer");
 
-  // Create toggle input and content
+  // Create toggle input and label
   const inputEl = document.createElement("input");
-  inputEl.setAttribute("class", "input");
-  inputEl.setAttribute("id", "toggle");
   inputEl.setAttribute("type", "checkbox");
+  inputEl.setAttribute("id", "toggle");
+  inputEl.setAttribute("class", "toggleInput");
 
-  const toggleHTML = `
-    <label class="label" for="toggle">
+  const toggleLabel = `
+    <label class="toggleLabel" for="toggle">
       <div class="left">
         Bio
-      </div>
-
-      <div class="switch">
-        <span class="slider round"></span>
-      </div>
-      
+      </div>      
       <div class="right">
-        Stats
+        Stat
       </div>
     </label>
     `;
 
   // Append toggle to show on page
-  btnContainer.append(inputEl);
-  btnContainer.innerHTML += toggleHTML;
+  toggleContainer.append(inputEl);
+  toggleContainer.innerHTML += toggleLabel;
 
   // Event listener to toggle between bio and stats
-  btnContainer.addEventListener("click", () => {
+  toggleContainer.addEventListener("click", () => {
     handleToggle(team);
   });
-  btnContainer.addEventListener("keyup", (e) => {
+  toggleContainer.addEventListener("keyup", (e) => {
     if (e.code === "Enter") {
       handleToggle(team);
     }
   });
 
-  return btnContainer;
+  const toggleOuterContainer = document.createElement("div");
+  toggleOuterContainer.classList.add("toggleOuter");
+  toggleOuterContainer.append(toggleContainer);
+
+  return toggleOuterContainer;
 };
 
 // Function to determine whether to display roster stats or bio

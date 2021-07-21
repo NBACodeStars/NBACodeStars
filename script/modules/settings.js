@@ -1,3 +1,3 @@
 export const defaultSeason = 2021;
-export const test = false;
+export const test = true;
 export const teamsSelected = ["all"];

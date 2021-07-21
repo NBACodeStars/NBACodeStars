@@ -796,99 +796,6 @@ footer {
   text-align: center;
 }
 
-.toggleBtnContainer {
-  cursor: pointer;
-  position: absolute;
-  display: inline-block;
-  top: 4vh;
-  left: 1vw;
-}
-
-.label {
-  pointer-events: none;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.switch,
-.input:checked + .label .left,
-.input:not(:checked) + .label .right {
-  pointer-events: all;
-}
-
-/* most of the stuff below is the same as the W3Schools stuff,
-   but modified a bit to reflect changed HTML structure */
-.input {
-  display: none;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-}
-
-input:checked + .label .slider {
-  background-color: #2196f3;
-}
-
-.toggleBtnContainer:focus-within,
-input:focus + .label .slider {
-  -webkit-box-shadow: 0 0 1px #2196f3;
-          box-shadow: 0 0 1px #2196f3;
-}
-
-input:checked + .label .slider:before {
-  -webkit-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-/* styling to make it look like your screenshot */
-.left,
-.right {
-  margin: 0 0.5em;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-family: sans-serif;
-}
-
 .loadingContainer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -944,6 +851,102 @@ input:checked + .label .slider:before {
             transform: rotate(360deg);
   }
 }
+.toggleOuter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 20px;
+  text-transform: uppercase;
+}
+
+.toggleContainer {
+  position: relative;
+  display: inline-block;
+  background: #f73859;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.toggleInput {
+  position: absolute;
+  opacity: 0;
+}
+
+.toggleLabel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.toggleLabel:hover {
+  cursor: pointer;
+}
+
+.left,
+.right {
+  height: 50px;
+  width: 60px;
+  padding: 5px;
+  line-height: calc(50px - 5px * 2);
+  text-align: center;
+}
+
+.left,
+.right {
+  position: relative;
+}
+
+.left::before {
+  content: "";
+  line-height: calc(50px - 5px * 2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #283149;
+  border: 0px #283149 solid;
+  height: calc(50px - 5px * 2);
+  width: calc(60px - 5px * 2 - 0px * 2);
+  margin: 5px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.left::after,
+.right::before {
+  position: absolute;
+}
+
+.right::before {
+  content: "Stat";
+  opacity: 0;
+}
+
+.left::after {
+  content: "Bio";
+  left: 18px;
+  opacity: 1;
+}
+
+.toggleInput:checked + .toggleLabel .left::before {
+  opacity: 1;
+  -webkit-transform: translateX(60px);
+          transform: translateX(60px);
+}
+.toggleInput:checked + .toggleLabel .right::before {
+  opacity: 0;
+}
+
 @media screen and (max-width: 860px) {
   .teamCards {
     grid-template-columns: repeat(2, 1fr);
