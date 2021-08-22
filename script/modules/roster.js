@@ -169,11 +169,13 @@ const handleToggle = (team) => {
   const inputEl = document.getElementById("toggle");
   const isChecked = inputEl.checked;
 
+  console.log(isChecked);
+
   if (isChecked) {
-    getRosterStats(team);
+    displayRosterBio();
     // displayRosterStats();
   } else {
-    displayRosterBio();
+    getRosterStats(team);
   }
 };
 
