@@ -6,14 +6,18 @@ import { bioTableMap, statsTableMap } from "./mapping.js";
 import { numberWithCommas, getPlayerByPlayerId } from "./utils.js";
 import { test } from "./settings.js";
 
+// ******************************************************
+// GENERAL ROSTER MODAL FLOW
+// ******************************************************
+
 // Roster modal with toggle, close icon, thead, and tbody
 // Toggle button click event
 //  - link to player bio
+//    - Call player bio
+//    - Show player bio
 //  - link to player stats
 //    - Call player stats
 //    - Show player stats
-// Call player bio
-// Show player bio
 
 // ******************************************************
 // GLOBAL DATA OBJECT
@@ -69,7 +73,6 @@ export const displayRoster = (team) => {
         const errorMessage =
           "Could not retrieve bio data. Please try again later!";
         displayErrorModal(errorMessage);
-        console.log(error);
       });
   }
 };
@@ -173,9 +176,11 @@ const handleToggle = (team) => {
 
   if (isChecked) {
     displayRosterBio();
-    // displayRosterStats();
   } else {
     getRosterStats(team);
+
+    // Uncomment for test environment
+    // displayRosterStats();
   }
 };
 
@@ -350,7 +355,6 @@ const getRosterStats = (team) => {
         const errorMessage =
           "Could not retrieve roster stats. Please try again later!";
         displayErrorModal(errorMessage);
-        console.log(error);
       });
   }
 };
