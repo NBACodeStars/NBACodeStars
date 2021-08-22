@@ -6,18 +6,14 @@ import { bioTableMap, statsTableMap } from "./mapping.js";
 import { numberWithCommas, getPlayerByPlayerId } from "./utils.js";
 import { test } from "./settings.js";
 
-// ******************************************************
-// GENERAL ROSTER MODAL FLOW
-// ******************************************************
-
 // Roster modal with toggle, close icon, thead, and tbody
 // Toggle button click event
 //  - link to player bio
-//    - Call player bio
-//    - Show player bio
 //  - link to player stats
 //    - Call player stats
 //    - Show player stats
+// Call player bio
+// Show player bio
 
 // ******************************************************
 // GLOBAL DATA OBJECT
@@ -73,6 +69,7 @@ export const displayRoster = (team) => {
         const errorMessage =
           "Could not retrieve bio data. Please try again later!";
         displayErrorModal(errorMessage);
+        console.log(error);
       });
   }
 };
@@ -124,47 +121,49 @@ const displayRosterModal = (team) => {
 };
 
 // Function to create the toggle button between roster bio and stats
+// Credits to stackoverflow author for providing this toggle button: https://stackoverflow.com/questions/63410507/how-to-connect-two-options-and-toggle-switch-buttons
 const displayToggleBtn = (team) => {
   // Create toggle container
-  const toggleContainer = document.createElement("div");
-  toggleContainer.classList.add("toggleContainer");
+  const btnContainer = document.createElement("div");
+  btnContainer.classList.add("toggleBtnContainer");
 
-  // Create toggle input and label
+  // Create toggle input and content
   const inputEl = document.createElement("input");
-  inputEl.setAttribute("type", "checkbox");
+  inputEl.setAttribute("class", "input");
   inputEl.setAttribute("id", "toggle");
-  inputEl.setAttribute("class", "toggleInput");
+  inputEl.setAttribute("type", "checkbox");
 
-  const toggleLabel = `
-    <label class="toggleLabel" for="toggle">
+  const toggleHTML = `
+    <label class="label" for="toggle">
       <div class="left">
         Bio
-      </div>      
+      </div>
+
+      <div class="switch">
+        <span class="slider round"></span>
+      </div>
+      
       <div class="right">
-        Stat
+        Stats
       </div>
     </label>
     `;
 
   // Append toggle to show on page
-  toggleContainer.append(inputEl);
-  toggleContainer.innerHTML += toggleLabel;
+  btnContainer.append(inputEl);
+  btnContainer.innerHTML += toggleHTML;
 
   // Event listener to toggle between bio and stats
-  toggleContainer.addEventListener("click", () => {
+  btnContainer.addEventListener("click", () => {
     handleToggle(team);
   });
-  toggleContainer.addEventListener("keyup", (e) => {
+  btnContainer.addEventListener("keyup", (e) => {
     if (e.code === "Enter") {
       handleToggle(team);
     }
   });
 
-  const toggleOuterContainer = document.createElement("div");
-  toggleOuterContainer.classList.add("toggleOuter");
-  toggleOuterContainer.append(toggleContainer);
-
-  return toggleOuterContainer;
+  return btnContainer;
 };
 
 // Function to determine whether to display roster stats or bio
@@ -172,15 +171,11 @@ const handleToggle = (team) => {
   const inputEl = document.getElementById("toggle");
   const isChecked = inputEl.checked;
 
-  console.log(isChecked);
-
   if (isChecked) {
-    displayRosterBio();
-  } else {
     getRosterStats(team);
-
-    // Uncomment for test environment
     // displayRosterStats();
+  } else {
+    displayRosterBio();
   }
 };
 
@@ -355,6 +350,7 @@ const getRosterStats = (team) => {
         const errorMessage =
           "Could not retrieve roster stats. Please try again later!";
         displayErrorModal(errorMessage);
+        console.log(error);
       });
   }
 };
