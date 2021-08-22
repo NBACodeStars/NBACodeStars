@@ -525,6 +525,101 @@ footer {
 }
 
 //***************************************
+// Modal toggle button styles
+//***************************************
+.toggleBtnContainer {
+  cursor: pointer;
+  position: absolute;
+  display: inline-block;
+  top: 4vh;
+  left: 1vw;
+}
+
+.label {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.switch,
+.input:checked + .label .left,
+.input:not(:checked) + .label .right {
+  pointer-events: all;
+}
+
+/* most of the stuff below is the same as the W3Schools stuff,
+   but modified a bit to reflect changed HTML structure */
+
+.input {
+  display: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .label .slider {
+  background-color: #2196f3;
+}
+
+.toggleBtnContainer:focus-within,
+input:focus + .label .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .label .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* styling to make it look like your screenshot */
+
+.left,
+.right {
+  margin: 0 0.5em;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: sans-serif;
+}
+
+// TODO: SELECT THE LOADING SPINNER TO KEEP
+//***************************************
 // Loading screen animation
 //***************************************
 
@@ -543,6 +638,13 @@ footer {
   background: rgba($black, 0.8);
 }
 
+// .loadingPositionFlex {
+//   display: flex;
+//   width: 100%;
+//   justify-content: center;
+//   align-items: center;
+// }
+
 .fas.fa-basketball-ball {
   font-size: calc(5rem + 2vw);
   color: $orange;
@@ -553,6 +655,40 @@ footer {
   animation-timing-function: linear;
 }
 
+// .fas.fa-spinner {
+//   font-size: 40px;
+//   color: white;
+
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 3s;
+//   animation-timing-function: linear;
+//   position: relative;
+// }
+
+// .uMadBruh {
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 3s;
+//   animation-timing-function: linear;
+//   position: relative;
+
+//   font-size: 40px;
+//   color: white;
+//   color: red;
+// }
+
+// .fas.fa-adjust {
+//   font-size: 40px;
+//   color: white;
+
+//   animation-name: loading;
+//   animation-iteration-count: infinite;
+//   animation-duration: 1s;
+//   animation-timing-function: linear;
+//   position: relative;
+// }
+
 @keyframes loading {
   from {
     transform: rotate(0);
@@ -562,97 +698,6 @@ footer {
   }
 }
 
-//***************************************
-// Toggle
-//***************************************
-
-.toggleOuter {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 20px;
-  text-transform: uppercase;
-}
-
-.toggleContainer {
-  position: relative;
-  display: inline-block;
-  background: $red;
-  font-size: 1rem;
-  border-radius: 5px;
-}
-
-.toggleInput {
-  position: absolute;
-  opacity: 0;
-}
-
-.toggleLabel {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.left,
-.right {
-  height: $toggleHeight;
-  width: $toggleWidth;
-  padding: $togglePadding;
-  line-height: calc(#{$toggleHeight} - #{$togglePadding} * 2);
-  text-align: center;
-}
-
-.left,
-.right {
-  position: relative;
-}
-
-.left::before {
-  content: "";
-  line-height: calc(#{$toggleHeight} - #{$togglePadding} * 2);
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: $grey;
-  border: $border $grey solid;
-  height: calc(#{$toggleHeight} - #{$toggleMargin} * 2);
-  width: calc(#{$toggleWidth} - #{$toggleMargin} * 2 - #{$border} * 2);
-  margin: $toggleMargin;
-  border-radius: 5px;
-  text-transform: uppercase;
-  transition: all 0.3s;
-}
-
-.left::after,
-.right::before {
-  position: absolute;
-}
-
-.right::before {
-  content: "Stat";
-  opacity: 0;
-}
-
-.left::after {
-  content: "Bio";
-  left: 18px;
-  opacity: 1;
-}
-
-.toggleInput:checked {
-  & + .toggleLabel .left::before {
-    opacity: 1;
-    transform: translateX($toggleWidth);
-  }
-
-  & + .toggleLabel .right::before {
-    opacity: 0;
-  }
-}
+// .nbaLettering {
+//   width: 70%;
+// }
