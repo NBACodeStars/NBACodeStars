@@ -42,8 +42,10 @@ export const displayRoster = (team) => {
     // Save the data retrieved
     roster.bioData = tempBioData;
 
-    // Display bio data
+    // Display roster modal
     displayRosterModal(team);
+
+    // Display bio data
     displayRosterBio();
   } else {
     // Fetch bio data from api
