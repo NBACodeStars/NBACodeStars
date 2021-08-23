@@ -121,44 +121,51 @@ const displayRosterModal = (team) => {
 
 // Function to create the toggle button between roster bio and stats
 const displayToggleBtn = (team) => {
-  // Create toggle container
-  const toggleContainer = document.createElement("div");
-  toggleContainer.classList.add("toggleContainer");
-
-  // Create toggle input and label
+  // Create toggle input
   const inputEl = document.createElement("input");
   inputEl.setAttribute("type", "checkbox");
   inputEl.setAttribute("id", "toggle");
   inputEl.setAttribute("class", "toggleInput");
 
-  const toggleLabel = `
-    <label class="toggleLabel" for="toggle">
-      <div class="left">
-        Bio
-      </div>      
-      <div class="right">
-        Stat
-      </div>
-    </label>
-    `;
+  // Toggle between team bio and stats when input element changes between checked and unchecked
+  inputEl.addEventListener("change", () => {
+    handleToggle(team);
+  });
+
+  // Create toggle label
+  const toggleLabel = document.createElement("label");
+  toggleLabel.setAttribute("class", "toggleLabel");
+  toggleLabel.setAttribute("for", "toggle");
+  toggleLabel.innerHTML = `
+    <div class="left">
+    Bio
+    </div>      
+    <div class="right">
+      Stat
+    </div>
+  `;
+
+  // Create toggle container
+  const toggleContainer = document.createElement("div");
+  toggleContainer.classList.add("toggleContainer");
 
   // Append toggle to show on page
   toggleContainer.append(inputEl);
-  toggleContainer.innerHTML += toggleLabel;
+  toggleContainer.append(toggleLabel);
 
-  // Event listener to toggle between bio and stats
-  toggleContainer.addEventListener("click", () => {
-    handleToggle(team);
-  });
-  toggleContainer.addEventListener("keyup", (e) => {
+  // Create outer toggle container
+  const toggleOuterContainer = document.createElement("div");
+  toggleOuterContainer.tabIndex = "0";
+  toggleOuterContainer.classList.add("toggleOuter");
+  toggleOuterContainer.append(toggleContainer);
+
+  // Toggle between team bio and stats when user hits enter key
+  toggleOuterContainer.addEventListener("keyup", (e) => {
     if (e.code === "Enter") {
+      inputEl.checked = !inputEl.checked;
       handleToggle(team);
     }
   });
-
-  const toggleOuterContainer = document.createElement("div");
-  toggleOuterContainer.classList.add("toggleOuter");
-  toggleOuterContainer.append(toggleContainer);
 
   return toggleOuterContainer;
 };
@@ -167,14 +174,12 @@ const displayToggleBtn = (team) => {
 const handleToggle = (team) => {
   const inputEl = document.getElementById("toggle");
   const isChecked = inputEl.checked;
+  console.log(isChecked);
 
   if (isChecked) {
-    displayRosterBio();
-  } else {
     getRosterStats(team);
-
-    // Uncomment for test environment
-    // displayRosterStats();
+  } else {
+    displayRosterBio();
   }
 };
 
